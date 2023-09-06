@@ -1,18 +1,23 @@
-import { useEffect } from 'react';
+import React, { useEffect } from 'react';
 import './homemain.css';
 
 function HomeMain () {
     
     useEffect(() => {
         var counter = 1;
-        setInterval(() => {
+        const bannerInterval = setInterval(() => {
             document.getElementById('bnr-changer' + counter).checked = true;
             counter++;
             if(counter > 4) {
             counter = 1;
             }
         }, 5000);
-    });
+
+        return () => {
+            clearInterval(bannerInterval);
+        }
+
+    }, []);
     
     return (
         <>
@@ -168,4 +173,4 @@ function HomeMain () {
     );
 }
 
-export default HomeMain;
+export default React.memo(HomeMain);

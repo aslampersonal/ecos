@@ -1,9 +1,107 @@
-import React from "react";
+import React, { useEffect } from "react";
+import axios from "axios";
 import "./ProductMain.css";
 
 function ProductMain (props) {
+    
+    useEffect(() => {
+
+        imageScroller();
+        showData();
+    
+    });
+
+    async function getData() {
+        var data = await axios.get('http://localhost:3000/products')
+        return data.data;
+    }
+
+    async function showData() {
+        const Data = await getData();
+
+        let mainimage = document.getElementById("prod-img"); 
+        let imgscrolldiv = document.getElementById("prod-scroll-carousel");
+        let title = document.getElementById("pd-title");
+        let description = document.getElementById("pd-desc");
+        let price = document.getElementById("pd-price");
+
+        for(let i=0; i<Data.length; i++) {
+            for(let j=0; j<Data[i].Images.length; j++) {
+                const pdimg = document.createElement("img");
+                const imgurl = "../images/product-images/" + Data[i].Images[j];
+                pdimg.setAttribute("class","prod-scroll-img");
+                pdimg.setAttribute("src",imgurl);
+                imgscrolldiv.appendChild(pdimg);
+            }
+
+            const mainImgurl = "../images/product-images/" + Data[0].Images[0];
+            mainimage.setAttribute("src",mainImgurl);
+
+            title.innerText = Data[i].productTitle;
+            description.innerText = Data[i].description;
+            price.innerText = Data[i].Price;
+
+        }
+    }
+
+    function imageScroller() {
+        const carousel = document.getElementById("prod-scroll-carousel");
+        const firstImg = carousel.querySelector(".prod-scroll-img");
+        const arrowIconBack = document.getElementById("scroll-back");
+        const arrowIconNext = document.getElementById("scroll-next");
+
+        let isDragStart = false, prevPageX, prevScrollLeft;
+
+        const showHideIcons = () => {
+            //showing and hiding prev/next icons according to carousel scroll left value
+            let ScrollWidth = carousel.ScrollWidth - carousel.clientWidth; //getting max scrollable width
+            arrowIconBack.style.display = carousel.scrollLeft == 0 ? "none" : "block";
+            arrowIconNext.style.display = carousel.scrollLeft == ScrollWidth ? "none" : "block";
+        }
+
+        arrowIconBack.addEventListener("click", () => {
+            let firstImgWidth = firstImg.clientWidth + 10; //getting first image width & adding 10 margin value
+            carousel.scrollLeft += -firstImgWidth;
+            setTimeout(() => showHideIcons(), 60); //calling showHideIcons after 60ms
+        })
+
+        arrowIconNext.addEventListener("click", () => {
+            let firstImgWidth = firstImg.clientWidth + 10; //getting first image width & adding 10 margin value
+            carousel.scrollLeft += firstImgWidth;
+            setTimeout(() => showHideIcons(), 60); //calling showHideIcons after 60ms
+        })
+
+        const dragStart = (e) => {
+            // updating global variables value on mouse down event
+            isDragStart = true;
+            prevPageX = e.pageX;
+            prevScrollLeft = carousel.scrollLeft;
+        }
+
+        const dragging = (e) => {
+            //scrolling images/carousel to left according to mouse pointer
+            if(!isDragStart) return;
+            e.preventDefault();
+            carousel.classList.add("dragging");
+            let positionDiff = e.pageX - prevPageX;
+            carousel.scrollLeft = prevScrollLeft - positionDiff;
+            showHideIcons();
+        }
+
+        const dragStop = () => {
+            isDragStart = false;
+            carousel.classList.remove("dragging");
+        }
+
+        carousel.addEventListener("mousedown", dragStart);
+        carousel.addEventListener("mousemove", dragging);
+        carousel.addEventListener("mouseup", dragStop);
+        carousel.addEventListener("mouseleave", dragStop);
+    }
+    
+    
     return (
-        <main>
+        <>
             <section id="product-section">
                 {/* <div id="path-div">
                         <span id="path-span">Home  FACE CARE PRODUCTS FOR MEN  Under Eye Cream | Quinoa & Collagen (15gm)</span>
@@ -11,7 +109,7 @@ function ProductMain (props) {
                 <div className="container" id="prod-sec-div">
                     <div id="prod-img-div">
                     <div id="prod-img-main">
-                        <img id="prod-img" src="../images/eyeshadow-girl1.jpg" alt="" />
+                        <img id="prod-img" src="../../assets/images/eyeshadow-girl1.jpg" alt="" />
                     </div>
                     <div id="prod-scroll-div">
                         <div id="scroll-back" className="scroll-icon">
@@ -33,12 +131,12 @@ function ProductMain (props) {
                         <div id="prod-scroll-carousel">
                         <img
                             className="prod-scroll-img"
-                            src="../images/product-images/under_eye_cream_1.jpg"
+                            src="/src/assets/images/product-images/under_eye_cream_1.jpg"
                             alt=""
                         />
                         <img
                             className="prod-scroll-img"
-                            src="../images/product-images/under_eye_cream_2.jpg"
+                            src="/src/assets/images/product-images/under_eye_cream_2.jpg"
                             alt=""
                         />
                         </div>
@@ -189,7 +287,7 @@ function ProductMain (props) {
                     </div>
                 </div>
                 </section>
-        </main>
+        </>
     );
 }
 
