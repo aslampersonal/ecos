@@ -4,25 +4,25 @@ const multer  = require('multer')
 const ProductSchema = require("../models/productModel")
 
 //adding products
-const AddProduct = async(req,res) => {
+const addProduct = async(req,res) => {
 
-    const {productTitle, productId, description, Options, Price, category, Images} = req.body
+    const {name, image, brand, price, category, countInStock, description} = req.body;
 
     const ProductAdding = await ProductSchema.create({
-        productTitle, 
-        productId, 
-        description, 
-        Price, 
+        name, 
+        image, 
+        brand, 
+        price, 
         category, 
-        Images
+        countInStock, 
+        description
     })
 
-    return res.json({msg:"userdetails", ProductAdding})
+    return res.json({msg:"productdetails", ProductAdding})
 }
 
 //fetching all data
 const getdata = async(req,res) => {
-
     const data = await ProductSchema.find()
     return res.json(data)
 }
@@ -53,5 +53,5 @@ const updateuser = async(req,res) => {
     res.json({msg:"user updated",updateuser})
 }
 
-module.exports = {AddProduct, getdata, finduser, deleteuser, updateuser}
+module.exports = {addProduct, getdata, finduser, deleteuser, updateuser}
 

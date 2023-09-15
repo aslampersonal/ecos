@@ -1,6 +1,7 @@
 main {
     display: flex;
     flex-direction: column;
+    background-color: white;
 }
 
 
@@ -151,7 +152,7 @@ main {
     background-image: url("/src/assets/images/makeup-banner.jpg");
     width: 50%;
     background-repeat: no-repeat;
-    background-size: 50rem 50rem;
+    background-size: 100%;
     display: flex;
     justify-content: flex-end;
     align-items: center;
@@ -173,7 +174,7 @@ main {
     background-image: url("/src/assets/images/skincare-banner.jpg");
     width: 50%;
     background-repeat: no-repeat;
-    background-size: 50rem 50rem;
+    background-size: 100%;
     display: flex;
     justify-content: flex-start;
     align-items: center;
@@ -374,5 +375,3 @@ main {
     border-radius: 25px;
     letter-spacing: 2px;
 }
-
-
