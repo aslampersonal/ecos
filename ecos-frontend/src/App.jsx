@@ -10,6 +10,7 @@ import CosmeticPage from "./pages/Cosmetics";
 import SkinCarePage from "./pages/Skincare";
 import SignupPage from "./pages/SignupPage"
 import LoginPage from "./pages/LoginPage"
+import CollectionPage from "./pages/CollectionPage";
 
 import ProductAddingPage from "./pages/Admin/ProductAddingPage";
 
@@ -25,6 +26,7 @@ function App() {
         <Route path="/" element={<Home />} /> 
         <Route path="/product" element={<ProductPage />} /> 
         <Route path="/store" element={<StorePage />} /> 
+        <Route path="/collections" element={<CollectionPage />} /> 
         <Route path="/about-us" element={<ProductPage />} /> 
         <Route path="/contact-us" element={<ProductPage />} /> 
         <Route path="/cosmetic-products" element={<CosmeticPage />} /> 
