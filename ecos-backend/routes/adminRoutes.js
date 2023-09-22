@@ -1,13 +1,24 @@
 const express = require("express")
-const {addProduct, finduser, deleteuser, updateuser} = require("../controller/productcontroller")
+const bodyparser = require("body-parser");
+const app = express();
 
-const router = express.Router()
+const admin = require("../controller/adminController");
+const checkAdminToken = require("../middleware/adminMiddleware");
 
-router.route("/add-product").post(addProduct)
+app.use(bodyparser.json());
+app.use(bodyparser.urlencoded({ extended: true }));
 
-router.route("/finduser/:id").get(finduser)
-router.route("/deleteuser/:id").delete(deleteuser)
-router.route("/updateuser/:id").put(updateuser)
+app.post("/login", admin.adminLogin);
+app.post("/products", checkAdminToken, admin.createProduct);
+app.get("/users", checkAdminToken, admin.getUsers);
+app.get("/users/:id", checkAdminToken, admin.getSpecificUser);
+app.get("/products", checkAdminToken, admin.getProducts);
+app.put("/products/:id", checkAdminToken, admin.updateProduct);
+app.delete("/products/:id", checkAdminToken, admin.deleteProduct);
+app.get("/products/category/:category", checkAdminToken, admin.getCategoryWise);
+app.get("/products/:id", checkAdminToken, admin.getSpecificProduct);
+app.get("/order", checkAdminToken, admin.getAllOrders);
+app.get("/revenue", checkAdminToken, admin.getRevenue);
 
-module.exports = router
+module.exports = app;
 

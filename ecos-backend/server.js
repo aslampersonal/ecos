@@ -1,26 +1,33 @@
-const express = require("express")
-const connectDB = require("./database")
-const router = require("./testrouter")
-var cors = require('cors')
+const express = require("express");
+const mongoose = require("mongoose");
+const cookieParser = require("cookie-parser");
+const dotenv = require("dotenv");
+const app = express();
 
-const app = express()
+dotenv.config();
 
-const adminRoutes = require ("./routes/adminRoutes");
-const userRoutes = require ("./routes/userRoutes");
+//const route = express.Router();
 
-app.use(cors())
-app.use(express.json())
+mongoose
+  .connect("mongodb+srv://ecos:NBnXAf3aCZzPaD2x@cluster0.7ctkgki.mongodb.net/ucos?retryWrites=true&w=majority")
+  .then(() => {
+    console.log("database connected");
+  })
+  .catch(() => {
+    console.log("connection failed");
+  });
 
-connectDB();
+app.use(cookieParser());
 
-app.use(adminRoutes);
-app.use(userRoutes);
+// for admin routes
+const adminRoute = require("./routes/adminRoutes");
+app.use("/api/admin", adminRoute);
 
-app.get('/',(req,res) => {
-    res.json("API IS RUNNING");
-})
+//for user route
 
-const PORT = 3000;
+const userRoute = require("./routes/userRoutes");
+app.use("/api/users", userRoute);
 
-app.listen(PORT,()=>console.log(`SERVER IS RUNNING ON PORT ${PORT}`))
-
+app.listen(3000, () => {
+  console.log("server connectec at 3000");
+});

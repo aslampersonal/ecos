@@ -1,19 +1,60 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
-const userSchema = new mongoose.Schema({
-  name: { type: String, required: true },
-  email: {
-    type: String, required: true, unique: true, index: true, dropDups: true,
+const mongoSchema = new mongoose.Schema({
+  firstName: {
+    type: String,
+    required: true,
   },
-  password: { type: String, required: true },
-  isAdmin: { type: Boolean, required: true, default: false },
+  lastName: {
+    type: String,
+    required: true,
+  },
+  userName: {
+    type: String,
+    required: true,
+  },
+  email: {
+    type: String,
+    required: true,
+  },
+  password: {
+    type: String,
+    required: true,
+  },
+  confirmPassword: {
+    type: String,
+    required: true,
+  },
+  cart: [
+    {
+      type: String,
+      required: false,
+    },
+  ],
+  wishList: [
+    {
+      type: String,
+      required: false,
+    },
+  ],
+  orders: [
+    {
+      product: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "productDatas",
+      },
+      orderId: {
+        type: String,
+      },
+      payment: {
+        type: Number,
+      },
+      orderDate: {
+        type: Date,
+        default: Date.now,
+      },
+    },
+  ],
 });
 
-const userModel = mongoose.model('User', userSchema);
-
-export default userModel;
-
-
-
-
-
+module.exports = mongoose.model("UserData", mongoSchema);

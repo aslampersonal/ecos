@@ -15,3 +15,7 @@ a {
 .title-page {
     text-transform: uppercase;
 }
+
+.row {
+    padding: 0;
+}

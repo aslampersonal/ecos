@@ -12,7 +12,7 @@ export default function CosmeticsMain() {
                     <h2 className="sec-h2" id="cosmetics-h2">Cosmetic Products</h2>
                     <div className="row">
                         <div className="col-sm-5">
-                            <NavLink to="/collections" state= {{title:"cosmetic-men"}} className="nav-link" >
+                            <NavLink to="/collections" state= {{title:"bodycare"}} className="nav-link" >
                             <div className="card">
                             <img className="card-img-top" src="/src/assets/images/eyeshadow-girl1.jpg" />
                                 <div className="card-body">
@@ -22,7 +22,7 @@ export default function CosmeticsMain() {
                             </NavLink>
                         </div>
                         <div className="col-sm-5">
-                            <NavLink to="/collections" state= {{title:"cosmetic-women"}} className="nav-link">
+                            <NavLink to="/collections" state= {{title:"haircare"}} className="nav-link">
                             <div className="card">
                                 <img className="card-img-top" src="/src/assets/images/eyeshadow-girl1.jpg" />
                                 <div className="card-body">

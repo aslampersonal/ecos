@@ -11,7 +11,7 @@ export default function SkinCare() {
                     <h2 className="sec-h2" id="skincare-h2">Skin Care Products</h2>
                     <div className="row">
                         <div className="col-sm-5">
-                            <NavLink to="/collections" state= {{title:"skincare-men"}} className="nav-link">
+                            <NavLink to="/collections" state= {{title:"skincare"}} className="nav-link">
                             <div className="card">
                                 <img className="card-img-top" src="/src/assets/images/eyeshadow-girl1.jpg" />
                                 <div className="card-body">
@@ -21,7 +21,7 @@ export default function SkinCare() {
                             </NavLink>
                         </div>
                         <div className="col-sm-5">
-                            <NavLink to="/collections" state= {{title:"skincare-women"}} className="nav-link">
+                            <NavLink to="/collections" state= {{title:"skincare"}} className="nav-link">
                             <div className="card">
                                 <img className="card-img-top" src="/src/assets/images/eyeshadow-girl1.jpg" />
                                 <div className="card-body">
