@@ -4,7 +4,7 @@ import ProductAdding from "../../components/Admin/ProductAdding/ProductAdding";
 
 export default function ProductAddingPage (props) {
     return (
-        <main>
+        <main id="main">
             <ProductAdding />
         </main>
     );

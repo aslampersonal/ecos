@@ -39,11 +39,18 @@ const createProduct = async (req, res) => {
       {
         title: req.body.title,
         description: req.body.description,
+        brand: req.body.brand,
         price: req.body.price,
-        image: req.body.image,
+        image: req.file.path,
         category: req.body.category,
+        countInStock: req.body.countInStock,
       },
-    ]);
+    ])
+      .then(() => {
+        console.log("Data inserted")  // Success
+      }).catch((error) => {
+        console.log(error);
+      });
     res.status(201).json({ message: "Product created successfully" });
   } catch (error) {
     res
@@ -51,6 +58,18 @@ const createProduct = async (req, res) => {
       .json({ message: "Failed to create product", error: error.message });
   }
 };
+
+//image uploading
+
+const uploadImage = async (req, res) => {
+  try {
+    res.status(201).json({ message: "Image uploaded successfully" });
+  } catch (error) {
+    res
+      .status(500)
+      .json({ message: "Failed to upload image", error: error.message });
+  }
+}
 
 // get users details
 
@@ -228,6 +247,7 @@ const getRevenue = async (req, res) => {
 module.exports = {
   adminLogin,
   createProduct,
+  uploadImage,
   getUsers,
   getSpecificUser,
   getProducts,

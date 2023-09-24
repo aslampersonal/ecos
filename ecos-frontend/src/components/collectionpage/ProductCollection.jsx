@@ -1,28 +1,33 @@
-import React, { createContext, useEffect, useState, useContext } from "react";
+import React, { useEffect } from "react";
 import { NavLink, useLocation } from "react-router-dom";
 import { MdKeyboardArrowDown } from "react-icons/md";
-import { FaSearchPlus } from "react-icons/fa";
-import axios from "axios";
+import { BiSearchAlt } from "react-icons/bi"
 
 import ProductCard from "../ProductCard/ProductCard";
-import CosmeticsMain from "../cosmetics/CosmeticsMain";
 import "./productCollection.css"
 
 
 export default function ProductCollection() {
-    
-    let loc = useLocation();
-    
+
+    // useEffect(() => {
+        
+    // });
+    const a = useLocation();
+    let loc = "Collections";
+    if(a.state !== null) {
+        loc = a.state.title;
+    }
+
     return (
     <>
         <section className="section-pagetop bg" id="first-sec">
             <div className="container" id="head-sec-div">
-                <h2 className="title-page">{loc.state.title}</h2>
+                <h2 className="title-page">{loc}</h2>
                 <nav>
                     <ol className="breadcrumb text-white">
                         <li className="breadcrumb-item"><NavLink to="/" className="link-dark link-underline-opacity-0">Home</NavLink></li>
                         <li className="breadcrumb-item"><NavLink to="/store" className="link-dark link-underline-opacity-0">Store</NavLink></li>
-                        <li className="breadcrumb-item active" aria-current="page">{loc.state.title}</li>
+                        <li className="breadcrumb-item active" aria-current="page">{loc}</li>
                     </ol>  
                 </nav>
             </div> 
@@ -33,24 +38,22 @@ export default function ProductCollection() {
                 <div className="row">
                     <aside className="col-3">
                         <div className="card">
+
                             <article className="filter-group">
                                 <header className="card-header">
-                                    <a href="#" data-toggle="collapse" data-target="#collapse_1" aria-expanded="true" className="link-dark link-underline-opacity-0">
-                                        <MdKeyboardArrowDown />
+                                    <a data-toggle="collapse" data-target="#collapse_1" aria-expanded="false" href="#collapse_1" role="button" aria-controls="#collapse_1" className="link-dark link-underline-opacity-0">
+                                        <MdKeyboardArrowDown className="pd-icons" />
                                         <h6 className="title">Product type</h6>
                                     </a>
                                 </header>
-                                <div className="filter-content collapse show" id="collapse_1">
+                                <div className="filter-content collapse" id="collapse_1">
                                     <div className="card-body">
                                         <form className="pb-3">
                                             <div className="input-group">
                                                 <input type="text" className="form-control" placeholder="Search" />
-                                                <div className="input-group-append">
-                                                <button className="btn btn-light" type="button"><i className="fa fa-search"></i></button>
-                                                </div>
+                                                <button className="btn btn-light" type="button"><BiSearchAlt className="pd-icons" /></button>
                                             </div>
                                         </form>
-                                        
                                         <ul className="list-menu">
                                             <li><a href="#" className="link-dark link-underline-opacity-0">People  </a></li>
                                             <li><a href="#" className="link-dark link-underline-opacity-0">Watches </a></li>
@@ -60,14 +63,14 @@ export default function ProductCollection() {
                                             <li><a href="#" className="link-dark link-underline-opacity-0">Animals</a></li>
                                             <li><a href="#" className="link-dark link-underline-opacity-0">People </a></li>
                                         </ul>
-                
                                     </div> 
                                 </div>
                             </article>
+
                             <article className="filter-group">
                                 <header className="card-header">
                                     <a href="#" data-toggle="collapse" data-target="#collapse_2" aria-expanded="true" className="link-dark link-underline-opacity-0">
-                                        <i className="icon-control fa fa-chevron-down"></i>
+                                        <MdKeyboardArrowDown className="pd-icons" />
                                         <h6 className="title">Brands </h6>
                                     </a>
                                 </header>
@@ -98,13 +101,14 @@ export default function ProductCollection() {
                                             <div className="custom-control-label">Honda 
                                                 <b className="badge badge-pill badge-light float-right">30</b>  </div>
                                         </label>
-                            </div> 
+                                    </div> 
                                 </div>
-                            </article> 
+                            </article>
+
                             <article className="filter-group">
                                 <header className="card-header">
-                                    <a href="#" data-toggle="collapse" data-target="#collapse_3" aria-expanded="true" className="">
-                                        <i className="icon-control fa fa-chevron-down"></i>
+                                    <a href="#" data-toggle="collapse" data-target="#collapse_3" aria-expanded="true" className="link-dark link-underline-opacity-0">
+                                        <MdKeyboardArrowDown className="pd-icons" />
                                         <h6 className="title">Price range </h6>
                                     </a>
                                 </header>
@@ -125,10 +129,11 @@ export default function ProductCollection() {
                                     </div>
                                 </div>
                             </article> 
+
                             <article className="filter-group">
                                 <header className="card-header">
-                                    <a href="#" data-toggle="collapse" data-target="#collapse_4" aria-expanded="true" className="">
-                                        <i className="icon-control fa fa-chevron-down"></i>
+                                    <a href="#" data-toggle="collapse" data-target="#collapse_4" aria-expanded="true" className="link-dark link-underline-opacity-0">
+                                        <MdKeyboardArrowDown className="pd-icons" />
                                         <h6 className="title">Sizes </h6>
                                     </a>
                                 </header>
@@ -152,37 +157,6 @@ export default function ProductCollection() {
                                         <label className="checkbox-btn">
                                         <input type="checkbox" />
                                         <span className="btn btn-light"> XXL </span>
-                                        </label>
-                                </div>
-                                </div>
-                            </article> 
-                            <article className="filter-group">
-                                <header className="card-header">
-                                    <a href="#" data-toggle="collapse" data-target="#collapse_5" aria-expanded="false" className="">
-                                        <i className="icon-control fa fa-chevron-down"></i>
-                                        <h6 className="title">More filter </h6>
-                                    </a>
-                                </header>
-                                <div className="filter-content collapse in" id="collapse_5">
-                                    <div className="card-body">
-                                        <label className="custom-control custom-radio">
-                                            <input type="radio" name="myfilter_radio" className="custom-control-input" />
-                                            <div className="custom-control-label">Any condition</div>
-                                        </label>
-                
-                                        <label className="custom-control custom-radio">
-                                            <input type="radio" name="myfilter_radio" className="custom-control-input" />
-                                            <div className="custom-control-label">Brand new </div>
-                                        </label>
-                
-                                        <label className="custom-control custom-radio">
-                                            <input type="radio" name="myfilter_radio" className="custom-control-input" />
-                                            <div className="custom-control-label">Used items</div>
-                                        </label>
-                
-                                        <label className="custom-control custom-radio">
-                                            <input type="radio" name="myfilter_radio" className="custom-control-input" />
-                                            <div className="custom-control-label">Very old</div>
                                         </label>
                                     </div>
                                 </div>

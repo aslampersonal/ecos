@@ -16,14 +16,15 @@ import CollectionPage from "./pages/CollectionPage";
 import ProductAddingPage from "./pages/Admin/ProductAddingPage";
 
 import MyContext from "./context/MyContext";
-import ImageUpload from "./components/imageupload/ImageUpload";
 
 function App() {
   
   const [prodData, setData] = useState([]);
+  const [file, setFile] = useState([]);
 
   const states = {
-    prodData
+    prodData,
+    file
   };
   
   useEffect(() => {
@@ -59,8 +60,6 @@ function App() {
 
           <Route path="/signup" element={<SignupPage />} /> 
           <Route path="/login" element={<LoginPage />} />
-
-          <Route path="/imageupload" element={<ImageUpload />} /> 
 
           <Route path="/admin/products-adding" element={<ProductAddingPage />} />
 

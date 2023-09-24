@@ -1,15 +1,20 @@
 import React, { useContext } from 'react';
 import "./ProductCard.css"
-import { FaSearchPlus } from "react-icons/fa"
+import { IoIosPricetag } from "react-icons/io"
+import { BsFillCartPlusFill } from "react-icons/bs"
 
 import MyContext from '../../context/MyContext';
+import { NavLink } from 'react-router-dom';
 
 export default function ProductCard (props) {
 
-    const path = props.loc.state.title;
+    const path = props.loc;
     const product = useContext(MyContext);
     const {prodData} = product;
-    const productList = prodData.filter((prod) => prod.category == path);
+    let productList = prodData;
+    if (path !== "Collections") {
+        productList = prodData.filter((prod) => prod.category == path);
+    }
 
     return(
         <section id="main-section" className="col-9">
@@ -32,32 +37,36 @@ export default function ProductCard (props) {
                 </div>
             </header>
             
-            <div className='row-6' >
+            <div className='card-row'>
                 {productList.map((prodData) => {
                         return (
-                            <div className="col-4" key={prodData._id}>
-                                <figure className="card card-product-grid">
-                                    <div className="img-wrap"> 
-                                        <span className="badge badge-danger"> NEW </span>
-                                        <img src={prodData.image} />
-                                        <a className="btn-overlay" href="#"><FaSearchPlus /> Quick view</a>
-                                    </div> 
+                            
+                            <div className='card-main-div' key={prodData._id}>
+                                <figure className="prod-card">
+                                    <NavLink to={"/product:id"} state={{prodId: prodData._id}} className="nav-link">
+                                        <div className="img-wrap"> 
+                                            <span className="badge badge-danger"> NEW </span>
+                                            <img src={prodData.image} />
+                                        </div>
+                                    </NavLink> 
                                     <figcaption className="info-wrap">
-                                        <div className="fix-height">
-                                            <a href="#" className="title">{prodData.name}</a>
-                                            <div className="price-wrap mt-2">
+                                        <span className="title">{prodData.title}</span>
+                                        <div className='price-div'>
+                                            <div className='price-tag-div'>
+                                                <IoIosPricetag className='price-tag' />
                                                 <span className="price">{prodData.price}</span>
                                             </div>
+                                            <button type='button' className="cart-btn"><BsFillCartPlusFill className='cart-icon'/></button>
                                         </div>
-                                        <a href="#" className="btn btn-block btn-primary">Add to cart</a>
                                     </figcaption>
                                 </figure>
                             </div>
+                            
                         )
                     })}
             </div>
 
-            <nav className="mt-4" aria-label="Page navigation sample">
+            {/* <nav className="mt-4" id='page-nav' aria-label="Page navigation sample">
                 <ul className="pagination">
                 <li className="page-item disabled"><a className="page-link" href="#">Previous</a></li>
                 <li className="page-item active"><a className="page-link" href="#">1</a></li>
@@ -65,7 +74,7 @@ export default function ProductCard (props) {
                 <li className="page-item"><a className="page-link" href="#">3</a></li>
                 <li className="page-item"><a className="page-link" href="#">Next</a></li>
                 </ul>
-            </nav>
+            </nav> */}
 
         </section> 
     );

@@ -5,12 +5,16 @@ const productDatas = require("../models/productModel");
 const validator = require("validator");
 const Razorpay = require("razorpay");
 const schema = require("../models/userModel");
+// const path = require('path');
 
 //getting all products without login
 
 const getAllProducts = async (req, res) => {
     try {
       const allProducts = await productDatas.find();
+      allProducts.forEach((product) => {
+        product.image =  "http://localhost:3000/" + product.image.slice(7);
+      });
       res.json(allProducts);
     } catch (error) {
       res.status(404).json({ error: "didnt load" });
