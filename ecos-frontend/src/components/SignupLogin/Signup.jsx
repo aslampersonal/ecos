@@ -1,22 +1,94 @@
 import React, { useEffect } from "react";
+import axios from "axios";
 import { FaUserAlt, FaLock, FaKey } from "react-icons/fa";
 import { MdEmail } from "react-icons/md";
 import { TbReload } from "react-icons/tb";
 import { loadCaptchaEnginge, LoadCanvasTemplate, LoadCanvasTemplateNoReload, validateCaptcha } from 'react-simple-captcha';
-import { useForm } from "react-hook-form";
 
 import "./Signup.css"
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
-export default function Signup (props) {
+export default function Signup () {
 
     useEffect (() => {
         loadCaptchaEnginge(5, "grey");
-    });
+    }, []);
 
-    const { register, handleSubmit, watch, formState: { errors } } = useForm(); 
-    const onSubmit = data => console.log(data);
+    const navigate = useNavigate();
 
-    // console.log(watch("example"));
+    const [formdata, setFormData] = useState({
+        username: "",
+        email: "",
+        password: "",
+        confirmpassword: ""
+    })
+
+    const [errors, setErrors] = useState({})
+
+    function handleChange(e) {
+        const {name, value} = e.target;
+        setFormData({...formdata, [name] : value})
+    }
+
+    async function handleSubmit(e) {
+        e.preventDefault();
+        const validationErrors = {}
+        if(!formdata.username.trim()) {
+            validationErrors.username = "username is required"
+        }
+
+        if(!formdata.email.trim()) {
+            validationErrors.email = "email is required"
+        } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(formdata.email)) {
+            validationErrors.email = "email is not valid"
+        }
+
+        if(!formdata.password.trim()) {
+            validationErrors.password = "password is required"
+        } else if (formdata.password.length < 6) {
+            validationErrors.password = "password should be at least 6 char"
+        }
+
+        if(formdata.password !== formdata.confirmpassword) {
+            validationErrors.confirmpassword = "passwords not matching"
+        }
+
+        if(!document.getElementById("terms-conditions").checked) {
+            validationErrors.terms = "You should agree the terms and conditions"
+        }
+
+        if(document.getElementById('captcha-text').value.length === 0) {
+            validationErrors.captcha = "Enter the captcha text"
+        } else if (validateCaptcha(document.getElementById('captcha-text').value)===false) {
+            validationErrors.captcha = "Invalid captcha!!!"
+        }
+
+        setErrors(validationErrors);
+
+        if(Object.keys(validationErrors).length === 0) {
+            const formData = new FormData();
+            formData.append('username', document.getElementById("username").value);
+            formData.append('email', document.getElementById("email").value);
+            formData.append('password', document.getElementById("password").value);
+            formData.append('confirmpassword', document.getElementById("confirmpassword").value);
+
+            try {
+                const response = await axios.post('http://localhost:3000/api/users/register', formData, {
+                    headers: {
+                      'Content-Type': 'application/json', // or 'application/json' if needed
+                    },
+                });
+                console.log(response.data);
+                
+                navigate("/login");
+
+              } catch (error) {
+                console.error('Error registering the user', error);
+              }
+        }
+
+    }
 
     function validateCaptchaValue () {
         let user_captcha_value = document.getElementById('captcha-text').value;
@@ -31,9 +103,6 @@ export default function Signup (props) {
         }
     }
 
-    function formSubmit () {
-        const captchaValid = validateCaptchaValue();
-    }
 
     return (
         <>
@@ -46,74 +115,100 @@ export default function Signup (props) {
                                         <p className="text-center h1 fw-bold mb-5 mx-1 mx-md-4 mt-4" style={{color: "rgb(37, 53, 76)"}}>
                                             SIGN UP
                                         </p>
-                                        <form id="signup-form" onSubmit={handleSubmit(onSubmit)} noValidate>
-                                            <div className="icons-div">
-                                                <FaUserAlt className="icons" />
-                                                <input
-                                                    {...register("profilename", { pattern: /^[A-Za-z]+$/i }, { required:{ value: true, message: 'required' } })}
-                                                    type="text"
-                                                    id="profilename"
-                                                    className="form-control"
-                                                    placeholder="Your Name"
-                                                    required
-                                                />
+                                        <form id="signup-form" onSubmit={handleSubmit} noValidate>
+                                            <div className="inputs-div">
+                                                <div className="icons-div">
+                                                    <FaUserAlt className="icons" />
+                                                    <input
+                                                        onChange={handleChange}
+                                                        type="text"
+                                                        name="username"
+                                                        id="username"
+                                                        className="form-control"
+                                                        placeholder="User Name"                                                    
+                                                    />
+                                                </div>
+                                                <div className="error-div">
+                                                    {errors.username && <span className="error-span">{errors.username}</span>}
+                                                </div>
                                             </div>
-                                            <div className="icons-div">
-                                                <MdEmail className="icons" />
-                                                <input
-                                                    {...register("email", { required: { value: true, message: 'required' } })}
-                                                    type="email"
-                                                    id="email"
-                                                    className="form-control"
-                                                    placeholder="Your Email"
-                                                    required
-                                                />
+                                            <div className="inputs-div">
+                                                <div className="icons-div">
+                                                    <MdEmail className="icons" />
+                                                    <input
+                                                        onChange={handleChange}
+                                                        type="email"
+                                                        name="email"
+                                                        id="email"
+                                                        className="form-control"
+                                                        placeholder="Email Id"
+                                                    />
+                                                </div>
+                                                <div className="error-div">
+                                                    {errors.email && <span className="error-span">{errors.email}</span>}
+                                                </div>
                                             </div>
-                                            <div className="icons-div">
-                                                <FaLock className="icons" />
-                                                <input
-                                                    {...register("password", { required: { value: true, message: 'required' } })}
-                                                    type="password"
-                                                    id="password"
-                                                    className="form-control"
-                                                    placeholder="Password"
-                                                    required
-                                                />
+                                            <div className="inputs-div">
+                                                <div className="icons-div">
+                                                    <FaLock className="icons" />
+                                                    <input
+                                                        onChange={handleChange}
+                                                        type="password"
+                                                        name="password"
+                                                        id="password"
+                                                        className="form-control"
+                                                        placeholder="Password"
+                                                    />
+                                                </div>
+                                                <div className="error-div">
+                                                    {errors.password && <span className="error-span">{errors.password}</span>}
+                                                </div>
                                             </div>
-                                            <div className="icons-div">
-                                                <FaKey className="icons" />
-                                                <input
-                                                    {...register("passwordRepeat", { required: { value: true, message: 'required' } })}
-                                                    type="password"
-                                                    id="password-repeat"
-                                                    className="form-control"
-                                                    placeholder="Repear Your Password"
-                                                />
+                                            <div className="inputs-div">
+                                                <div className="icons-div">
+                                                    <FaKey className="icons" />
+                                                    <input
+                                                        onChange={handleChange}
+                                                        type="password"
+                                                        name="confirmpassword"
+                                                        id="confirmpassword"
+                                                        className="form-control"
+                                                        placeholder="Repear Your Password"
+                                                    />
+                                                </div>
+                                                <div className="error-div">
+                                                    {errors.confirmpassword && <span className="error-span">{errors.confirmpassword}</span>}
+                                                </div>
                                             </div>
-                                            <div id="terms-checkbox">
-                                                <input
-                                                    {...register("termsCond", { required: { value: true, message: 'accept terms & conditions' } })}
-                                                    type="checkbox"
-                                                    defaultValue=""
-                                                    id="terms-conditions"
-                                                />
-                                                <label htmlFor="form2Example3">
-                                                I agree all {" "}
-                                                <a href="#!" id="terms-text">Terms of service</a>
-                                                </label>
+                                            <div className="inputs-div">
+                                                <div id="terms-checkbox">
+                                                    <input
+                                                        type="checkbox"
+                                                        defaultValue=""
+                                                        id="terms-conditions"
+                                                    />
+                                                    <label htmlFor="form2Example3">
+                                                    I agree all {" "}
+                                                    <a href="#!" id="terms-text">Terms of service</a>
+                                                    </label>
+                                                </div>
+                                                <div className="error-div">
+                                                    {errors.terms && <span className="error-span">{errors.terms}</span>}
+                                                </div>
                                             </div>
                                             <div id="captcha-div">
                                                 <a id="reload_href"><TbReload className="reload-icon"/><div></div></a>
                                                 <LoadCanvasTemplateNoReload />
                                                 <div id="captcha-input-div">
-                                                    <input type="text" id="captcha-text" onChange={() => {validateCaptchaValue()}} className="form-control" placeholder="Type the code!" />
+                                                    <input type="text" id="captcha-text" onChange={validateCaptchaValue} className="form-control" placeholder="Type the code!" />
                                                     <div className="input-status-div">
-                                                        <label id="captcha-status"></label>
+                                                        <label id="captcha-status">{errors.captcha}</label>
+                                                        {/* {errors.captcha && <span className="error-span">{errors.captcha}</span>} */}
                                                     </div>
                                                 </div>
                                             </div>
                                             <div className="d-flex justify-content-center mx-4 mb-3 mb-lg-4" id="register-div">
-                                                <button type="button" id="register-btn" className="btn btn-primary btn-lg" onClick={() => {formSubmit()}}>
+                                                <button type="submit" id="register-btn" className="btn btn-primary btn-lg">
                                                 Register
                                                 </button>
                                             </div>

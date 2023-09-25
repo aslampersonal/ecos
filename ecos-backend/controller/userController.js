@@ -26,17 +26,25 @@ const getAllProducts = async (req, res) => {
 // user login
 
 const userLogin = async (req, res) => {
-  // console.log(login.email);
+  
   try {
     const login = await schema.findOne({ email: req.body.email });
+    console.log(login);
+
+    if(login == null) {
+      res.status(401).json({ error: "E-mail or password is invalid" });
+      return;
+    }
+
     // check user email and password
     if (login.email == req.body.email && login.password == req.body.password) {
+      console.log("came");
       const token = jwt.sign({ email: login.email }, "secretkey");
       res.cookie("token", token);
       res.status(200).json({ message: "user logged successfully....." });
       return;
     }
-    res.status(401).json({ message: "wrong name or password" });
+    res.status(401).json({ error: "E-mail or password is invalid" });
   } catch (error) {
     console.log(error);
     res.status(500).json({ error: "server error", error: error.message });
@@ -52,18 +60,17 @@ const userRegister = async (req, res) => {
     return res.status(400).json({ error: "Invalid email format" });
   }
 
-  // validate password as 5 character
-  if (req.body.password.length < 5) {
+  // validate password as 6 character
+  if (req.body.password.length < 6) {
     return res
       .status(400)
       .json({ error: "Password must be at least 5 character" });
   }
 
-  if (req.body.password !== req.body.confirmPassword) {
+  if (req.body.password !== req.body.confirmpassword) {
     return res.status(400).json({ error: "Password do not match" });
   }
 
-  console.log(req.body);
   try {
     // check if email already exists in the database
     const existingUser = await schema.findOne({ email: req.body.email });
@@ -71,13 +78,12 @@ const userRegister = async (req, res) => {
       return res.status(400).json({ message: "Email already exists" });
     }
 
+    console.log(req.body);
+
     await schema.insertMany({
-      firstName: req.body.firstName,
-      lastName: req.body.lastName,
-      userName: req.body.userName,
+      username: req.body.username,
       email: req.body.email,
       password: req.body.password,
-      confirmPassword: req.body.confirmPassword,
     });
     res.status(200).json({ message: "user registered successfully !!..." });
   } catch (error) {

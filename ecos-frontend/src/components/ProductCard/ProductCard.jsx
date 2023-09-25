@@ -1,6 +1,6 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import "./ProductCard.css"
-import { IoIosPricetag } from "react-icons/io"
+import { IoIosArrowDropdown, IoIosPricetag } from "react-icons/io"
 import { BsFillCartPlusFill } from "react-icons/bs"
 
 import MyContext from '../../context/MyContext';
@@ -16,23 +16,30 @@ export default function ProductCard (props) {
         productList = prodData.filter((prod) => prod.category == path);
     }
 
+    const [sorted, sortProducts] = useState([]);
+
+    function sortChange() {
+        productList.forEach(element => {
+            sortProducts([...sorted, element]);
+            console.log(element);
+        });
+        // sortProducts(productList);
+        console.log(sorted);
+    }
+
     return(
         <section id="main-section" className="col-9">
     
             <header className="border-bottom mb-4 pb-3">
-                <div className="form-inline">
-                    <span className="mr-md-auto">{productList.length} Items found </span>
-                    <select className="mr-2 form-control">
-                        <option>Latest items</option>
-                        <option>Trending</option>
-                        <option>Most Popular</option>
-                        <option>Cheapest</option>
-                    </select>
-                    <div className="btn-group">
-                        <a href="#" className="btn btn-outline-secondary" data-toggle="tooltip" title="List view"> 
-                            <i className="fa fa-bars"></i></a>
-                        <a href="#" className="btn  btn-outline-secondary active" data-toggle="tooltip" title="Grid view"> 
-                            <i className="fa fa-th"></i></a>
+                <div className="form-inline" id='sort-main-div'>
+                    <span className="mr-md-auto" style={{fontWeight: "600"}}>{productList.length} Items found </span>
+                    <div id='sort-div'>
+                        <span style={{marginRight: "1rem", fontWeight: "600"}}>Sort By:</span>
+                        <select className="form-control" id='sort-select' onChange={sortChange}>
+                            <option>Latest items</option>
+                            <option>Name</option>
+                            <option>Cheapest</option>
+                        </select>
                     </div>
                 </div>
             </header>

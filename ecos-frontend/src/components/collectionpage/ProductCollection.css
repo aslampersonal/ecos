@@ -19,3 +19,7 @@ a {
 .row {
     padding: 0;
 }
+
+#search-btn {
+    z-index: 0;
+}

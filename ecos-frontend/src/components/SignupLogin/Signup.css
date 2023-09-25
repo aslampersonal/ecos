@@ -14,15 +14,30 @@
     margin-right: 2rem;
 }
 
+.error-div {
+    width: 100%;
+    height: 1rem;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.error-span {
+    color: red;
+    font-size: 13px;
+}
+
 .icons {
     font-size: 20px;
+}
+
+.inputs-div {
+    margin-bottom: 1rem;
 }
 
 .icons-div { 
     display: flex;
     flex-direction: row;
     align-items: center;
-    padding-bottom: 2rem;
 }
 
 .icons-div input {
@@ -33,7 +48,6 @@
     width: 20rem;
     display: flex;
     flex-direction: row;
-    margin-bottom: 1rem;
 }
 
 #terms-conditions {
@@ -77,8 +91,8 @@
     flex-direction: column;
     margin-left: 2rem;
     
-    height: 4rem;
-    overflow: hidden;
+    /* height: 4rem; */
+    /* overflow: hidden; */
 }
 
 .input-status-div {
@@ -93,10 +107,10 @@
     height: 100%;
 }
 
-#captcha-text:focus + .input-status-div { 
+/* #captcha-text:focus + .input-status-div { 
     cursor: pointer;
     top: 0;
-}
+} */
 
 #register-div {
     margin-top: 1rem;

@@ -38,30 +38,28 @@ export default function ProductCollection() {
                 <div className="row">
                     <aside className="col-3">
                         <div className="card">
-
+                            
                             <article className="filter-group">
                                 <header className="card-header">
-                                    <a data-toggle="collapse" data-target="#collapse_1" aria-expanded="false" href="#collapse_1" role="button" aria-controls="#collapse_1" className="link-dark link-underline-opacity-0">
-                                        <MdKeyboardArrowDown className="pd-icons" />
+                                    <button data-toggle="collapse" type="button" data-target="#collapse_1" aria-expanded="false" aria-controls="#collapse_1" className="link-dark link-underline-opacity-0">
+                                        {/* <MdKeyboardArrowDown className="pd-icons" /> */}
                                         <h6 className="title">Product type</h6>
-                                    </a>
+                                    </button>
                                 </header>
-                                <div className="filter-content collapse" id="collapse_1">
+                                <div className="filter-content collapse show" id="collapse_1">
                                     <div className="card-body">
                                         <form className="pb-3">
                                             <div className="input-group">
                                                 <input type="text" className="form-control" placeholder="Search" />
-                                                <button className="btn btn-light" type="button"><BiSearchAlt className="pd-icons" /></button>
+                                                <button className="btn btn-light" id="search-btn" type="button"><BiSearchAlt className="pd-icons" /></button>
                                             </div>
                                         </form>
                                         <ul className="list-menu">
-                                            <li><a href="#" className="link-dark link-underline-opacity-0">People  </a></li>
-                                            <li><a href="#" className="link-dark link-underline-opacity-0">Watches </a></li>
-                                            <li><a href="#" className="link-dark link-underline-opacity-0">Cinema  </a></li>
-                                            <li><a href="#" className="link-dark link-underline-opacity-0">Clothes  </a></li>
-                                            <li><a href="#" className="link-dark link-underline-opacity-0">Home items </a></li>
-                                            <li><a href="#" className="link-dark link-underline-opacity-0">Animals</a></li>
-                                            <li><a href="#" className="link-dark link-underline-opacity-0">People </a></li>
+                                            <li><a href="#" className="link-dark link-underline-opacity-0">Skin Care</a></li>
+                                            <li><a href="#" className="link-dark link-underline-opacity-0">Face Care</a></li>
+                                            <li><a href="#" className="link-dark link-underline-opacity-0">Body Care</a></li>
+                                            <li><a href="#" className="link-dark link-underline-opacity-0">Cosmetics for Men</a></li>
+                                            <li><a href="#" className="link-dark link-underline-opacity-0">Cosmetics for Women</a></li>
                                         </ul>
                                     </div> 
                                 </div>
@@ -69,10 +67,10 @@ export default function ProductCollection() {
 
                             <article className="filter-group">
                                 <header className="card-header">
-                                    <a href="#" data-toggle="collapse" data-target="#collapse_2" aria-expanded="true" className="link-dark link-underline-opacity-0">
-                                        <MdKeyboardArrowDown className="pd-icons" />
+                                    <button href="#" data-toggle="collapse" data-target="#collapse_2" aria-expanded="true" className="link-dark link-underline-opacity-0">
+                                        {/* <MdKeyboardArrowDown className="pd-icons" /> */}
                                         <h6 className="title">Brands </h6>
-                                    </a>
+                                    </button>
                                 </header>
                                 <div className="filter-content collapse show" id="collapse_2">
                                     <div className="card-body">
@@ -107,10 +105,10 @@ export default function ProductCollection() {
 
                             <article className="filter-group">
                                 <header className="card-header">
-                                    <a href="#" data-toggle="collapse" data-target="#collapse_3" aria-expanded="true" className="link-dark link-underline-opacity-0">
-                                        <MdKeyboardArrowDown className="pd-icons" />
+                                    <button href="#" data-toggle="collapse" data-target="#collapse_3" aria-expanded="true" className="link-dark link-underline-opacity-0">
+                                        {/* <MdKeyboardArrowDown className="pd-icons" /> */}
                                         <h6 className="title">Price range </h6>
-                                    </a>
+                                    </button>
                                 </header>
                                 <div className="filter-content collapse show" id="collapse_3">
                                     <div className="card-body">
@@ -132,10 +130,10 @@ export default function ProductCollection() {
 
                             <article className="filter-group">
                                 <header className="card-header">
-                                    <a href="#" data-toggle="collapse" data-target="#collapse_4" aria-expanded="true" className="link-dark link-underline-opacity-0">
-                                        <MdKeyboardArrowDown className="pd-icons" />
+                                    <button href="#" data-toggle="collapse" data-target="#collapse_4" aria-expanded="true" className="link-dark link-underline-opacity-0">
+                                        {/* <MdKeyboardArrowDown className="pd-icons" /> */}
                                         <h6 className="title">Sizes </h6>
-                                    </a>
+                                    </button>
                                 </header>
                                 <div className="filter-content collapse show" id="collapse_4">
                                     <div className="card-body">
