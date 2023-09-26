@@ -38,10 +38,9 @@ const userLogin = async (req, res) => {
 
     // check user email and password
     if (login.email == req.body.email && login.password == req.body.password) {
-      console.log("came");
-      const token = jwt.sign({ email: login.email }, "secretkey");
-      res.cookie("token", token);
-      res.status(200).json({ message: "user logged successfully....." });
+      const token = jwt.sign({ email: login.email, username: login.username }, process.env.SECRET_KEY);
+      res.cookie("token", token, { httpOnly: true, maxAge: 7 * 24 * 60 * 60 * 1000 });
+      res.status(201).json({ message: "user logged successfully.....", user: {username: login.username, email: login.email} });
       return;
     }
     res.status(401).json({ error: "E-mail or password is invalid" });

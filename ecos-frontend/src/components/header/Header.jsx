@@ -1,11 +1,39 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import Cookies from 'js-cookie';
 import './header.css'
 import { NavLink } from 'react-router-dom';
 import { BsPersonCircle } from "react-icons/bs";
 import { BiSolidCart }from "react-icons/bi"
+import { FiLogOut } from "react-icons/fi"
+import { useContext, useState } from "react";
+import MyContext from '../../context/MyContext';
 
 function Header() {
 
+    // useEffect(() => {
+    //     const jwtToken = Cookies.get('token');
+
+    //     console.log("token:" + jwtToken);
+
+    //     if (jwtToken) {
+    //         setToken(jwtToken);
+    //       }
+    // }, []);
+
+    const [token, setToken] = useState(null);
+    const [user, setUser] = useState(null);
+    const [logged, setLogged] = useState("none");
+
+    function logoutUser() {
+        console.log(user);
+        setUser("adadad");
+        console.log(user);
+    }
+
+    function loginUser() {
+
+    }
+    
     return (
         <header className="header" id="header">
             <div id="header-top">
@@ -52,11 +80,14 @@ function Header() {
                         </ul>
                     </div>
                     <div id="h-nav-div-profile">
-                            <a id="login-icon" className="btn" href="./profile">
+                            <a className="btn" id="login-icon" onClick={logoutUser}>
                                 <BsPersonCircle className='top-icons' />
                             </a>
                             <a className="btn" id="cart-icon" href="./cart">
                                 <BiSolidCart className='top-icons' />
+                            </a>
+                            <a className="btn" id="logout-icon" href="./cart" style={{display: logged}} >
+                                <FiLogOut className='top-icons' />
                             </a>
                     </div>
                 </nav>

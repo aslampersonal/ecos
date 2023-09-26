@@ -24,7 +24,9 @@ function App() {
 
   const states = {
     prodData,
-    file
+    setData,
+    file,
+    setFile,
   };
   
   useEffect(() => {

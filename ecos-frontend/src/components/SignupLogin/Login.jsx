@@ -1,5 +1,7 @@
 import React, { useContext } from "react";
 import axios from "axios";
+import Cookies from 'js-cookie';
+
 import { FaFacebook, FaTwitter, FaLinkedin, FaLock } from "react-icons/fa";
 import { MdEmail } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
@@ -9,6 +11,16 @@ import { useState } from "react";
 
 export default function Login (props) {
         
+    // useEffect(() => {
+    //     const jwtToken = Cookies.get('token');
+
+    //     console.log("token:" + jwtToken);
+
+    //     if (jwtToken) {
+    //         setToken(jwtToken);
+    //         }
+    // }, []);
+    
     const navigate = useNavigate();
 
     const [formdata, setFormData] = useState({
@@ -52,9 +64,23 @@ export default function Login (props) {
                       'Content-Type': 'application/json', // or 'application/json' if needed
                     },
                 });
-                console.log(response.data);
+
+                console.log(response.status);
+
+                if (response.status >= 200 && response.status < 300) {
+    
+                    // Attempt to read the token here and set it in the state
+                    const jwtToken = Cookies.get('token');
+                    console.log(jwtToken);
+                    if (jwtToken) {
+                    //   setToken(jwtToken);
+                    console.log(jwtToken);
+                    }
+                  } else {
+                    console.log('Failed to set cookies');
+                  }
                 
-                navigate("/");
+                // navigate("/");
 
               } catch (error) {
                 console.error('Error login:', error);

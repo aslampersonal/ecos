@@ -9,8 +9,8 @@ import { NavLink } from 'react-router-dom';
 export default function ProductCard (props) {
 
     const path = props.loc;
-    const product = useContext(MyContext);
-    const {prodData} = product;
+    const context = useContext(MyContext);
+    const {prodData} = context;
     let productList = prodData;
     if (path !== "Collections") {
         productList = prodData.filter((prod) => prod.category == path);

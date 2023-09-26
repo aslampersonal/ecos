@@ -185,7 +185,10 @@ main {
 #cart-icon {
     padding: 0;
     margin-left: 1rem;
+}
 
+#login-icon:hover, #cart-icon:hover, #logout-icon:hover {
+    color: blue;
 }
 
 .top-icons {
