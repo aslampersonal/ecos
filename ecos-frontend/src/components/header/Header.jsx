@@ -1,5 +1,8 @@
 import React, { useEffect } from 'react';
+import axios from 'axios';
 import Cookies from 'js-cookie';
+import jwt_decode from "jwt-decode";
+
 import './header.css'
 import { NavLink } from 'react-router-dom';
 import { BsPersonCircle } from "react-icons/bs";
@@ -20,14 +23,39 @@ function Header() {
     //       }
     // }, []);
 
+    useEffect(() => {
+        // const fetchData = async () => {
+        //   try {
+        //     const response = await axios.get('http://localhost:3000/api/users/protected');
+    
+        //     if (response.status >= 200 && response.status < 300) {
+        //       setMessage(response.data.message);
+        //       setUser(response.data.user);
+        //     } else {
+        //       console.error('Unauthorized');
+        //     }
+        //   } catch (error) {
+        //     console.error('Protected route error:', error);
+        //   }
+        // };
+    
+        // fetchData();
+
+        const token = sessionStorage.getItem('token');
+        const decoded = jwt_decode(token);
+        console.log(decoded);
+      }, []);
+
+    const [message, setMessage] = useState('');
+
     const [token, setToken] = useState(null);
     const [user, setUser] = useState(null);
     const [logged, setLogged] = useState("none");
 
     function logoutUser() {
         console.log(user);
-        setUser("adadad");
-        console.log(user);
+        // setUser("adadad");
+        // console.log(user);
     }
 
     function loginUser() {

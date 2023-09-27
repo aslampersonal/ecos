@@ -5,6 +5,7 @@ const productDatas = require("../models/productModel");
 const validator = require("validator");
 const Razorpay = require("razorpay");
 const schema = require("../models/userModel");
+const secretKey = process.env.SECRET_KEY;
 // const path = require('path');
 
 //getting all products without login
@@ -38,8 +39,14 @@ const userLogin = async (req, res) => {
 
     // check user email and password
     if (login.email == req.body.email && login.password == req.body.password) {
-      const token = jwt.sign({ email: login.email, username: login.username }, process.env.SECRET_KEY);
-      res.cookie("token", token, { httpOnly: true, maxAge: 7 * 24 * 60 * 60 * 1000 });
+      
+      // Create a JWT token
+      const user = { email: login.email, username: login.username };
+      const token = jwt.sign(user, secretKey, { expiresIn: '1h' });
+
+      // Set the token as a HTTP cookie
+      res.cookie("token", token, { httpOnly: true});
+      
       res.status(201).json({ message: "user logged successfully.....", user: {username: login.username, email: login.email} });
       return;
     }
@@ -48,6 +55,16 @@ const userLogin = async (req, res) => {
     console.log(error);
     res.status(500).json({ error: "server error", error: error.message });
   }
+};
+
+// user logout
+
+const userLogout = async (req, res) => {
+
+  res.clearCookie('token');
+  
+  res.json({ message: 'Logged out successfully' });
+  
 };
 
 // user registration
@@ -364,6 +381,7 @@ const getOrderProduct = async (req, res) => {
 module.exports = {
     getAllProducts,
     userLogin,
+    userLogout,
     userRegister,
     getProducts,
     specificProduct,

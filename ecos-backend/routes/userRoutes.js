@@ -12,6 +12,7 @@ app.use(bodyparser.urlencoded({ extended: true }));
 app.get("/products", user.getAllProducts);
 
 app.post("/login", user.userLogin);
+app.post("/logout", user.userLogout);
 app.post("/register", user.userRegister);
 app.get("/products", checkUserToken, user.getProducts);
 app.get("/products/:id", checkUserToken, user.specificProduct);

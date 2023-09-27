@@ -20,15 +20,35 @@ export default function Login (props) {
     //         setToken(jwtToken);
     //         }
     // }, []);
-    
-    const navigate = useNavigate();
 
+    // useEffect(() => {
+    //     const fetchData = async () => {
+    //       try {
+    //         const response = await axios.get('http://localhost:3000/api/users/protected');
+    
+    //         if (response.status >= 200 && response.status < 300) {
+    //           setMessage(response.data.message);
+    //           setUser(response.data.user);
+    //         } else {
+    //           console.error('Unauthorized');
+    //         }
+    //       } catch (error) {
+    //         console.error('Protected route error:', error);
+    //       }
+    //     };
+    
+    //     fetchData();
+    //   }, []);
+
+    // const [message, setMessage] = useState('');
+    // const [user, setUser] = useState(null);
     const [formdata, setFormData] = useState({
         email: "",
         password: "",
     })
-
     const [errors, setErrors] = useState({})
+
+    const navigate = useNavigate();
 
     function handleChange(e) {
         const {name, value} = e.target;
@@ -65,12 +85,12 @@ export default function Login (props) {
                     },
                 });
 
-                console.log(response.status);
-
                 if (response.status >= 200 && response.status < 300) {
-    
+
+                    Cookies.set('jwtToken', token);
+
                     // Attempt to read the token here and set it in the state
-                    const jwtToken = Cookies.get('token');
+                    const jwtToken = Cookies.get('jwtToken');
                     console.log(jwtToken);
                     if (jwtToken) {
                     //   setToken(jwtToken);
@@ -80,7 +100,7 @@ export default function Login (props) {
                     console.log('Failed to set cookies');
                   }
                 
-                // navigate("/");
+                navigate("/");
 
               } catch (error) {
                 console.error('Error login:', error);
