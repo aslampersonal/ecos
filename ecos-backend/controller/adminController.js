@@ -4,28 +4,28 @@ const express = require("express");
 const jwt = require("jsonwebtoken");
 const schema = require("../models/userModel");
 const productDatas = require("../models/productModel");
-
-const checkAdminToken = require("../middleware/adminMiddleware");
+const secretKey = process.env.SECRET_KEY;
 
 // admin login
 
 const adminLogin = async (req, res) => {
   try {
+    
     const email = req.body.email;
     const password = req.body.password;
 
     // check admin email and password
     if (email !== "admin@gmail.com" || password !== "admin123") {
-      throw new Error("Invalid email or password");
+      res.status(401).json({ error: "E-mail or password is invalid" });
+      return;
     }
 
-    const token = jwt.sign({ email }, process.env.SECRET_KEY, {
-      expiresIn: "1h",
-    });
+    const token = jwt.sign({ email }, secretKey, { expiresIn: '5h' });
     res.cookie("token", token);
-    res.setHeader("Authorization", token); //  token response to headers
+    // res.setHeader("Authorization", token); //  token response to headers
 
-    res.json({ message: "Welcome, Admin!", token });
+    res.status(201).json({ message: "Welcome, Admin!", cookie: token });
+
   } catch (err) {
     res.status(401).json({ message: err.message });
   }

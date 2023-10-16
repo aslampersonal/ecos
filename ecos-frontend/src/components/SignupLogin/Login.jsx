@@ -59,47 +59,90 @@ export default function Login (props) {
             formData.append('email', document.getElementById("email").value);
             formData.append('password', document.getElementById("password").value);
 
-            try {
-                const response = await axios.post('http://localhost:3000/api/users/login', formData, {
-                    headers: {
-                      'Content-Type': 'application/json', // or 'application/json' if needed
-                    },
-                });
-
-                if (response.status >= 200 && response.status < 300 && response.data.cookie) {
-
-                    const jwtToken = response.data.cookie;
-                    
-                    // Set the token as an HTTP-only cookie
-                    Cookies.set('jwtToken', jwtToken, { expires: 5 / 24 , path: '/', secure: false, sameSite: 'strict' });
-
-                    // Store the token in state for application use
-                    setToken(jwtToken);
-                    
-                    const decodedToken = jwt_decode(jwtToken);
-                    setUser(decodedToken);
-                    setCart(decodedToken.cart);
-                    
-                } else {
-                console.log('Unable to find Cookies');
-                }
-            
-                login();
-                if (localStorage.getItem("cart") === "null") {
-                    addToCart();
-                }
-                setShowToast(true);
-                setTimeout(() => {
-                    setShowToast(false);
-                }, 2000);
-                setTimeout(() => {
-                    navigate(-1);
-                }, 2000);
-
-              } catch (error) {
-                console.error('Error login:', error);
-                alert(error.response.data.error);
-              }
+            if(document.getElementById("email").value === "admin@gmail.com") {
+                try {
+                    const response = await axios.post('http://localhost:3000/api/admin/login', formData, {
+                        headers: {
+                          'Content-Type': 'application/json', // or 'application/json' if needed
+                        },
+                    });
+    
+                    if (response.status >= 200 && response.status < 300 && response.data.cookie) {
+    
+                        const jwtToken = response.data.cookie;
+                        
+                        // Set the token as an HTTP-only cookie
+                        Cookies.set('jwtToken', jwtToken, { expires: 5 / 24 , path: '/', secure: false, sameSite: 'strict' });
+    
+                        // Store the token in state for application use
+                        setToken(jwtToken);
+                        
+                        const decodedToken = jwt_decode(jwtToken);
+                        setUser(decodedToken);
+                        
+                    } else {
+                        console.log('Unable to find Cookies');
+                    }
+                
+                    login();
+                    if (localStorage.getItem("cart") !== "null") {
+                        localStorage.removeItem("cart");
+                    }
+                    setShowToast(true);
+                    setTimeout(() => {
+                        setShowToast(false);
+                    }, 2000);
+                    setTimeout(() => {
+                        navigate("/admin");
+                    }, 2000);
+    
+                  } catch (error) {
+                    console.error('Error login to Admin:', error);
+                    alert("Error Login!!!");
+                  } 
+            } else {
+                try {
+                    const response = await axios.post('http://localhost:3000/api/users/login', formData, {
+                        headers: {
+                          'Content-Type': 'application/json', // or 'application/json' if needed
+                        },
+                    });
+    
+                    if (response.status >= 200 && response.status < 300 && response.data.cookie) {
+    
+                        const jwtToken = response.data.cookie;
+                        
+                        // Set the token as an HTTP-only cookie
+                        Cookies.set('jwtToken', jwtToken, { expires: 5 / 24 , path: '/', secure: false, sameSite: 'strict' });
+    
+                        // Store the token in state for application use
+                        setToken(jwtToken);
+                        
+                        const decodedToken = jwt_decode(jwtToken);
+                        setUser(decodedToken);
+                        setCart(decodedToken.cart);
+                        
+                    } else {
+                    console.log('Unable to find Cookies');
+                    }
+                
+                    login();
+                    if (localStorage.getItem("cart") === "null") {
+                        addToCart();
+                    }
+                    setShowToast(true);
+                    setTimeout(() => {
+                        setShowToast(false);
+                    }, 2000);
+                    setTimeout(() => {
+                        navigate(-1);
+                    }, 2000);
+    
+                  } catch (error) {
+                    console.error('Error login:', error);
+                    alert(error.response.data.error);
+                  }
+            }
         }
 
         async function addToCart() {

@@ -5,7 +5,7 @@ import axios from 'axios';
 
 import './header.css'
 import Toast from '../Toast/Toast';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 import { useState, useContext } from "react";
 
 import { useCont } from '../../context/MyContext';
@@ -19,6 +19,7 @@ function Header() {
     const { loggedIn, login, logout } = useAuth();
     const { cart, setCart, setToken, user, setUser, getCart } = useCont();
     const [showToast, setShowToast] = useState(false);
+    const navigate = useNavigate();
     
     useEffect(() => {
 
@@ -43,15 +44,9 @@ function Header() {
 
     async function logoutUser() {
 
-        try {
-            const response = await axios.post('http://localhost:3000/api/users/logout',
-            {username: user.username},
-            {
-                headers: {
-                  'Content-Type': 'application/json', // or 'application/json' if needed
-                },
-            });
-            console.log(user.username," - ", response.data.message);
+        const jwtToken = Cookies.get("jwtToken");
+        const decodedToken = jwt_decode(jwtToken);
+        if (decodedToken.email === "admin@gmail.com") {
             Cookies.remove("jwtToken");
             localStorage.removeItem('cartProducts');
             localStorage.removeItem("cart");
@@ -63,10 +58,34 @@ function Header() {
                 setShowToast(false);
             }, 2000); 
             setTimeout(() => {
-                window.location.reload();
+                navigate("/");
             }, 2000);
-        } catch (error) {
-            console.error('Error login:', error);
+        } else {
+            try {
+                const response = await axios.post('http://localhost:3000/api/users/logout',
+                {username: user.username},
+                {
+                    headers: {
+                      'Content-Type': 'application/json', // or 'application/json' if needed
+                    },
+                });
+                console.log(user.username," - ", response.data.message);
+                Cookies.remove("jwtToken");
+                localStorage.removeItem('cartProducts');
+                localStorage.removeItem("cart");
+                setToken("");
+                setUser(null);
+                logout();
+                setShowToast(true);
+                setTimeout(() => {
+                    setShowToast(false);
+                }, 2000); 
+                setTimeout(() => {
+                    window.location.reload();
+                }, 2000);
+            } catch (error) {
+                console.error('Error login:', error);
+            }
         }
 
     }

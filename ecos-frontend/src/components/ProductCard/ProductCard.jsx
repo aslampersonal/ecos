@@ -98,7 +98,7 @@ export default function ProductCard (props) {
                                         </div>
                                     </NavLink> 
                                     <figcaption className="info-wrap">
-                                        <span className="title">{prodData.title}</span>
+                                        <span className="pd-title">{prodData.title}</span>
                                         <div className='price-div'>
                                             <div className='price-tag-div'>
                                                 <IoIosPricetag className='price-tag' />
