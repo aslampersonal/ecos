@@ -7,8 +7,6 @@ const cors = require("cors");
 
 dotenv.config();
 
-//const route = express.Router();
-
 mongoose
   .connect("mongodb+srv://ecos:NBnXAf3aCZzPaD2x@cluster0.7ctkgki.mongodb.net/ucos?retryWrites=true&w=majority")
   .then(() => {
@@ -18,7 +16,7 @@ mongoose
     console.log("connection failed");
   });
 
-app.use(cors());
+app.use(cors({ origin: 'http://localhost:5173', credentials: true }));
 app.use(express.static("public"));
 
 app.use(cookieParser());

@@ -23,7 +23,7 @@ app.get("/cart", checkUserToken, user.cartProducts);
 app.delete("/products/cart/:id", checkUserToken, user.RemoveCartProduct);
 app.get("/wishlist", checkUserToken, user.wishListProducts);
 app.delete("/products/wishlist/:id", checkUserToken, user.RemoveWishlist);
-app.post("/order/:id", checkUserToken, user.oderProduct);
-app.get("/order", checkUserToken, user.getOrderProduct);
+app.post("/products/addorders", checkUserToken, user.oderProduct);
+app.get("/orders", checkUserToken, user.getOrderProduct);
 
 module.exports = app;

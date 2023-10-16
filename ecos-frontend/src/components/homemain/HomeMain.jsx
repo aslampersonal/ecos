@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import './homemain.css';
+import { NavLink } from 'react-router-dom';
 
 function HomeMain () {
     
@@ -31,16 +32,25 @@ function HomeMain () {
                         <input type="radio" name="radio-btn" id="bnr-changer4" />
                         {/* banner images */}
                         <div className="mySlides first">
-                            <img src="/src/assets/images/main-banner1.jpg" className="b-img" alt='' />
+                            <img src="/src/assets/images/banners/main-banner1.jpg" className="b-img" alt='' />
                         </div>
                         <div className="mySlides">
-                            <img src="/src/assets/images/main-banner2.jpg" className="b-img" alt='' />
+                            <NavLink to="/collections" state= {{title:"haircare"}}>
+                            <img src="/src/assets/images/banners/main-banner2.jpg" className="b-img" alt='' />
+                            <button className='b-shop-btn'>SHOP NOW</button>
+                            </NavLink>
                         </div>
                         <div className="mySlides">
-                            <img src="/src/assets/images/main-banner3.jpg" className="b-img" alt='' />
+                            <NavLink to="/collections" state= {{title:"face"}}>
+                            <img src="/src/assets/images/banners/main-banner3.jpg" className="b-img" alt='' />
+                            <button className='b-shop-btn'>SHOP NOW</button>
+                            </NavLink>
                         </div>
                         <div className="mySlides">
-                            <img src="/src/assets/images/main-banner4.jpg" className="b-img" alt='' />
+                            <NavLink to="/collections" state= {{title:"lips"}}>
+                            <img src="/src/assets/images/banners/main-banner4.jpg" className="b-img" alt='' />
+                            <button className='b-shop-btn'>SHOP NOW</button>
+                            </NavLink>
                         </div>
                         {/* automatic navigation */}
                         <div className="navigation-auto">
@@ -72,18 +82,22 @@ function HomeMain () {
             <section id="category-section">
                 <div id="cat-makeup-div">
                     <div id="cat-makeup-div-div">
-                        <h2 id="cat-makeup-h2">makeup products</h2>
-                        <a href="./product.html" className="btn btn-light" id="cat-makeup-btn">
-                        SHOP NOW
-                        </a>
+                        <h2 id="cat-makeup-h2">Face Care products</h2>
+                        <NavLink to="/collections" state= {{title:"face"}}>
+                            <button href="./product.html" className="btn btn-light" id="cat-makeup-btn">
+                            SHOP NOW
+                            </button>
+                        </NavLink>
                     </div>
                 </div>
                 <div id="cat-skin-div">
                     <div id="cat-skin-div-div">
                         <h2 id="cat-skin-h2">skincare products</h2>
-                        <a className="btn btn-dark" id="cat-skin-btn" href="./product.html">
-                        SHOP NOW
-                        </a>
+                        <NavLink to="/collections" state= {{title:"skincare"}}>
+                            <button className="btn btn-dark" id="cat-skin-btn" href="./product.html">
+                            SHOP NOW
+                            </button>
+                        </NavLink>
                     </div>
                 </div>
             </section>

@@ -1,6 +1,10 @@
+const express = require('express');
 const jwt = require("jsonwebtoken");
+const cookieParser = require("cookie-parser");
+const app = express();
 const secretKey = process.env.ADMIN_KEY;
 
+app.use(cookieParser());
 
 const checkAdminToken = (req, res, next) => {
   const token = req.headers.authorization || req.cookies.token;

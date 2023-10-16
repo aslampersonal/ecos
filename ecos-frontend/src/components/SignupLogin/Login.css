@@ -50,3 +50,7 @@
     width: 10rem;
 }
 
+#email, #password, #username, #confirmpassword {
+    width: 15rem !important;
+}
+

@@ -1,11 +1,13 @@
-const app = require("express");
+const express = require('express');
 const jwt = require("jsonwebtoken");
-
 const cookieParser = require("cookie-parser");
+const app = express();
 const secretKey = process.env.SECRET_KEY;
 
+app.use(cookieParser());
+
 const checkUserToken = (req, res, next) => {
-  const token = req.cookies.token;
+  const token = req.headers.authorization?.split('Bearer ')[1]; // Extract the token from the header
   if (!token) {
     return res.status(401).json({ message: "Token missing" });
   }

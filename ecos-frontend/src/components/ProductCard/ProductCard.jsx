@@ -3,20 +3,32 @@ import "./ProductCard.css"
 import { IoIosArrowDropdown, IoIosPricetag } from "react-icons/io"
 import { BsFillCartPlusFill } from "react-icons/bs"
 
-import MyContext from '../../context/MyContext';
-import { NavLink } from 'react-router-dom';
+import { useCont } from '../../context/MyContext';
+import { NavLink, useNavigate } from 'react-router-dom';
+import { useEffect } from 'react';
+import Toast from '../Toast/Toast';
+import Cookies from 'js-cookie';
+import axios from 'axios';
 
 export default function ProductCard (props) {
 
     const path = props.loc;
-    const context = useContext(MyContext);
-    const {prodData} = context;
+    const { cart, setCart, user, prodData } = useCont();
+    const navigate = useNavigate();
+
     let productList = prodData;
     if (path !== "Collections") {
         productList = prodData.filter((prod) => prod.category == path);
     }
 
+    useEffect(() => {
+        if(prodData) {
+            localStorage.setItem("productData", JSON.stringify(productList));
+        }
+    }, [productList]);
+
     const [sorted, sortProducts] = useState([]);
+    const [showToast, setShowToast] = useState(false);
 
     function sortChange() {
         productList.forEach(element => {
@@ -27,9 +39,37 @@ export default function ProductCard (props) {
         console.log(sorted);
     }
 
+    async function addToCart(id) {
+        const jwtToken = Cookies.get("jwtToken");
+        if (jwtToken) {
+            try {
+                const response = await axios.post(`http://localhost:3000/api/users/products/cart/${id}`,
+                {id: id},
+                {
+                    headers: {
+                      'Content-Type': 'application/json',
+                      Authorization: `Bearer ${jwtToken}`,
+                    },
+                    withCredentials: true 
+                });
+                console.log(response.data.message);
+                
+            } catch (error) {
+                console.error('Error adding to cart:', error);
+            }            
+        } else {
+            const cart = JSON.parse(localStorage.getItem("cart")) ? JSON.parse(localStorage.getItem("cart")) : [];
+            localStorage.setItem("cart", JSON.stringify([...cart, id]));
+        }
+        window.location.reload();
+    }
+
     return(
         <section id="main-section" className="col-9">
-    
+            {/* notification toasts */}
+            <div className="toast-container position-fixed top-0 start-50 translate-middle-x" style={{zIndex: "10"}}>
+                <Toast show={showToast} type="error" message="Login to order your products" />
+            </div>
             <header className="border-bottom mb-4 pb-3">
                 <div className="form-inline" id='sort-main-div'>
                     <span className="mr-md-auto" style={{fontWeight: "600"}}>{productList.length} Items found </span>
@@ -49,8 +89,9 @@ export default function ProductCard (props) {
                         return (
                             
                             <div className='card-main-div' key={prodData._id}>
+                                <form>
                                 <figure className="prod-card">
-                                    <NavLink to={"/product:id"} state={{prodId: prodData._id}} className="nav-link">
+                                    <NavLink to="/product" state={{prodId: prodData._id}} className="nav-link">
                                         <div className="img-wrap"> 
                                             <span className="badge badge-danger"> NEW </span>
                                             <img src={prodData.image} />
@@ -63,25 +104,16 @@ export default function ProductCard (props) {
                                                 <IoIosPricetag className='price-tag' />
                                                 <span className="price">{prodData.price}</span>
                                             </div>
-                                            <button type='button' className="cart-btn"><BsFillCartPlusFill className='cart-icon'/></button>
+                                            <button type='button' className="cart-btn" onClick={() => addToCart(prodData._id)}><BsFillCartPlusFill className='cart-icon'/></button>
                                         </div>
                                     </figcaption>
                                 </figure>
+                                </form>
                             </div>
                             
                         )
                     })}
             </div>
-
-            {/* <nav className="mt-4" id='page-nav' aria-label="Page navigation sample">
-                <ul className="pagination">
-                <li className="page-item disabled"><a className="page-link" href="#">Previous</a></li>
-                <li className="page-item active"><a className="page-link" href="#">1</a></li>
-                <li className="page-item"><a className="page-link" href="#">2</a></li>
-                <li className="page-item"><a className="page-link" href="#">3</a></li>
-                <li className="page-item"><a className="page-link" href="#">Next</a></li>
-                </ul>
-            </nav> */}
 
         </section> 
     );

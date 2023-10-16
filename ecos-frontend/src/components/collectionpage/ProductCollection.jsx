@@ -9,9 +9,6 @@ import "./productCollection.css"
 
 export default function ProductCollection() {
 
-    // useEffect(() => {
-        
-    // });
     const a = useLocation();
     let loc = "Collections";
     if(a.state !== null) {

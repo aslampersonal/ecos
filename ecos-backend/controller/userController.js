@@ -1,15 +1,18 @@
-// const app=express()
+const express = require('express');
+const app=express();
 const jwt = require("jsonwebtoken");
+const cookieParser = require("cookie-parser");
 
 const productDatas = require("../models/productModel");
 const validator = require("validator");
-const Razorpay = require("razorpay");
 const schema = require("../models/userModel");
 const secretKey = process.env.SECRET_KEY;
-// const path = require('path');
+
+// Configure cookie parsing middleware
+app.use(cookieParser());
+
 
 //getting all products without login
-
 const getAllProducts = async (req, res) => {
     try {
       const allProducts = await productDatas.find();
@@ -25,7 +28,6 @@ const getAllProducts = async (req, res) => {
 
 
 // user login
-
 const userLogin = async (req, res) => {
   
   try {
@@ -41,13 +43,18 @@ const userLogin = async (req, res) => {
     if (login.email == req.body.email && login.password == req.body.password) {
       
       // Create a JWT token
-      const user = { email: login.email, username: login.username };
-      const token = jwt.sign(user, secretKey, { expiresIn: '1h' });
+      const user = { email: login.email, username: login.username, cart: login.cart };
+      const token = jwt.sign(user, secretKey, { expiresIn: '5h' });
 
       // Set the token as a HTTP cookie
-      res.cookie("token", token, { httpOnly: true});
+      // res.cookie("jwtToken", token, { httpOnly: true});
+      res.cookie('jwtToken', token, {
+        httpOnly: true,
+        secure: true, // Set to true in production (for HTTPS)
+        sameSite: 'strict', // Adjust as needed
+      });
       
-      res.status(201).json({ message: "user logged successfully.....", user: {username: login.username, email: login.email} });
+      res.status(201).json({ message: "user logged successfully.....", user: {username: login.username, email: login.email}, cookie: token });
       return;
     }
     res.status(401).json({ error: "E-mail or password is invalid" });
@@ -58,17 +65,15 @@ const userLogin = async (req, res) => {
 };
 
 // user logout
-
 const userLogout = async (req, res) => {
-
-  res.clearCookie('token');
   
+  console.log(req.body.username, "logged out successfully");
+
   res.json({ message: 'Logged out successfully' });
   
 };
 
 // user registration
-
 const userRegister = async (req, res) => {
   //validator check email as email format use in isEmail
 
@@ -108,7 +113,6 @@ const userRegister = async (req, res) => {
 };
 
 // user can get products details
-
 const getProducts = async (req, res) => {
   try {
     const allProducts = await productDatas.find();
@@ -120,18 +124,18 @@ const getProducts = async (req, res) => {
 };
 
 // user can get specific product details
-
 const specificProduct = async (req, res) => {
   try {
-    console.log(req.params.id);
-    const specificProduct = await productDatas.findById(req.params.id);
+    console.log("hii");
+    // console.log(req.params.id);
+    // const specificProduct = await productDatas.findById(req.params.id);
 
-    if (specificProduct) {
-      return res
-        .status(200)
-        .json({ message: "Specific Product :", specificProduct });
-    }
-    return res.status(404).json({ error: "product not found" });
+    // if (specificProduct) {
+    //   return res
+    //     .status(200)
+    //     .json({ message: "Specific Product :", specificProduct });
+    // }
+    // return res.status(404).json({ error: "product not found" });
   } catch (error) {
     console.log(error);
     res.status(500).json({ message: "server error", error: error.message });
@@ -167,8 +171,7 @@ const getCategoryWise = async (req, res) => {
   }
 };
 
-// user add product to cart
-
+// add product to cart
 const addToCart = async (req, res) => {
   try {
     const productId = req.params.id;
@@ -176,17 +179,16 @@ const addToCart = async (req, res) => {
     if (!product) {
       return res.status(404).json({ message: "Product not found" });
     }
-    const token = req.cookies.token;
-    const decoded = jwt.verify(token, "secretkey");
+    const token = req.headers.authorization?.split('Bearer ')[1]; // Extract the token from the header
+    const decoded = jwt.verify(token, secretKey);
     const user = await schema.findOne({ email: decoded.email });
 
-    // add the product to the cart
     user.cart.push(productId);
     await user.save();
 
     res
       .status(200)
-      .json({ message: "Product added to cart successfully", product });
+      .json({ message: "Product added to cart successfully", product, user });
   } catch (err) {
     console.log(err);
     res.status(500).json({ error: "server error", error: err.message });
@@ -196,13 +198,10 @@ const addToCart = async (req, res) => {
 // get cart product details
 const cartProducts = async (req, res) => {
   try {
-    const token = req.cookies.token;
-    const decoded = jwt.verify(token, "secretkey");
-    const user = await schema.findOne({ email: decoded.email }).populate({
-      path: "cart",
-      model: "productDatas",
-      select: "title description price category",
-    });
+    const token = req.headers.authorization?.split('Bearer ')[1]; // Extract the token from the header
+    const decoded = jwt.verify(token, secretKey);
+    const user = await schema.findOne({ email: decoded.email });
+
     res.status(200).json({ message: "Your cart products", cart: user.cart });
   } catch (error) {
     console.log(error);
@@ -211,12 +210,11 @@ const cartProducts = async (req, res) => {
 };
 
 // remove cart products
-
 const RemoveCartProduct = async (req, res) => {
   try {
     const productId = req.params.id;
-    const token = req.cookies.token;
-    const decoded = jwt.verify(token, "secretkey");
+    const token = req.headers.authorization?.split('Bearer ')[1]; // Extract the token from the header
+    const decoded = jwt.verify(token, secretKey);
 
     const user = await schema.findOne({ email: decoded.email });
     if (!user) {
@@ -229,7 +227,7 @@ const RemoveCartProduct = async (req, res) => {
       return res.status(404).json({ message: "Product not found in Cart" });
     }
 
-    // remove the product from the wishlist and save the updated user document
+    // remove the product from the cart and save the updated user document
     user.cart.splice(index, 1);
     await user.save();
 
@@ -248,8 +246,8 @@ const addToWishList = async (req, res) => {
     if (!product) {
       return res.status(404).json({ message: "product not found" });
     }
-    const token = req.cookies.token;
-    const decoded = jwt.verify(token, "secretkey");
+    const token = req.headers.authorization?.split('Bearer ')[1]; // Extract the token from the header
+    const decoded = jwt.verify(token, secretKey);
     const user = await schema.findOne({ email: decoded.email });
 
     user.wishList.push(productId);
@@ -263,11 +261,11 @@ const addToWishList = async (req, res) => {
   }
 };
 
-// get wish list product
+// get wish list products
 const wishListProducts = async (req, res) => {
   try {
-    const token = req.cookies.token;
-    const decoded = jwt.verify(token, "secretkey");
+    const token = req.headers.authorization?.split('Bearer ')[1]; // Extract the token from the header
+    const decoded = jwt.verify(token, secretKey);
     const user = await schema.findOne({ email: decoded.email }).populate({
       path: "wishList",
       model: "productDatas",
@@ -282,12 +280,12 @@ const wishListProducts = async (req, res) => {
   }
 };
 
-// prodcut remove from wishlist
+// product remove from wishlist
 const RemoveWishlist = async (req, res) => {
   try {
     const productId = req.params.id;
-    const token = req.cookies.token;
-    const decoded = jwt.verify(token, "secretkey");
+    const token = req.headers.authorization?.split('Bearer ')[1]; // Extract the token from the header
+    const decoded = jwt.verify(token, secretKey);
 
     const user = await schema.findOne({ email: decoded.email });
     if (!user) {
@@ -313,63 +311,48 @@ const RemoveWishlist = async (req, res) => {
   }
 };
 
-// user order product
+// add an order
 const oderProduct = async (req, res) => {
   try {
-    const productID = req.params.id;
-    const product = await productDatas.findById(productID);
-    if (!product) {
-      return res.status(404).json({ message: "product not found" });
-    }
-    const token = req.cookies.token;
-    const decoded = jwt.verify(token, "secretkey");
+    const { cart, total } = req.body;
+    const token = req.headers.authorization?.split('Bearer ')[1]; // Extract the token from the header
+    const decoded = jwt.verify(token, secretKey);
     const user = await schema.findOne({ email: decoded.email });
-
     const orderDate = new Date();
-    const { price } = product;
+    const orderId = Math.floor(Math.random() * (99999999999 - 1111111111 + 1)) + 1111111111;
 
-    if (price !== req.body.price) {
-      return res.status(400).json({
-        message: "The entered price does not match the product price",
-      });
+    for(let i=0; i<cart.length; i++) {
+      const product = await productDatas.findById(cart[i]);
+      if (!product) {
+        return res.status(404).json({ message: "product not found", product: product });
+      }
     }
-
-    const instance = new Razorpay({
-      key_id: "rzp_test_0LUKufjaMK2vf1",
-      key_secret: "ZiRr7BkM06hjOw8sx5V3tT7Q",
-    });
-
-    const order = await instance.orders.create({
-      amount: price * 100,
-      currency: "INR",
-      receipt: "Receipt#1",
-    });
 
     user.orders.push({
-      product: productID,
-      orderId: order.id,
-      payment: price,
+      _id: orderId,
+      products: cart,
+      payment: total,
       orderDate,
     });
     await user.save();
+    console.log(decoded.email, "- order placed successfully");
+    
     res
       .status(200)
-      .json({ message: "payment successful!...  Order confirmed...", product });
+      .json({ message: "payment successful!...  Order confirmed...", orderId, cart });
   } catch (error) {
     console.log(error);
     res.status(500).json({ error: "server error", error: error.message });
   }
 };
 
-// get order products
-
+// get order lists
 const getOrderProduct = async (req, res) => {
   try {
-    const token = req.cookies.token;
-    const decoded = jwt.verify(token, "secretkey");
-    const user = await schema
-      .findOne({ email: decoded.email })
-      .populate("orders.product");
+    const token = req.headers.authorization?.split('Bearer ')[1]; // Extract the token from the header
+    const decoded = jwt.verify(token, secretKey);
+    const user = await schema.findOne({ email: decoded.email });
+    console.log(user.orders);
 
     res.status(200).json({ orders: user.orders });
   } catch (error) {

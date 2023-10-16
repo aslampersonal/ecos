@@ -1,17 +1,23 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import Cookies from 'js-cookie';
+
 import { FaUserAlt, FaLock, FaKey } from "react-icons/fa";
 import { MdEmail } from "react-icons/md";
 import { TbReload } from "react-icons/tb";
-import { loadCaptchaEnginge, LoadCanvasTemplate, LoadCanvasTemplateNoReload, validateCaptcha } from 'react-simple-captcha';
+import { loadCaptchaEnginge, LoadCanvasTemplateNoReload, validateCaptcha } from 'react-simple-captcha';
 
 import "./Signup.css"
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
 
 export default function Signup () {
 
     useEffect (() => {
+        const jwtToken = Cookies.get('jwt');
+        if (jwtToken) {
+            navigate("/");
+          }
+
         loadCaptchaEnginge(5, "grey");
     }, []);
 
@@ -119,14 +125,17 @@ export default function Signup () {
                                             <div className="inputs-div">
                                                 <div className="icons-div">
                                                     <FaUserAlt className="icons" />
-                                                    <input
-                                                        onChange={handleChange}
-                                                        type="text"
-                                                        name="username"
-                                                        id="username"
-                                                        className="form-control"
-                                                        placeholder="User Name"                                                    
-                                                    />
+                                                    <div className="form-floating">
+                                                        <input
+                                                            onChange={handleChange}
+                                                            type="text"
+                                                            name="username"
+                                                            id="username"
+                                                            className="form-control"
+                                                            placeholder="User Name"                                                    
+                                                        />
+                                                        <label className="form-label">User Name</label>
+                                                    </div>
                                                 </div>
                                                 <div className="error-div">
                                                     {errors.username && <span className="error-span">{errors.username}</span>}
@@ -135,6 +144,7 @@ export default function Signup () {
                                             <div className="inputs-div">
                                                 <div className="icons-div">
                                                     <MdEmail className="icons" />
+                                                    <div className="form-floating">
                                                     <input
                                                         onChange={handleChange}
                                                         type="email"
@@ -143,6 +153,8 @@ export default function Signup () {
                                                         className="form-control"
                                                         placeholder="Email Id"
                                                     />
+                                                    <label className="form-label">E-mail Id</label>
+                                                    </div>
                                                 </div>
                                                 <div className="error-div">
                                                     {errors.email && <span className="error-span">{errors.email}</span>}
@@ -151,6 +163,7 @@ export default function Signup () {
                                             <div className="inputs-div">
                                                 <div className="icons-div">
                                                     <FaLock className="icons" />
+                                                    <div className="form-floating">
                                                     <input
                                                         onChange={handleChange}
                                                         type="password"
@@ -159,6 +172,8 @@ export default function Signup () {
                                                         className="form-control"
                                                         placeholder="Password"
                                                     />
+                                                    <label className="form-label">Password</label>
+                                                    </div>
                                                 </div>
                                                 <div className="error-div">
                                                     {errors.password && <span className="error-span">{errors.password}</span>}
@@ -167,6 +182,7 @@ export default function Signup () {
                                             <div className="inputs-div">
                                                 <div className="icons-div">
                                                     <FaKey className="icons" />
+                                                    <div className="form-floating">
                                                     <input
                                                         onChange={handleChange}
                                                         type="password"
@@ -175,6 +191,8 @@ export default function Signup () {
                                                         className="form-control"
                                                         placeholder="Repear Your Password"
                                                     />
+                                                    <label className="form-label">Repeat Your Password</label>
+                                                    </div>
                                                 </div>
                                                 <div className="error-div">
                                                     {errors.confirmpassword && <span className="error-span">{errors.confirmpassword}</span>}
@@ -196,6 +214,7 @@ export default function Signup () {
                                                     {errors.terms && <span className="error-span">{errors.terms}</span>}
                                                 </div>
                                             </div>
+                                            
                                             <div id="captcha-div">
                                                 <a id="reload_href"><TbReload className="reload-icon"/><div></div></a>
                                                 <LoadCanvasTemplateNoReload />
@@ -207,10 +226,20 @@ export default function Signup () {
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div className="d-flex justify-content-center mx-4 mb-3 mb-lg-4" id="register-div">
+    
+                                            <div className="d-flex justify-content-center" id="register-div">
                                                 <button type="submit" id="register-btn" className="btn btn-primary btn-lg">
                                                 Register
                                                 </button>
+                                            </div>
+
+                                            <div style={{display: "flex", justifyContent: "center"}}>
+                                                <p className="small fw-bold mt-2 pt-1 mb-0">
+                                                    Already have an account?{" "}
+                                                    <a href="/login" className="link-success" style={{textDecoration: "none"}}>
+                                                        Login
+                                                    </a>
+                                                </p>
                                             </div>
                                         </form>
                                     </div>

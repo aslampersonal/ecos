@@ -1,0 +1,11 @@
+@media (min-width: 1025px) {
+    .h-custom {
+    height: 100vh !important;
+    }
+    }
+
+.cards-icons {
+    font-size: 40px;
+    margin-right: 1rem;
+}
+

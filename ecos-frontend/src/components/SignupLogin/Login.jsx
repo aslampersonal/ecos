@@ -1,52 +1,33 @@
 import React, { useContext } from "react";
 import axios from "axios";
 import Cookies from 'js-cookie';
+import jwt_decode from "jwt-decode";
+import { useState, useEffect } from "react";
 
 import { FaFacebook, FaTwitter, FaLinkedin, FaLock } from "react-icons/fa";
 import { MdEmail } from "react-icons/md";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
+import { useAuth } from "../../context/AuthContext";
+import { useCont } from '../../context/MyContext';
 import "./Login.css"
-import { useState } from "react";
+import Toast from "../Toast/Toast";
 
 export default function Login (props) {
-        
-    // useEffect(() => {
-    //     const jwtToken = Cookies.get('token');
 
-    //     console.log("token:" + jwtToken);
+    useEffect(() => {
+        const jwtToken = Cookies.get('jwt');
+        if (jwtToken) {
+            navigate("/");
+          }
+    }, []);
 
-    //     if (jwtToken) {
-    //         setToken(jwtToken);
-    //         }
-    // }, []);
+    const { cart, setCart, token, setToken, user, setUser } = useCont();
+    const { login } = useAuth();
 
-    // useEffect(() => {
-    //     const fetchData = async () => {
-    //       try {
-    //         const response = await axios.get('http://localhost:3000/api/users/protected');
-    
-    //         if (response.status >= 200 && response.status < 300) {
-    //           setMessage(response.data.message);
-    //           setUser(response.data.user);
-    //         } else {
-    //           console.error('Unauthorized');
-    //         }
-    //       } catch (error) {
-    //         console.error('Protected route error:', error);
-    //       }
-    //     };
-    
-    //     fetchData();
-    //   }, []);
-
-    // const [message, setMessage] = useState('');
-    // const [user, setUser] = useState(null);
-    const [formdata, setFormData] = useState({
-        email: "",
-        password: "",
-    })
+    const [formdata, setFormData] = useState({ email: "", password: "" })
     const [errors, setErrors] = useState({})
+    const [showToast, setShowToast] = useState(false);
 
     const navigate = useNavigate();
 
@@ -85,22 +66,33 @@ export default function Login (props) {
                     },
                 });
 
-                if (response.status >= 200 && response.status < 300) {
+                if (response.status >= 200 && response.status < 300 && response.data.cookie) {
 
-                    Cookies.set('jwtToken', token);
+                    const jwtToken = response.data.cookie;
+                    
+                    // Set the token as an HTTP-only cookie
+                    Cookies.set('jwtToken', jwtToken, { expires: 5 / 24 , path: '/', secure: false, sameSite: 'strict' });
 
-                    // Attempt to read the token here and set it in the state
-                    const jwtToken = Cookies.get('jwtToken');
-                    console.log(jwtToken);
-                    if (jwtToken) {
-                    //   setToken(jwtToken);
-                    console.log(jwtToken);
-                    }
-                  } else {
-                    console.log('Failed to set cookies');
-                  }
-                
-                navigate("/");
+                    // Store the token in state for application use
+                    setToken(jwtToken);
+                    
+                    const decodedToken = jwt_decode(jwtToken);
+                    setUser(decodedToken);
+                    setCart(decodedToken.cart);
+                    
+                } else {
+                console.log('Unable to find Cookies');
+                }
+            
+                login();
+                addToCart();
+                setShowToast(true);
+                setTimeout(() => {
+                    setShowToast(false);
+                }, 2000);
+                setTimeout(() => {
+                    navigate(-1);
+                }, 2000);
 
               } catch (error) {
                 console.error('Error login:', error);
@@ -108,10 +100,41 @@ export default function Login (props) {
               }
         }
 
+        async function addToCart() {
+
+            const jwtToken = Cookies.get("jwtToken");
+            const localCart = JSON.parse(localStorage.getItem("cart"));
+
+            for(let i=0; i<localCart.length; i++) {
+                try {
+                    const response = await axios.post(`http://localhost:3000/api/users/products/cart/${localCart[i]}`,
+                    {id: localCart[i]}, 
+                    {
+                        headers: {
+                          'Content-Type': 'application/json',
+                          Authorization: `Bearer ${jwtToken}`,
+                        },
+                        withCredentials: true 
+                    });
+                    console.log(response.data.message);
+                    
+                } catch (error) {
+                    console.error('Error adding to cart:', error);
+                }
+            }
+
+            localStorage.removeItem("cart");
+            
+        }
+
     }
     
     return (
         <>
+            {/* notification toasts */}
+            <div className="toast-container position-fixed top-0 start-50 translate-middle-x" style={{zIndex: "10"}}>
+                <Toast show={showToast} type="success" message="Logged in successfully" />
+            </div>
             <section className="login-section">
                     <div className="login-main-div">
                         <div className="left-div">
@@ -126,7 +149,7 @@ export default function Login (props) {
                                 LOGIN
                             </p>
                             <form onSubmit={handleSubmit} id="login-form" noValidate>
-                                <div className="d-flex flex-row align-items-center justify-content-center">
+                                {/* <div className="d-flex flex-row align-items-center justify-content-center">
                                     <p className="lead fw-normal mb-0 me-3">Sign in with</p>
                                     <FaFacebook className="social-icons">
                                         
@@ -140,18 +163,22 @@ export default function Login (props) {
                                 </div>
                                 <div className="divider d-flex align-items-center justify-content-center my-4">
                                     <p className="text-center fw-bold mx-3 mb-0">Or</p>
-                                </div>
+                                </div> */}
+
                                 <div className="inputs-div">
                                     <div className="icons-div">
                                         <MdEmail className="icons" />
-                                        <input
-                                            onChange={handleChange}
-                                            type="email"
-                                            id="email"
-                                            name="email"
-                                            className="form-control"
-                                            placeholder="E-mail address"
-                                        />
+                                        <div className="form-floating">
+                                            <input
+                                                onChange={handleChange}
+                                                type="email"
+                                                id="email"
+                                                name="email"
+                                                className="form-control"
+                                                placeholder="E-mail address"
+                                            />
+                                            <label className="form-label">E-mail address</label>
+                                        </div>
                                     </div>
                                     <div className="error-div">
                                         {errors.email && <span className="error-span">{errors.email}</span>}
@@ -160,14 +187,17 @@ export default function Login (props) {
                                 <div className="inputs-div">
                                     <div className="icons-div">
                                         <FaLock className="icons" />
-                                        <input
-                                            onChange={handleChange}
-                                            type="password"
-                                            id="password"
-                                            name="password"
-                                            className="form-control"
-                                            placeholder="Password"
-                                        />
+                                        <div className="form-floating">
+                                            <input
+                                                onChange={handleChange}
+                                                type="password"
+                                                id="password"
+                                                name="password"
+                                                className="form-control"
+                                                placeholder="Password"
+                                            />
+                                            <label className="form-label">Password</label>
+                                        </div>
                                     </div>
                                     <div className="error-div">
                                         {errors.password && <span className="error-span">{errors.password}</span>}
@@ -200,9 +230,9 @@ export default function Login (props) {
                                     </button>
                                     <p className="small fw-bold mt-2 pt-1 mb-0">
                                     Don't have an account?{" "}
-                                    <a href="/signup" className="link-danger" style={{textDecoration: "none"}}>
-                                        Register
-                                    </a>
+                                        <a href="/signup" className="link-danger" style={{textDecoration: "none"}}>
+                                            Register
+                                        </a>
                                     </p>
                                 </div>
                             </form>

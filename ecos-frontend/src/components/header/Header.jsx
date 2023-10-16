@@ -1,64 +1,77 @@
 import React, { useEffect } from 'react';
-import axios from 'axios';
 import Cookies from 'js-cookie';
 import jwt_decode from "jwt-decode";
+import axios from 'axios';
 
 import './header.css'
+import Toast from '../Toast/Toast';
 import { NavLink } from 'react-router-dom';
-import { BsPersonCircle } from "react-icons/bs";
-import { BiSolidCart }from "react-icons/bi"
+import { useState, useContext } from "react";
+
+import { useCont } from '../../context/MyContext';
+import { useAuth } from "../../context/AuthContext";
+import { BiSolidCart, BiLogInCircle, BiSearchAlt }from "react-icons/bi"
 import { FiLogOut } from "react-icons/fi"
-import { useContext, useState } from "react";
-import MyContext from '../../context/MyContext';
+import { FaUser } from "react-icons/fa"
 
 function Header() {
-
-    // useEffect(() => {
-    //     const jwtToken = Cookies.get('token');
-
-    //     console.log("token:" + jwtToken);
-
-    //     if (jwtToken) {
-    //         setToken(jwtToken);
-    //       }
-    // }, []);
-
+    
+    const { loggedIn, login, logout } = useAuth();
+    const { cart, setCart, setToken, user, setUser, getCart } = useCont();
+    const [showToast, setShowToast] = useState(false);
+    
     useEffect(() => {
-        // const fetchData = async () => {
-        //   try {
-        //     const response = await axios.get('http://localhost:3000/api/users/protected');
-    
-        //     if (response.status >= 200 && response.status < 300) {
-        //       setMessage(response.data.message);
-        //       setUser(response.data.user);
-        //     } else {
-        //       console.error('Unauthorized');
-        //     }
-        //   } catch (error) {
-        //     console.error('Protected route error:', error);
-        //   }
-        // };
-    
-        // fetchData();
 
-        const token = sessionStorage.getItem('token');
-        const decoded = jwt_decode(token);
-        console.log(decoded);
-      }, []);
+        const jwtToken = Cookies.get("jwtToken");
+        if (jwtToken) {
+            const decodedToken = jwt_decode(jwtToken);
+            setUser(decodedToken);
+            login();
+            document.getElementById("login-icon").style.display = "none";            
+            document.getElementById("user-icon").style.display = "";            
+            document.getElementById("cart-icon").style.display = ""            
+            document.getElementById("logout-icon").style.display = "";
+        } else {
+            document.getElementById("login-icon").style.display = "";            
+            document.getElementById("user-icon").style.display = "none";            
+            document.getElementById("cart-icon").style.display = ""            
+            document.getElementById("logout-icon").style.display = "none";
+        }
+        getCart();
 
-    const [message, setMessage] = useState('');
+    }, [loggedIn]);
 
-    const [token, setToken] = useState(null);
-    const [user, setUser] = useState(null);
-    const [logged, setLogged] = useState("none");
+    async function logoutUser() {
 
-    function logoutUser() {
-        console.log(user);
-        // setUser("adadad");
-        // console.log(user);
+        try {
+            const response = await axios.post('http://localhost:3000/api/users/logout',
+            {username: user.username},
+            {
+                headers: {
+                  'Content-Type': 'application/json', // or 'application/json' if needed
+                },
+            });
+            console.log(user.username," - ", response.data.message);
+            Cookies.remove("jwtToken");
+            localStorage.removeItem('cartProducts');
+            localStorage.removeItem("cart");
+            setToken("");
+            setUser(null);
+            logout();
+            setShowToast(true);
+            setTimeout(() => {
+                setShowToast(false);
+            }, 2000); 
+            setTimeout(() => {
+                window.location.reload();
+            }, 2000);
+        } catch (error) {
+            console.error('Error login:', error);
+        }
+
     }
 
-    function loginUser() {
+    async function searchProduct() {
 
     }
     
@@ -71,54 +84,74 @@ function Header() {
                     <p className="h-news-text">FREE SHIPPING ON ALL ORDERS ABOVE ₹1000</p>
                     <p className="h-news-text">FREE SHIPPING ON ALL ORDERS ABOVE ₹1000</p> 
                 </div>
-                <nav className="navbar navbar-expand-lg navbar-light bg-light" id="navbar">
-                    <div id="h-logo-div">
-                        <img id="logo" alt="" src="/src/assets/images/ucos-logo.png" />
-                    </div> 
-                    <div id="h-nav-div-search">
-                        <input
-                        type="search"
-                        id="h-search"
-                        defaultValue=""
-                        placeholder="Search..."
-                        aria-required="false"
-                        maxLength={100}
-                        autoComplete="off"
-                        aria-label="Search..."
-                        />
-                    </div>
+                <nav className="navbar navbar-expand-lg" id="navbar">
+                    <NavLink to="/">
+                        <div id="h-logo-div">
+                            <img id="logo" alt="" src="/src/assets/images/ucos-logo.png" />
+                        </div> 
+                    </NavLink>
                     <div id="h-nav-div-nav">
                         <ul id="h-nav-ul">
                             <li className="h-nav-li">
-                                <NavLink className="h-nav-a" to='/'>Home</NavLink>
+                                <NavLink className="h-nav-a" to='/offers'>offers</NavLink>
                             </li>
                             <li className="drop-li">
-                                <NavLink className="drop-link" to="./store">Store<i className="fa fa-caret-down"></i></NavLink>
-                                <div className="dropdown-content bg-light" aria-labelledby="navbarDropdown">
-                                    <NavLink className="dropdown-item" to="./skin-care-products">Skin Care</NavLink>
-                                    <NavLink className="dropdown-item" to="./cosmetic-products">Cosmetics</NavLink>
-                                </div>
+                                <NavLink className="h-nav-a" to="./store">Store<i className="fa fa-caret-down"></i></NavLink>
                             </li>
                             <li className="h-nav-li">
-                                <NavLink className="h-nav-a" to="./about-us">About Us</NavLink>
+                                <NavLink className="h-nav-a" to="./collections" state= {{title:"lips"}}>lips</NavLink>
                             </li>
                             <li className="h-nav-li">
-                                <NavLink className="h-nav-a" to="./contact-us">Contact Us</NavLink>
+                                <NavLink className="h-nav-a" to="./collections" state= {{title:"face"}}>face</NavLink>
+                            </li>
+                            <li className="h-nav-li">
+                                <NavLink className="h-nav-a" to="./collections" state= {{title:"eyes"}}>eyes</NavLink>
+                            </li>
+                            <li className="h-nav-li">
+                                <NavLink className="h-nav-a" to="./collections" state= {{title:"skincare"}}>skin care</NavLink>
+                            </li>
+                            <li className="h-nav-li">
+                                <NavLink className="h-nav-a" to="./collections" state= {{title:"haircare"}}>hair care</NavLink>
+                            </li>
+                            <li className="h-nav-li">
+                                <NavLink className="h-nav-a" to="./collections" state= {{title:"services"}}>services</NavLink>
                             </li>
                         </ul>
                     </div>
+                    <form className='search-form'>
+                        <button className='search-btn' type='submit' onChange={searchProduct}><BiSearchAlt className='search-icon' /></button>
+                        <input
+                            type="text"
+                            className="search-input"
+                            placeholder="search"
+                        />
+                    </form>
                     <div id="h-nav-div-profile">
-                            <a className="btn" id="login-icon" onClick={logoutUser}>
-                                <BsPersonCircle className='top-icons' />
-                            </a>
-                            <a className="btn" id="cart-icon" href="./cart">
-                                <BiSolidCart className='top-icons' />
-                            </a>
-                            <a className="btn" id="logout-icon" href="./cart" style={{display: logged}} >
+                            <NavLink to="./login">
+                                <button className="btn" id="login-icon" >
+                                    <BiLogInCircle className='top-icons' />
+                                </button>
+                            </NavLink>
+                            <NavLink to="./profile">
+                                <button className="btn" id="user-icon" >
+                                    <FaUser className='top-icons' />
+                                </button>
+                            </NavLink>
+                            <NavLink to="./cart">
+                                <button className="btn" id="cart-icon" >
+                                    <BiSolidCart className='top-icons' />
+                                    <label>{cart? cart.length: 0}</label>
+                                </button>
+                            </NavLink>
+                            <button onClick={logoutUser} className="btn" id="logout-icon" >
                                 <FiLogOut className='top-icons' />
-                            </a>
+                            </button>
                     </div>
                 </nav>
+                {/* notification toasts */}
+                <div className="toast-container position-fixed top-0 start-50 translate-middle-x" style={{zIndex: "10"}}>
+                    <Toast show={showToast} type="info" message="User logged out successfully" />
+                </div>
             </div>
         </header>
 

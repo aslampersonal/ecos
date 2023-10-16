@@ -8,6 +8,7 @@ footer {
     padding-top: 2rem;
     background-color: rgb(37, 53, 76);
     border-top: 3px solid #6d9962;
+    font-family: ano-bold_regular,Helvetica,Arial,sans-serif;
 }
 
 #footer-div {
@@ -41,7 +42,6 @@ footer {
 .f-links {
     text-decoration: none;
     color: white;
-    font-family: 'Josefin Sans';
     margin-bottom: 5px;
     cursor: pointer;
 }
@@ -68,4 +68,9 @@ footer {
     justify-content: center;
     align-content: center;
     padding-top: 10px;
+    font-family: ano-bold_regular,Helvetica,Arial,sans-serif;
+}
+
+#f-copyright-text {
+    font-size: 12px;
 }

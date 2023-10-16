@@ -40,10 +40,6 @@
     align-items: center;
 }
 
-.icons-div input {
-    margin-left: 1rem;
-}
-
 #terms-checkbox {
     width: 20rem;
     display: flex;
@@ -65,7 +61,6 @@
     flex-direction: row;
     justify-content: center;
     align-items: center;
-    margin: 1rem 0;
 }
 
 #reload_href {
@@ -106,11 +101,6 @@
     transition: all .3s ease-out;
     height: 100%;
 }
-
-/* #captcha-text:focus + .input-status-div { 
-    cursor: pointer;
-    top: 0;
-} */
 
 #register-div {
     margin-top: 1rem;

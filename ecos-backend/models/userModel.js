@@ -21,12 +21,11 @@ const mongoSchema = new mongoose.Schema({
   ],
   orders: [
     {
-      product: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "productDatas",
-      },
-      orderId: {
+      _id: {
         type: String,
+      },
+      products: {
+        type: Array,
       },
       payment: {
         type: Number,
