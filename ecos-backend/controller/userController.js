@@ -103,6 +103,8 @@ const userRegister = async (req, res) => {
 
     await schema.insertMany({
       username: req.body.username,
+      fullname: req.body.fullname,
+      mobile: req.body.mobile,
       email: req.body.email,
       password: req.body.password,
     });

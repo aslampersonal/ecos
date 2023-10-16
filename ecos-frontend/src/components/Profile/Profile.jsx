@@ -1,7 +1,19 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { MDBCol, MDBContainer, MDBRow, MDBCard, MDBCardText, MDBCardBody, MDBCardImage, MDBBtn, MDBTypography, MDBIcon } from 'mdb-react-ui-kit';
+import { useNavigate } from "react-router-dom";
+import Cookies from "js-cookie";
 
 export default function Profile() {
+    
+    const navigate = useNavigate();
+
+    useEffect (() => {
+        const jwtToken = Cookies.get("jwtToken");
+        if (!jwtToken) {
+            navigate("/");
+        } 
+    });
+    
     return (
         <>
             <section>

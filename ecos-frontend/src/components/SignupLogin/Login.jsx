@@ -85,7 +85,9 @@ export default function Login (props) {
                 }
             
                 login();
-                addToCart();
+                if (localStorage.getItem("cart") === "null") {
+                    addToCart();
+                }
                 setShowToast(true);
                 setTimeout(() => {
                     setShowToast(false);

@@ -148,7 +148,7 @@ function HomeMain () {
                         </a>
                     </div>
                     <div id="b3-rightb">
-                        <img id="b3-right-img" src="/src/assets/images/girl-face-skincare.jpg" alt='' />
+                        <img id="b3-right-img" src="/src/assets/images/eye-shadow2.jpg" alt='' />
                     </div>
                 </div>
             </section>

@@ -4,11 +4,12 @@ import axios from "axios";
 import Cookies from 'js-cookie';
 
 import { FaUserAlt, FaLock, FaKey } from "react-icons/fa";
-import { MdEmail } from "react-icons/md";
+import { MdDriveFileRenameOutline, MdEmail } from "react-icons/md";
 import { TbReload } from "react-icons/tb";
 import { loadCaptchaEnginge, LoadCanvasTemplateNoReload, validateCaptcha } from 'react-simple-captcha';
 
 import "./Signup.css"
+import { AiFillMobile } from "react-icons/ai";
 
 export default function Signup () {
 
@@ -25,6 +26,8 @@ export default function Signup () {
 
     const [formdata, setFormData] = useState({
         username: "",
+        fullname: "",
+        mobile: "",
         email: "",
         password: "",
         confirmpassword: ""
@@ -42,6 +45,14 @@ export default function Signup () {
         const validationErrors = {}
         if(!formdata.username.trim()) {
             validationErrors.username = "username is required"
+        }
+
+        if(!formdata.fullname.trim()) {
+            validationErrors.fullname = "full name is required"
+        }
+
+        if(!formdata.mobile.trim()) {
+            validationErrors.mobile = "mobile is required"
         }
 
         if(!formdata.email.trim()) {
@@ -75,6 +86,8 @@ export default function Signup () {
         if(Object.keys(validationErrors).length === 0) {
             const formData = new FormData();
             formData.append('username', document.getElementById("username").value);
+            formData.append('fullname', document.getElementById("fullname").value);
+            formData.append('mobile', document.getElementById("mobile").value);
             formData.append('email', document.getElementById("email").value);
             formData.append('password', document.getElementById("password").value);
             formData.append('confirmpassword', document.getElementById("confirmpassword").value);
@@ -139,6 +152,44 @@ export default function Signup () {
                                                 </div>
                                                 <div className="error-div">
                                                     {errors.username && <span className="error-span">{errors.username}</span>}
+                                                </div>
+                                            </div>
+                                            <div className="inputs-div">
+                                                <div className="icons-div">
+                                                    <MdDriveFileRenameOutline className="icons" />
+                                                    <div className="form-floating">
+                                                        <input
+                                                            onChange={handleChange}
+                                                            type="text"
+                                                            name="fullname"
+                                                            id="fullname"
+                                                            className="form-control"
+                                                            placeholder="Full Name"                                                    
+                                                        />
+                                                        <label className="form-label">Full Name</label>
+                                                    </div>
+                                                </div>
+                                                <div className="error-div">
+                                                    {errors.username && <span className="error-span">{errors.fullname}</span>}
+                                                </div>
+                                            </div>
+                                            <div className="inputs-div">
+                                                <div className="icons-div">
+                                                    <AiFillMobile className="icons" />
+                                                    <div className="form-floating">
+                                                        <input
+                                                            onChange={handleChange}
+                                                            type="number"
+                                                            name="mobile"
+                                                            id="mobile"
+                                                            className="form-control"
+                                                            placeholder="Mobile"                                                    
+                                                        />
+                                                        <label className="form-label">Mobile</label>
+                                                    </div>
+                                                </div>
+                                                <div className="error-div">
+                                                    {errors.username && <span className="error-span">{errors.mobile}</span>}
                                                 </div>
                                             </div>
                                             <div className="inputs-div">

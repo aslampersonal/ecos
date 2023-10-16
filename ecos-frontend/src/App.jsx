@@ -15,6 +15,8 @@ import CartPage from "./pages/CartPage";
 import OrderPage from "./pages/Order";
 import ProfilePage from "./pages/ProfilePage"
 
+import AdminDashboard from "./pages/Admin/AdminDashboard";
+
 import ProductAddingPage from "./pages/Admin/ProductAddingPage";
 
 import { ContProvider, useCont } from "./context/MyContext";
@@ -42,6 +44,7 @@ function App() {
             <Route path="/signup" element={<SignupPage />} /> 
             <Route path="/login" element={<LoginPage />} />
 
+            <Route path="/admin" element={<AdminDashboard />} />
             <Route path="/admin/products-adding" element={<ProductAddingPage />} />
 
           </Routes>
