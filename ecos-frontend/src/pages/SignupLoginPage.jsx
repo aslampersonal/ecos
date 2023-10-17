@@ -1,11 +1,11 @@
 import React from "react";
 
-import Login from "../components/SignupLogin/Login";
+import SignupLogin from "../components/SignupLogin/SignupLogin";
 
 export default function LoginPage (props) {
     return (
         <main>
-            <Login />
+            <SignupLogin />
         </main>
     );
 }

@@ -9,7 +9,7 @@ import Home from './pages/Home';
 import ProductPage from './pages/Product';
 import StorePage from "./pages/Store";
 import SignupPage from "./pages/SignupPage"
-import LoginPage from "./pages/LoginPage"
+import LoginPage from "./pages/SignupLoginPage"
 import CollectionPage from "./pages/CollectionPage";
 import CartPage from "./pages/CartPage";
 import OrderPage from "./pages/Order";
