@@ -111,7 +111,6 @@ export default function Cart() {
           }
 
           localStorage.removeItem("cartProducts");
-          window.location.reload();
           navigate(`/orders/${response.data.orderId}`);
         }
 

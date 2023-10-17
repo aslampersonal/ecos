@@ -13,7 +13,7 @@ mongoose
     console.log("database connected");
   })
   .catch(() => {
-    console.log("connection failed");
+    console.log("database connection failed");
   });
 
 app.use(cors({ origin: 'http://localhost:5173', credentials: true }));
