@@ -2,6 +2,8 @@
     font-family: sans-serif;
     text-align: center;
     margin: 2rem 0;
+    display: flex;
+    justify-content: center;
   }  
 
 .ls-h1 {
@@ -73,7 +75,7 @@
     width: 70%;
   }
   
-  .container {
+  .ls-container {
     background-color: #fff;
     border-radius: 10px;
     box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
@@ -97,7 +99,7 @@
     z-index: 2;
   }
   
-  .container.right-panel-active .sign-in-container {
+  .ls-container.right-panel-active .sign-in-container {
     transform: translateX(100%);
   }
   
@@ -108,7 +110,7 @@
     z-index: 1;
   }
   
-  .container.right-panel-active .sign-up-container {
+  .ls-container.right-panel-active .sign-up-container {
     transform: translateX(100%);
     opacity: 1;
     z-index: 5;
@@ -140,7 +142,7 @@
     z-index: 10;
   }
   
-  .container.right-panel-active .overlay-container {
+  .ls-container.right-panel-active .overlay-container {
     transform: translateX(-100%);
   }
   
@@ -160,7 +162,7 @@
     transition: transform 0.6s ease-in-out;
   }
   
-  .container.right-panel-active .overlay {
+  .ls-container.right-panel-active .overlay {
     transform: translateX(50%);
   }
   
@@ -183,7 +185,7 @@
     transform: translateX(-20%);
   }
   
-  .container.right-panel-active .overlay-left {
+  .ls-container.right-panel-active .overlay-left {
     transform: translateX(0);
   }
   
@@ -192,7 +194,7 @@
     transform: translateX(0);
   }
   
-  .container.right-panel-active .overlay-right {
+  .ls-container.right-panel-active .overlay-right {
     transform: translateX(20%);
   }
   
