@@ -1,78 +1,122 @@
-import React from "react";
-function SignUpForm() {
-  const [state, setState] = React.useState({
-    name: "",
-    email: "",
-    password: ""
-  });
-  const handleChange = evt => {
-    const value = evt.target.value;
-    setState({
-      ...state,
-      [evt.target.name]: value
-    });
-  };
+import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
+import Cookies from 'js-cookie';
 
-  const handleOnSubmit = evt => {
-    evt.preventDefault();
+import { FaFacebook, FaLinkedin, FaGoogle } from "react-icons/fa";
+import { TbReload } from "react-icons/tb";
 
-    const { name, email, password } = state;
-    alert(
-      `You are sign up with name: ${name} email: ${email} and password: ${password}`
-    );
+export default function SignUpForm () {
+    
+  useEffect (() => {
+        const jwtToken = Cookies.get('jwt');
+        if (jwtToken) {
+            navigate("/");
+          }
 
-    for (const key in state) {
-      setState({
-        ...state,
-        [key]: ""
-      });
+    }, []);
+
+    const navigate = useNavigate();
+
+    const [formdata, setFormData] = useState({
+        username: "",
+        fullname: "",
+        mobile: "",
+        email: "",
+        password: "",
+        confirmpassword: ""
+    })
+
+    const [errors, setErrors] = useState({})
+
+    function handleChange(e) {
+        const {name, value} = e.target;
+        setFormData({...formdata, [name] : value})
     }
-  };
+
+    async function handleSubmit(e) {
+        e.preventDefault();
+        const validationErrors = {}
+
+        if(!document.getElementById("terms-conditions").checked) {
+            validationErrors.terms = "You should agree the terms and conditions"
+        }
+
+        setErrors(validationErrors);
+
+        if(Object.keys(validationErrors).length === 0) {
+            const formData = new FormData();
+            formData.append('username', document.getElementById("username").value);
+            formData.append('fullname', document.getElementById("fullname").value);
+            formData.append('mobile', document.getElementById("mobile").value);
+            formData.append('email', document.getElementById("email").value);
+            formData.append('password', document.getElementById("password").value);
+            formData.append('confirmpassword', document.getElementById("confirmpassword").value);
+
+            try {
+                const response = await axios.post('http://localhost:3000/api/users/register', formData, {
+                    headers: {
+                      'Content-Type': 'application/json', // or 'application/json' if needed
+                    },
+                });
+                console.log(response.data);
+                
+                navigate("/login");
+
+              } catch (error) {
+                console.error('Error registering the user', error);
+              }
+        }
+
+    }
 
   return (
+
     <div className="form-container sign-up-container">
-      <form onSubmit={handleOnSubmit}>
-        <h1>Create Account</h1>
+      <form onSubmit={handleSubmit} className="ls-form">
+        <h1 className="ls-h1">Create Account</h1>
         <div className="social-container">
           <a href="#" className="social">
-            <i className="fab fa-facebook-f" />
+            <FaFacebook className="social-i" />
           </a>
           <a href="#" className="social">
-            <i className="fab fa-google-plus-g" />
+            <FaGoogle className="social-i" />
           </a>
           <a href="#" className="social">
-            <i className="fab fa-linkedin-in" />
+            <FaLinkedin className="social-i" />
           </a>
         </div>
-        <span>or use your email for registration</span>
+        <span className="ls-span">or use your email for registration</span>
         <input
           type="text"
-          name="name"
-          value={state.name}
+          name="username"
+          id="username"
           onChange={handleChange}
-          placeholder="Name"
+          placeholder="User Name"
+          className="ls-input"
         />
         <input
           type="email"
           name="email"
-          value={state.email}
+          id="email"
           onChange={handleChange}
           placeholder="Email"
+          className="ls-input"
         />
         <input
           type="password"
           name="password"
-          value={state.password}
+          id="password"
           onChange={handleChange}
           placeholder="Password"
+          className="ls-input"
         />
-        <button>Sign Up</button>
+        <button type="submit" className="ls-btn">Sign Up</button>
       </form>
     </div>
   );
 }
 
-export default SignUpForm;
 
 
 

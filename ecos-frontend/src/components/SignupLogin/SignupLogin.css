@@ -2,24 +2,14 @@
     font-family: sans-serif;
     text-align: center;
     margin: 2rem 0;
-  }
-  
-  @import url("https://fonts.googleapis.com/css?family=Montserrat:400,800");
-  
-  * {
-    box-sizing: border-box;
-  }
+  }  
 
-  h1 {
+.ls-h1 {
     font-weight: bold;
     margin: 0;
   }
   
-  h2 {
-    text-align: center;
-  }
-  
-  p {
+.ls-p {
     font-size: 14px;
     font-weight: 100;
     line-height: 20px;
@@ -27,18 +17,18 @@
     margin: 20px 0 30px;
   }
   
-  span {
+.ls-span {
     font-size: 12px;
   }
-  
-  a {
+
+.ls-a {
     color: #333;
     font-size: 14px;
     text-decoration: none;
     margin: 15px 0;
-  }
+}
   
-  button {
+.ls-btn {
     border-radius: 20px;
     border: 1px solid #ff4b2b;
     background-color: #ff4b2b;
@@ -64,7 +54,7 @@
     border-color: #ffffff;
   }
   
-  form {
+.ls-form {
     background-color: #ffffff;
     display: flex;
     align-items: center;
@@ -75,12 +65,12 @@
     text-align: center;
   }
   
-  input {
+.ls-input {
     background-color: #eee;
     border: none;
     padding: 12px 15px;
-    margin: 8px 0;
-    width: 100%;
+    margin: 10px 0;
+    width: 70%;
   }
   
   .container {
@@ -220,15 +210,11 @@
     height: 40px;
     width: 40px;
   }
-  
-  footer {
-    background-color: #222;
-    color: #fff;
-    font-size: 14px;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    text-align: center;
+
+  .social-i {
+    font-size: 20px;
+    color: black;
   }
+
   
   

@@ -9,7 +9,7 @@ import { HiArrowNarrowLeft, HiArrowNarrowRight } from "react-icons/hi"
 import { FaCcMastercard, FaCcVisa, FaCcPaypal } from "react-icons/fa"
 
 import { useCont } from '../../context/MyContext';
-import { NavLink, useLocation } from "react-router-dom";
+import { NavLink, useLocation, useParams } from "react-router-dom";
 
 export default function OrderMain() {
 
@@ -18,10 +18,7 @@ export default function OrderMain() {
     const [total, setTotal] = useState(0);
     const { user, setUser, orders, setOrders, getOrders } = useCont();
     const loc = useLocation().state;
-    let orderId = null;
-    if (loc) {
-        orderid = loc.id;
-    }
+    const { orderId } = useParams();
 
     useEffect(() => {
 

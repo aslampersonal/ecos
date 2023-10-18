@@ -1,71 +1,200 @@
-import React from "react";
+import React, { useContext } from "react";
+import axios from "axios";
+import Cookies from 'js-cookie';
+import jwt_decode from "jwt-decode";
+import { useState, useEffect } from "react";
 
-function SignInForm() {
-  const [state, setState] = React.useState({
-    email: "",
-    password: ""
-  });
-  const handleChange = evt => {
-    const value = evt.target.value;
-    setState({
-      ...state,
-      [evt.target.name]: value
-    });
-  };
+import { FaFacebook, FaLinkedin, FaGoogle } from "react-icons/fa";
+import { useNavigate } from "react-router-dom";
 
-  const handleOnSubmit = evt => {
-    evt.preventDefault();
+import { useAuth } from "../../context/AuthContext";
+import { useCont } from '../../context/MyContext';
+import Toast from "../Toast/Toast";
 
-    const { email, password } = state;
-    alert(`You are login with email: ${email} and password: ${password}`);
+export default function SignInForm (props) {
 
-    for (const key in state) {
-      setState({
-        ...state,
-        [key]: ""
-      });
+    useEffect(() => {
+        const jwtToken = Cookies.get('jwt');
+        if (jwtToken) {
+            navigate("/");
+          }
+    }, []);
+
+    const { cart, setCart, token, setToken, user, setUser } = useCont();
+    const { login } = useAuth();
+
+    const [formdata, setFormData] = useState({ email: "", password: "" })
+    const [errors, setErrors] = useState({})
+    const [showToast, setShowToast] = useState(false);
+
+    const navigate = useNavigate();
+
+    function handleChange(e) {
+        const {name, value} = e.target;
+        setFormData({...formdata, [name] : value})
     }
-  };
+
+    async function handleSubmit(e) {
+        e.preventDefault();
+
+        const formData = new FormData();
+        formData.append('email', document.getElementById("email").value);
+        formData.append('password', document.getElementById("password").value);
+
+        if(document.getElementById("email").value === "admin@gmail.com") {
+            try {
+                const response = await axios.post('http://localhost:3000/api/admin/login', formData, {
+                    headers: {
+                      'Content-Type': 'application/json', // or 'application/json' if needed
+                    },
+                });
+
+                if (response.status >= 200 && response.status < 300 && response.data.cookie) {
+
+                    const jwtToken = response.data.cookie;
+                    
+                    // Set the token as an HTTP-only cookie
+                    Cookies.set('jwtToken', jwtToken, { expires: 5 / 24 , path: '/', secure: false, sameSite: 'strict' });
+
+                    // Store the token in state for application use
+                    setToken(jwtToken);
+                    
+                    const decodedToken = jwt_decode(jwtToken);
+                    setUser(decodedToken);
+                    
+                } else {
+                    console.log('Unable to find Cookies');
+                }
+            
+                login();
+                if (localStorage.getItem("cart") !== "null") {
+                    localStorage.removeItem("cart");
+                }
+                setShowToast(true);
+                setTimeout(() => {
+                    setShowToast(false);
+                }, 2000);
+                setTimeout(() => {
+                    navigate("/admin");
+                }, 2000);
+
+              } catch (error) {
+                console.error('Error login to Admin:', error);
+                alert("Error Login!!!");
+              } 
+        } else {
+            try {
+                const response = await axios.post('http://localhost:3000/api/users/login', formData, {
+                    headers: {
+                      'Content-Type': 'application/json', // or 'application/json' if needed
+                    },
+                });
+
+                if (response.status >= 200 && response.status < 300 && response.data.cookie) {
+
+                    const jwtToken = response.data.cookie;
+                    
+                    // Set the token as an HTTP-only cookie
+                    Cookies.set('jwtToken', jwtToken, { expires: 5 / 24 , path: '/', secure: false, sameSite: 'strict' });
+
+                    // Store the token in state for application use
+                    setToken(jwtToken);
+                    
+                    const decodedToken = jwt_decode(jwtToken);
+                    setUser(decodedToken);
+                    setCart(decodedToken.cart);
+                    
+                } else {
+                console.log('Unable to find Cookies');
+                }
+            
+                login();
+                if (localStorage.getItem("cart") === "null") {
+                    addToCart();
+                }
+                setShowToast(true);
+                setTimeout(() => {
+                    setShowToast(false);
+                }, 2000);
+                setTimeout(() => {
+                    navigate(-1);
+                }, 2000);
+
+              } catch (error) {
+                console.error('Error login:', error);
+                alert(error.response.data.error);
+              }
+        }
+
+        //add to cart from local storage while a user logged in
+        async function addToCart() {
+
+            const jwtToken = Cookies.get("jwtToken");
+            const localCart = JSON.parse(localStorage.getItem("cart"));
+
+            for(let i=0; i<localCart.length; i++) {
+                try {
+                    const response = await axios.post(`http://localhost:3000/api/users/products/cart/${localCart[i]}`,
+                    {id: localCart[i]}, 
+                    {
+                        headers: {
+                          'Content-Type': 'application/json',
+                          Authorization: `Bearer ${jwtToken}`,
+                        },
+                        withCredentials: true 
+                    });
+                    console.log(response.data.message);
+                    
+                } catch (error) {
+                    console.error('Error adding to cart:', error);
+                }
+            }
+
+            localStorage.removeItem("cart");
+            
+        }
+
+    }
 
   return (
+    
     <div className="form-container sign-in-container">
-      <form onSubmit={handleOnSubmit}>
-        <h1>Sign in</h1>
+      <form onSubmit={handleSubmit} className="ls-form">
+        <h1 className="ls-h1">Sign in</h1>
         <div className="social-container">
           <a href="#" className="social">
-            <i className="fab fa-facebook-f" />
+            <FaFacebook className="social-i" />
           </a>
           <a href="#" className="social">
-            <i className="fab fa-google-plus-g" />
+            <FaGoogle className="social-i" />
           </a>
           <a href="#" className="social">
-            <i className="fab fa-linkedin-in" />
+            <FaLinkedin className="social-i" />
           </a>
         </div>
-        <span>or use your account</span>
+        <span className="ls-span">or use your account</span>
         <input
           type="email"
           placeholder="Email"
           name="email"
-          value={state.email}
+          id="email"
           onChange={handleChange}
+          className="ls-input"
         />
         <input
           type="password"
           name="password"
+          id="password"
           placeholder="Password"
-          value={state.password}
           onChange={handleChange}
+          className="ls-input"
         />
-        <a href="#">Forgot your password?</a>
-        <button>Sign In</button>
+        <a href="#" className="ls-a">Forgot your password?</a>
+        <button type="submit" className="ls-btn">Sign In</button>
       </form>
     </div>
   );
 }
-
-export default SignInForm;
-
 
 
 
