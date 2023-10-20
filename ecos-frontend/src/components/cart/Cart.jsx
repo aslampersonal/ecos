@@ -111,7 +111,8 @@ export default function Cart() {
           }
 
           localStorage.removeItem("cartProducts");
-          navigate(`/orders/${response.data.orderId}`);
+          localStorage.setItem("orderId", JSON.parse(response.data.orderId));
+          navigate("/orders");
         }
 
       } catch (error) {

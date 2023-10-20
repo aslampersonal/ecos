@@ -43,19 +43,19 @@ const userLogin = async (req, res) => {
     if (login.email == req.body.email && login.password == req.body.password) {
       
       // Create a JWT token
-      const user = { email: login.email, username: login.username, cart: login.cart };
+      const user = login;
       const token = jwt.sign(user, secretKey, { expiresIn: '5h' });
 
       // Set the token as a HTTP cookie
-      // res.cookie("jwtToken", token, { httpOnly: true});
       res.cookie('jwtToken', token, {
         httpOnly: true,
         secure: true, // Set to true in production (for HTTPS)
         sameSite: 'strict', // Adjust as needed
       });
       
-      res.status(201).json({ message: "user logged successfully.....", user: {username: login.username, email: login.email}, cookie: token });
+      res.status(201).json({ message: "user logged successfully.....", user, cookie: token });
       return;
+
     }
     res.status(401).json({ error: "E-mail or password is invalid" });
   } catch (error) {

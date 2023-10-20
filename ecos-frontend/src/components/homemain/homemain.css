@@ -41,12 +41,14 @@ main {
 
 .b-shop-btn {
     position: relative;
+    font-size: 13px;
     z-index: 2;
     border: 0;
     border-radius: 20px;
-    padding: 5px 1rem;
+    padding: 10px 30px;
     font-weight: 600;
-    box-shadow: 0px 2px 0px 0px grey;
+    background: #f5f5f5;
+    box-shadow: 0px 0px 15px rgb(162, 162, 162);
     margin-top: 15rem;
     margin-left: 43.5rem;
 }
@@ -123,34 +125,35 @@ main {
 
 /* section 2 - text section */
 #section2 {
-    height: 20rem;
+    background-image: url("../../assets/images/face-banner2.png");
+    height: 550px;
     width: 100%;
+    background-size: cover;
+    background-position: top 25% right 0;
+    padding: 0 150px;
     display: flex;
-    justify-content: center; 
-    align-items: center;
-}
-
-#s2-main-div {
-    background-color: rgb(37, 53, 76);
-    height: 75%;
-    width: 85%;
-    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
     justify-content: center;
-    align-items: center;
-    box-shadow: 0 0 20px;
 }
 
-#s2-h2 {
-    width: 60%;
-    text-align: center;
-    color: #e7e3e3;
-    letter-spacing: 0.1rem;
-    font-family: 'Josefin Sans';
-    text-transform: uppercase;
-    font-size: 25px;
-    font-weight: 300;
-    line-height: 40px;
-}  
+#section2 h1 {
+    color: #088178; 
+}
+
+#section2 button {
+    background-color: transparent;
+    color: #088178;
+    border: 0;
+    padding: 10px 30px;
+    background-repeat: no-repeat;
+    cursor: pointer;
+    font-weight: 700;
+    font-size: 15px;
+    border-radius: 20px;
+    box-shadow: 0px 0px 15px rgb(160, 160, 160);
+}
+  
 
 /* product category section */
 #category-section {
@@ -362,16 +365,21 @@ main {
     position: relative;
 }
 
+.prod-div-nav {
+    text-decoration: none;
+}
+
 .prod-img {
     width: 100%;
     height: 100%;
     position: absolute;
     border-radius: 15px;
-
+    box-shadow: 0px 0px 15px grey;
 }
 
 .prod-img-text {
     background-color: #6d9962;
+    color: white;
     width: fit-content;
     padding: 0 10px;
     position: relative;

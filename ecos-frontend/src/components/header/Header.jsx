@@ -13,6 +13,7 @@ import { useAuth } from "../../context/AuthContext";
 import { BiSolidCart, BiLogInCircle, BiSearchAlt }from "react-icons/bi"
 import { FiLogOut } from "react-icons/fi"
 import { FaUser } from "react-icons/fa"
+import { AiTwotoneShopping } from 'react-icons/ai';
 
 function Header() {
     
@@ -96,7 +97,6 @@ function Header() {
     
     return (
         <header className="header" id="header">
-            <div id="header-top">
                 <div id="header-news">
                     <p className="h-news-text">FREE SHIPPING ON ALL ORDERS ABOVE ₹1000</p>
                     <p className="h-news-text">FREE SHIPPING ON ALL ORDERS ABOVE ₹1000</p>
@@ -114,8 +114,8 @@ function Header() {
                             <li className="h-nav-li">
                                 <NavLink className="h-nav-a" to='/offers'>offers</NavLink>
                             </li>
-                            <li className="drop-li">
-                                <NavLink className="h-nav-a" to="./store">Store<i className="fa fa-caret-down"></i></NavLink>
+                            <li className="h-nav-li">
+                                <NavLink className="h-nav-a" to="./store">Store</NavLink>
                             </li>
                             <li className="h-nav-li">
                                 <NavLink className="h-nav-a" to="./collections" state= {{title:"lips"}}>lips</NavLink>
@@ -158,8 +158,8 @@ function Header() {
                             </NavLink>
                             <NavLink to="./cart">
                                 <button className="btn" id="cart-icon" >
-                                    <BiSolidCart className='top-icons' />
-                                    <label>{cart? cart.length: 0}</label>
+                                    <AiTwotoneShopping className='top-icons' style={{fontSize: "30px"}} />
+                                    <label>{cart>0 ? cart.length: ""}</label>
                                 </button>
                             </NavLink>
                             <button onClick={logoutUser} className="btn" id="logout-icon" >
@@ -171,7 +171,6 @@ function Header() {
                 <div className="toast-container position-fixed top-0 start-50 translate-middle-x" style={{zIndex: "10"}}>
                     <Toast show={showToast} type="info" message="User logged out successfully" />
                 </div>
-            </div>
         </header>
 
     );

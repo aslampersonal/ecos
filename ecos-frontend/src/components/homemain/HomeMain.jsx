@@ -1,10 +1,15 @@
 import React, { useEffect } from 'react';
 import './homemain.css';
 import { NavLink } from 'react-router-dom';
+import { useCont } from '../../context/MyContext';
 
 function HomeMain () {
     
+    // const Products = localStorage.getItem("fullProducts");
+    const { cart, setCart, user, prodData } = useCont();
+
     useEffect(() => {
+        console.log("hii");
         var counter = 1;
         const bannerInterval = setInterval(() => {
             document.getElementById('bnr-changer' + counter).checked = true;
@@ -71,12 +76,10 @@ function HomeMain () {
             </section>
 
             <section id="section2">
-                <div id="s2-main-div">
-                    <h1 id="s2-h2">
-                        Powerful. . . Independent. . . Embrace your elegance and become the most
-                        exquisite you.
-                    </h1>
-                </div>
+                <h2>Super value deals</h2>
+                <h1>On Body Care products</h1>
+                <p>Save more with coupons & up to 70% off! </p>
+                <NavLink to="/collections" state= {{title:"bodycare"}}><button>Shop Now</button></NavLink>
             </section>
 
             <section id="category-section">
@@ -143,9 +146,9 @@ function HomeMain () {
                     </div>
                     <div id="b3-center">
                         <h2 id="b3-center-h2">BEAUTIFUL. GLAMOROUS. RADIANT.</h2>
-                        <a className="btn btn-light" id="b3-center-btn" href="./product.html">
+                        <NavLink to="/collections" state= {{title:"eyeshadow"}} className="btn btn-light" id="b3-center-btn">
                         SHOP EYE SHADOWS
-                        </a>
+                        </NavLink>
                     </div>
                     <div id="b3-rightb">
                         <img id="b3-right-img" src="/src/assets/images/eye-shadow2.jpg" alt='' />
@@ -156,30 +159,40 @@ function HomeMain () {
             <section id="product-bnr2-sec">
                 <div id="prod-bnr2-div">
                     <div className="prod-div">
-                        <img src="/src/assets/images/girlface-lipstick.jpg" className="prod-img" alt='' />
+                        <NavLink to="/product" state={{prodId: prodData[0]._id}} className="prod-div-nav">
+                        <img src={prodData[0].image} className="prod-img" alt='' />
                         <p className="prod-img-text">NEW</p>
+                        </NavLink>
                     </div>
                     <div className="prod-div">
-                        <img src="/src/assets/images/girl-face-skincare.jpg" className="prod-img" alt='' />
+                        <NavLink to="/product" state={{prodId: prodData[1]._id}} className="prod-div-nav">
+                        <img src={prodData[1].image} className="prod-img" alt='' />
                         <p className="prod-img-text">NEW</p>
+                        </NavLink>
                     </div>
                     <div className="prod-div">
-                        <img src="/src/assets/images/men-skincare1.jpg" className="prod-img" alt='' />
+                        <NavLink to="/product" state={{prodId: prodData[2]._id}} className="prod-div-nav">
+                        <img src={prodData[2].image} className="prod-img" alt='' />
                         <p className="prod-img-text">NEW</p>
+                        </NavLink>
                     </div>
                     <div className="prod-div">
-                        <img src="/src/assets/images/eyeshadow-girl1.jpg" className="prod-img" alt='' />
+                        <NavLink to="/product" state={{prodId: prodData[3]._id}} className="prod-div-nav">
+                        <img src={prodData[3].image} className="prod-img" alt='' />
                         <p className="prod-img-text">NEW</p>
+                        </NavLink>
                     </div>
                     <div className="prod-div">
-                        <img src="/src/assets/images/men-bearedcare.jpg" className="prod-img" alt='' />
+                        <NavLink to="/product" state={{prodId: prodData[4]._id}} className="prod-div-nav">
+                        <img src={prodData[4].image} className="prod-img" alt='' />
                         <p className="prod-img-text">NEW</p>
+                        </NavLink>
                     </div>
                 </div>
                 <div id="prod-bnr2-btn-div">
-                    <a id="prod-bnr2-btn" className="btn btn-dark" href="./product.html">
+                    <NavLink id="prod-bnr2-btn" className="btn btn-dark" to="/store">
                         SHOP ALL
-                    </a>
+                    </NavLink>
                 </div>
             </section>
         </>

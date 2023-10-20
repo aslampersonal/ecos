@@ -38,8 +38,8 @@ export default function SignInForm (props) {
         e.preventDefault();
 
         const formData = new FormData();
-        formData.append('email', document.getElementById("email").value);
-        formData.append('password', document.getElementById("password").value);
+        formData.append('email', document.getElementById("l-email").value);
+        formData.append('password', document.getElementById("l-password").value);
 
         if(document.getElementById("email").value === "admin@gmail.com") {
             try {
@@ -177,14 +177,14 @@ export default function SignInForm (props) {
           type="email"
           placeholder="Email"
           name="email"
-          id="email"
+          id="l-email"
           onChange={handleChange}
           className="ls-input"
         />
         <input
           type="password"
           name="password"
-          id="password"
+          id="l-password"
           placeholder="Password"
           onChange={handleChange}
           className="ls-input"

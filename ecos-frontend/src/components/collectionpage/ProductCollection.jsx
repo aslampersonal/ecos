@@ -1,6 +1,5 @@
 import React, { useEffect } from "react";
 import { NavLink, useLocation } from "react-router-dom";
-import { MdKeyboardArrowDown } from "react-icons/md";
 import { BiSearchAlt } from "react-icons/bi"
 
 import ProductCard from "../ProductCard/ProductCard";
