@@ -159,7 +159,7 @@ function Header() {
                             <NavLink to="./cart">
                                 <button className="btn" id="cart-icon" >
                                     <AiTwotoneShopping className='top-icons' style={{fontSize: "30px"}} />
-                                    <label>{cart>0 ? cart.length: ""}</label>
+                                    <label>{cart ? cart.length: ""}</label>
                                 </button>
                             </NavLink>
                             <button onClick={logoutUser} className="btn" id="logout-icon" >

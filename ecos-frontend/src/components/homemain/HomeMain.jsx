@@ -5,11 +5,9 @@ import { useCont } from '../../context/MyContext';
 
 function HomeMain () {
     
-    // const Products = localStorage.getItem("fullProducts");
-    const { cart, setCart, user, prodData } = useCont();
+    const prodData = JSON.parse(localStorage.getItem("fullProducts"));
 
     useEffect(() => {
-        console.log("hii");
         var counter = 1;
         const bannerInterval = setInterval(() => {
             document.getElementById('bnr-changer' + counter).checked = true;

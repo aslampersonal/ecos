@@ -43,7 +43,7 @@ const userLogin = async (req, res) => {
     if (login.email == req.body.email && login.password == req.body.password) {
       
       // Create a JWT token
-      const user = login;
+      const user = {username: login.username, email: login.email, cart: login.cart, orders: login.orders};
       const token = jwt.sign(user, secretKey, { expiresIn: '5h' });
 
       // Set the token as a HTTP cookie
@@ -103,8 +103,8 @@ const userRegister = async (req, res) => {
 
     await schema.insertMany({
       username: req.body.username,
-      fullname: req.body.fullname,
-      mobile: req.body.mobile,
+      // fullname: req.body.fullname,
+      // mobile: req.body.mobile,
       email: req.body.email,
       password: req.body.password,
     });

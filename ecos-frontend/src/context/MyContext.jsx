@@ -46,7 +46,7 @@ export function useCont() {
       await axios.get('http://localhost:3000/api/users/products')
       .then((response) => {
           setData(response.data);
-          // localStorage.setItem("fullProducts", response.data);
+          localStorage.setItem("fullProducts", JSON.stringify(response.data));
           return response.data;
       })
       .catch((err) => {

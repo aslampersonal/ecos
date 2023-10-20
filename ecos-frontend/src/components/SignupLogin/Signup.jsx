@@ -38,17 +38,15 @@ export default function SignUpForm () {
         e.preventDefault();
         const validationErrors = {}
 
-        if(!document.getElementById("terms-conditions").checked) {
-            validationErrors.terms = "You should agree the terms and conditions"
-        }
+        // if(!document.getElementById("terms-conditions").checked) {
+        //     validationErrors.terms = "You should agree the terms and conditions"
+        // }
 
         setErrors(validationErrors);
 
         if(Object.keys(validationErrors).length === 0) {
             const formData = new FormData();
             formData.append('username', document.getElementById("username").value);
-            formData.append('fullname', document.getElementById("fullname").value);
-            formData.append('mobile', document.getElementById("mobile").value);
             formData.append('email', document.getElementById("email").value);
             formData.append('password', document.getElementById("password").value);
             formData.append('confirmpassword', document.getElementById("confirmpassword").value);
@@ -59,9 +57,9 @@ export default function SignUpForm () {
                       'Content-Type': 'application/json', // or 'application/json' if needed
                     },
                 });
-                console.log(response.data);
+                console.log(response.data.message);
                 
-                navigate("/login");
+                window.location.reload();
 
               } catch (error) {
                 console.error('Error registering the user', error);
@@ -109,6 +107,14 @@ export default function SignUpForm () {
           id="password"
           onChange={handleChange}
           placeholder="Password"
+          className="ls-input"
+        />
+        <input
+          type="password"
+          name="confirmpassword"
+          id="confirmpassword"
+          onChange={handleChange}
+          placeholder="Repeat Password"
           className="ls-input"
         />
         <button type="submit" className="ls-btn">Sign Up</button>

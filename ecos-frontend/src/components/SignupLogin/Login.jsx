@@ -24,7 +24,6 @@ export default function SignInForm (props) {
     const { login } = useAuth();
 
     const [formdata, setFormData] = useState({ email: "", password: "" })
-    const [errors, setErrors] = useState({})
     const [showToast, setShowToast] = useState(false);
 
     const navigate = useNavigate();
@@ -159,6 +158,10 @@ export default function SignInForm (props) {
   return (
     
     <div className="form-container sign-in-container">
+      {/* notification toasts */}
+      <div className="toast-container position-fixed top-0 start-50 translate-middle-x" style={{zIndex: "10"}}>
+        <Toast show={showToast} type="success" message="Logged in successfully" />
+      </div>
       <form onSubmit={handleSubmit} className="ls-form">
         <h1 className="ls-h1">Sign in</h1>
         <div className="social-container">
