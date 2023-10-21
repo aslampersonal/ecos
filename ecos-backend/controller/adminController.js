@@ -7,7 +7,6 @@ const productDatas = require("../models/productModel");
 const secretKey = process.env.SECRET_KEY;
 
 // admin login
-
 const adminLogin = async (req, res) => {
   try {
     
@@ -32,7 +31,6 @@ const adminLogin = async (req, res) => {
 };
 
 // create product
-
 const createProduct = async (req, res) => {
   try {
     await productDatas.insertMany([
@@ -60,7 +58,6 @@ const createProduct = async (req, res) => {
 };
 
 //image uploading
-
 const uploadImage = async (req, res) => {
   try {
     res.status(201).json({ message: "Image uploaded successfully" });
@@ -72,7 +69,6 @@ const uploadImage = async (req, res) => {
 }
 
 // get users details
-
 const getUsers = async (req, res) => {
   try {
     const allUsers = await schema.find();

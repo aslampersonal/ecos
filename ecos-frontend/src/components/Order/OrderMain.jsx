@@ -22,12 +22,15 @@ import { TiTick } from "react-icons/ti"
 import { useCont } from '../../context/MyContext';
 import { NavLink, useLocation, useParams } from "react-router-dom";
 import { BsFillCalendarDateFill } from "react-icons/bs";
+import axios from "axios";
+import Toast from "../Toast/Toast";
 
 export default function OrderMain() {
 
     const [products, setProducts] = useState([]);
     const [orderList, setOrderList] = useState([]);
     const [Id, setId] = useState("");
+    const [showToast, setShowToast] = useState(false);
     const { user, setUser, orders, getOrders } = useCont();
     const loc = useLocation().state;
     const { orderId } = useParams();
@@ -53,9 +56,37 @@ export default function OrderMain() {
 
     }, []);
 
+    async function cancelOrder(id) {
+        try {
+            const jwtToken = Cookies.get("jwtToken");
+
+            const response = await axios.put(`http://localhost:3000/api/users/orders/updateorders/${id}`,
+            { status: "Cancelled" },
+            {
+                method: 'PUT', // Use PUT request to update the resource
+                headers: {
+                  'Content-Type': 'application/json',
+                  Authorization: `Bearer ${jwtToken}`, // Include the JWT token in the Authorization header
+                },
+            });
+            console.log(response.data.message);
+            setShowToast(true);
+            setTimeout(() => {
+                setShowToast(false);
+                window.location.reload();
+            }, 2000); 
+        } catch (error) {
+            console.log('Error updating order status:', error);
+        }
+    }
+
 
     return (
         <>
+            {/* notification toasts */}
+            <div className="toast-container position-fixed top-0 start-50 translate-middle-x" style={{zIndex: "10"}}>
+                <Toast show={showToast} type="success" message="Your Order has been cancelled" />
+            </div>
             <section style={{display: orderId? "block" : "none" }}>
                 <div style={{display: "flex"}}>
                     <TiTick style={{fontSize: "35px", color: "green"}} />
@@ -81,98 +112,52 @@ export default function OrderMain() {
                             orderList.map((order) => {
 
                             return (
-                                <div className="order-main">
+                                <div className="order-main" key={order._id}>
                                     <div className="order-main-top">
-                                        <span><strong>Order Id: </strong>{order._id}</span>
-                                        <span>₹{order.payment}</span>
+                                        <span><strong>ID: </strong>{order._id}</span>
                                         <span><BsFillCalendarDateFill style={{fontSize:"20px", marginRight: "10px"}} />{order.orderDate.slice(0, 10)}</span>
+                                        <span><strong>₹{order.payment}</strong></span>
+                                        <span style={{color: order.status === "Cancelled"? "red": "green"}}>{order.status}</span>
+                                        <button className="cncl-btn" style={{display: order.status === "Cancelled"? "none": "block"}} onClick={() => {cancelOrder(order._id)}}>Cancel</button>
                                     </div>
                                     <div className="order-main-prods">
                                         {
                                             order.products.map((id) => {
-                                                products.forEach((product) => {
+                                                return (
+                                                    <div key={id}>{
+                                                    products.map((product) => {
                                                     if (id === product._id) {
                                                         return (
-                                                            <div className="d-flex justify-content-between">
-                                                                <div className="d-flex flex-row align-items-center">
-                                                                    <div>
+                                                            <div className="prod-div" key={product._id}>
+                                                                <div className="">
                                                                     <img
                                                                         src= {product.image}
                                                                         className="img-fluid rounded-3"
                                                                         alt="Shopping item"
                                                                         style={{ width: 65 }}
                                                                     />
-                                                                    </div>
-                                                                    <div className="ms-3">
+                                                                </div>
+                                                                <div className="ms-3">
                                                                     <h5>{product.title}</h5>
                                                                     <p className="small mb-0">{product.brand}</p>
-                                                                    <p className="small mb-0">₹{product.price}</p>
-                                                                    </div>
                                                                 </div>
-                                                                {/* <div className="d-flex flex-row align-items-center">
-                                                                    <div style={{ width: 50 }}>
-                                                                    <h5 className="fw-normal mb-0">{quantity}</h5>
-                                                                    </div>
-                                                                    <div style={{ width: 80 }}>
-                                                                    <h5 className="mb-0">₹{totalPrice}</h5>
-                                                                    </div>
-                                                                    <MDBTooltip wrapperProps={{ size: "sm", color: "danger" }} wrapperClass="me-3 mb-2"
-                                                                    title="Remove item">
-                                                                        <AiFillDelete />
-                                                                    </MDBTooltip>
-                                                                    <MDBTooltip wrapperProps={{ size: "sm" }} wrapperClass="me-1 mb-2"
-                                                                    title="Move to the wish list">
-                                                                        <AiFillHeart />
-                                                                    </MDBTooltip>
-                                                                </div> */}
+                                                                <div>
+                                                                    <p className="mb-0"><strong>₹{product.price}</strong></p>
+                                                                </div>
+                                                                <div>
+                                                                    <NavLink className="pd-view-btn" to="/product" state={{prodId: product._id}}>View Product</NavLink>
+                                                                </div>
                                                             </div>
-                                                        )
-                                                    }
-                                                })
+                                                        );
+                                                    }    
+                                                    }) 
+                                                    }</div>
+                                                )
                                             })
                                         }
                                     </div>
                                 </div>
                             )
-                            //     return (
-                            //     <div className="card mb-3" key={order._id}>
-                            //     <div className="card-body">
-                            //         <div className="d-flex justify-content-between">
-                            //         <div className="d-flex flex-row align-items-center">
-                            //             <div>
-                            //             <img
-                            //                 src= {order.image}
-                            //                 className="img-fluid rounded-3"
-                            //                 alt="Shopping item"
-                            //                 style={{ width: 65 }}
-                            //             />
-                            //             </div>
-                            //             <div className="ms-3">
-                            //             <h5>{order.title}</h5>
-                            //             <p className="small mb-0">{order.brand}</p>
-                            //             <p className="small mb-0">₹{order.price}</p>
-                            //             </div>
-                            //         </div>
-                            //         <div className="d-flex flex-row align-items-center">
-                            //             <div style={{ width: 50 }}>
-                            //             <h5 className="fw-normal mb-0">{quantity}</h5>
-                            //             </div>
-                            //             <div style={{ width: 80 }}>
-                            //             <h5 className="mb-0">₹{totalPrice}</h5>
-                            //             </div>
-                            //             <MDBTooltip wrapperProps={{ size: "sm", color: "danger" }} wrapperClass="me-3 mb-2"
-                            //             title="Remove item">
-                            //                 <AiFillDelete />
-                            //             </MDBTooltip>
-                            //             <MDBTooltip wrapperProps={{ size: "sm" }} wrapperClass="me-1 mb-2"
-                            //             title="Move to the wish list">
-                            //                 <AiFillHeart />
-                            //             </MDBTooltip>
-                            //         </div>
-                            //         </div>
-                            //     </div>
-                            //     </div>
-                            // )
                             })
                         }
 

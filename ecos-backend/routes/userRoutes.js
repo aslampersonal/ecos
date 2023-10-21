@@ -25,5 +25,6 @@ app.get("/wishlist", checkUserToken, user.wishListProducts);
 app.delete("/products/wishlist/:id", checkUserToken, user.RemoveWishlist);
 app.post("/products/addorders", checkUserToken, user.oderProduct);
 app.get("/orders", checkUserToken, user.getOrderProduct);
+app.put("/orders/updateorders/:id", checkUserToken, user.updateOrderStatus);
 
 module.exports = app;

@@ -366,6 +366,32 @@ const getOrderProduct = async (req, res) => {
   }
 };
 
+//update order status
+const updateOrderStatus = async (req, res) => {
+  try {
+    const id = req.params.id;
+    const status = req.body.status;
+    const token = req.headers.authorization?.split('Bearer ')[1]; // Extract the token from the header
+    const decoded = jwt.verify(token, secretKey);
+    // Find the user by email in the database
+    const user = await schema.findOne({ email: decoded.email });
+
+    // Find the order with the specified id in the user's orders array
+    const orderToUpdate = user.orders.find(order => order._id === id);
+
+    // If the order with the specified id is found, update its status
+    if (orderToUpdate) {
+      orderToUpdate.status = status;
+      await user.save(); // Save the updated user document to the database
+      res.status(200).json({ message: "Order status updated successfully", orderId: orderToUpdate._id });
+    } else {
+      res.status(404).json({ message: "Order not found" });
+    }
+  } catch (error) {
+    res.status(500).json({ message: "Error updating product" });
+  }
+};
+
 module.exports = {
     getAllProducts,
     userLogin,
@@ -382,4 +408,5 @@ module.exports = {
     getOrderProduct,
     RemoveWishlist,
     RemoveCartProduct,
+    updateOrderStatus,
 };
