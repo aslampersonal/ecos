@@ -42,6 +42,9 @@ const mongoSchema = new mongoose.Schema({
         type: Date,
         default: Date.now,
       },
+      status: {
+        type: String,
+      },
     },
   ],
 });

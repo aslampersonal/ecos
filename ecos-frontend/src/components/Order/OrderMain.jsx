@@ -63,18 +63,18 @@ export default function OrderMain() {
                 </div>
             </section>
 
-            <section className="container py-5 h-100" >
+            <section className="container py-5 h-100 d-flex justify-content-center" >
                 <div className="o-row d-flex justify-content-center align-items-center h-100">
                     <div className="col">
-                        <h5 className="mb-3">
+                        <h6 className="mb-3">
                             <a href="#!" className="text-body link-underline link-underline-opacity-0">
                             <HiArrowNarrowLeft style={{marginRight: "5px"}} />
                             Continue Shopping
                             </a>
-                        </h5>
+                        </h6>
                         <hr />
                         <div className="d-flex justify-content-between align-items-center mb-4">
-                            <h3 className="mb-1">Your Orders:</h3>
+                            <h4 className="mb-1">Your Orders:</h4>
                         </div>
 
                         {

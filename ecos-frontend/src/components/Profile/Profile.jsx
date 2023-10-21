@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import Cookies from "js-cookie";
 import jwt_decode from "jwt-decode";
 import { useCont } from '../../context/MyContext';
+import "./Profile.css";
 
 import { styled } from '@mui/material/styles';
 import Table from '@mui/material/Table';
@@ -13,21 +14,20 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
-import { HiArrowNarrowLeft } from "react-icons/hi";
+import { HiArrowNarrowLeft, HiArrowNarrowRight } from "react-icons/hi";
+import { BsFillCalendarDateFill } from "react-icons/bs";
 
 export default function Profile() {
     
     const navigate = useNavigate();
-    const [user, setUser] = useState("");
     const [orders, setOrders] = useState([]);
-    const { getOrders } = useCont();
+    const { getOrders, user } = useCont();
 
     useEffect (() => {
         const jwtToken = Cookies.get("jwtToken");
         if (!jwtToken) {
             navigate("/");
         }
-        setUser(jwt_decode(jwtToken));
         getOrders();
         if (JSON.parse(localStorage.getItem("orders")).length !== 0) {
             setOrders(JSON.parse(localStorage.getItem("orders")));
@@ -40,30 +40,34 @@ export default function Profile() {
         if (JSON.parse(localStorage.getItem("orders")).length !== 0) {
             return (
             <TableContainer component={Paper}>
-                <Table sx={{ minWidth: 700 }} aria-label="customized table">
+                <Table sx={{ minWidth: 500 }} aria-label="customized table">
                     <TableHead>
                     <TableRow>
-                        <StyledTableCell>Dessert (100g serving)</StyledTableCell>
-                        <StyledTableCell align="right">Calories</StyledTableCell>
-                        <StyledTableCell align="right">Fat&nbsp;(g)</StyledTableCell>
-                        <StyledTableCell align="right">Carbs&nbsp;(g)</StyledTableCell>
-                        <StyledTableCell align="right">Protein&nbsp;(g)</StyledTableCell>
+                        <StyledTableCell align="center">Order Id</StyledTableCell>
+                        <StyledTableCell align="center">Ordered Date</StyledTableCell>
+                        <StyledTableCell align="center">Total</StyledTableCell>
+                        <StyledTableCell align="center">Status</StyledTableCell>
+                        <StyledTableCell align="center">Cancellation</StyledTableCell>
                     </TableRow>
                     </TableHead>
                     <TableBody>
-                    {user.orders.map((row) => (
-                        <StyledTableRow key={row.name}>
-                        <StyledTableCell component="th" scope="row">
-                            {row.name}
-                        </StyledTableCell>
-                        <StyledTableCell align="right">{row.calories}</StyledTableCell>
-                        <StyledTableCell align="right">{row.fat}</StyledTableCell>
-                        <StyledTableCell align="right">{row.carbs}</StyledTableCell>
-                        <StyledTableCell align="right">{row.protein}</StyledTableCell>
+                    {orders.map((order) => (
+                        <StyledTableRow key={order._id}>
+                        <StyledTableCell component="th" scope="row">{order._id}</StyledTableCell>
+                        <StyledTableCell align="left"><BsFillCalendarDateFill style={{fontSize:"20px", marginRight: "10px"}} />{order.orderDate.slice(0, 10)}</StyledTableCell>
+                        <StyledTableCell align="left">₹{order.payment}</StyledTableCell>
+                        <StyledTableCell align="right">{order.status}</StyledTableCell>
+                        <StyledTableCell align="center"><button className="cancel-btn" onClick={() => {cancelOrder(order._id)}}>Cancel</button></StyledTableCell>
                         </StyledTableRow>
                     ))}
                     </TableBody>
                 </Table>
+                <h6 className="mb-3" onClick={() => { navigate("/orders") }} style={{cursor: "pointer"}}>
+                    <a className="text-body link-underline link-underline-opacity-0 py-2" style={{borderBottom: "2px solid grey"}}>
+                        View all orders
+                        <HiArrowNarrowRight style={{marginLeft: "1rem"}} />
+                    </a>
+                </h6>
             </TableContainer>
             )
         } else {
@@ -79,6 +83,10 @@ export default function Profile() {
                 </div>
             )
         }
+    }
+
+    function cancelOrder(id) {
+        console.log(id);
     }
 
     const StyledTableCell = styled(TableCell)(({ theme }) => ({
@@ -107,16 +115,16 @@ export default function Profile() {
                 <div style={{ backgroundColor: '#eee' }}>
                     <MDBContainer className="container py-5 h-100">
                         <MDBRow className="justify-content-center align-items-center h-100">
-                            <MDBCol md="12" xl="4">
+                            <MDBCol md="12" xl="6">
                                 <MDBCard style={{ borderRadius: '15px' }}>
                                     <MDBCardBody className="text-center">
                                         <div className="mt-3 mb-4">
                                                 <MDBCardImage src="./src/assets/images/profile-icon-men.png"
                                                 className="rounded-circle" fluid style={{ width: '100px' }} />
                                         </div>
-                                        <MDBTypography tag="h4" id="fullname">{user.username}</MDBTypography>
+                                        <MDBTypography tag="h4" id="fullname">{user? user.username: ""}</MDBTypography>
                                         <MDBCardText className="text-muted mb-4">
-                                            <span id="email">{user.email}</span>
+                                            <span id="email">{user? user.email: ""}</span>
                                         </MDBCardText>
                                         <hr />
                                         <div className="d-flex flex-column justify-content-center text-center mt-1 mb-2">

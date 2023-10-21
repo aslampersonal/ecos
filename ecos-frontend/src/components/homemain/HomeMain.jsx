@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import './homemain.css';
 import { NavLink } from 'react-router-dom';
 import { useCont } from '../../context/MyContext';
+import axios from 'axios';
 
 function HomeMain () {
     
@@ -22,6 +23,18 @@ function HomeMain () {
         }
 
     }, []);
+
+    async function getProducts() {
+        await axios.get('http://localhost:3000/api/users/products')
+        .then((response) => {
+            localStorage.setItem("fullProducts", JSON.stringify(response.data));
+            return response.data;
+        })
+        .catch((err) => {
+            console.log("error: " + err);
+        })
+    }
+    getProducts();
     
     return (
         <>

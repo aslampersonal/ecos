@@ -320,8 +320,10 @@ const oderProduct = async (req, res) => {
     const token = req.headers.authorization?.split('Bearer ')[1]; // Extract the token from the header
     const decoded = jwt.verify(token, secretKey);
     const user = await schema.findOne({ email: decoded.email });
-    const orderDate = new Date();
+    const date = new Date();
+    const orderDate = date.slice(0, 10);
     const orderId = Math.floor(Math.random() * (99999999999 - 1111111111 + 1)) + 1111111111;
+    const status = "Shipped";
 
     for(let i=0; i<cart.length; i++) {
       const product = await productDatas.findById(cart[i]);
@@ -335,6 +337,7 @@ const oderProduct = async (req, res) => {
       products: cart,
       payment: total,
       orderDate,
+      status,
     });
     await user.save();
     console.log(decoded.email, "- order placed successfully");

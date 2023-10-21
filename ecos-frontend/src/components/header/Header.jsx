@@ -51,6 +51,7 @@ function Header() {
             Cookies.remove("jwtToken");
             localStorage.removeItem('cartProducts');
             localStorage.removeItem("cart");
+            localStorage.removeItem("orders");
             setToken("");
             setUser(null);
             logout();
