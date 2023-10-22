@@ -16,17 +16,25 @@ import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import { HiArrowNarrowLeft, HiArrowNarrowRight } from "react-icons/hi";
 import { BsFillCalendarDateFill } from "react-icons/bs";
+import Toast from "../Toast/Toast";
 
 export default function Profile() {
     
     const navigate = useNavigate();
     const [orders, setOrders] = useState([]);
+    const [showToast, setShowToast] = useState(false);
     const { getOrders, user } = useCont();
 
     useEffect (() => {
         const jwtToken = Cookies.get("jwtToken");
         if (!jwtToken) {
-            navigate("/");
+            setShowToast(true);
+            setTimeout(() => {
+                setShowToast(false);
+            }, 1000);
+            setTimeout(() => {
+                navigate("/login");
+            }, 1000);
         }
         getOrders();
         if (JSON.parse(localStorage.getItem("orders")).length !== 0) {
@@ -112,6 +120,10 @@ export default function Profile() {
     return (
         <>
             <section>
+                {/* notification toasts */}
+                <div className="toast-container position-fixed top-0 start-50 translate-middle-x" style={{zIndex: "10"}}>
+                    <Toast show={showToast} type="error" message="Please login in to your account! " />
+                </div>
                 <div style={{ backgroundColor: '#eee' }}>
                     <MDBContainer className="container py-5 h-100">
                         <MDBRow className="justify-content-center align-items-center h-100">

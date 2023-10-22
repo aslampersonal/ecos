@@ -3,6 +3,7 @@ import './homemain.css';
 import { NavLink } from 'react-router-dom';
 import { useCont } from '../../context/MyContext';
 import axios from 'axios';
+import { AiFillStar, AiOutlineShoppingCart } from 'react-icons/ai';
 
 function HomeMain () {
     
@@ -91,6 +92,116 @@ function HomeMain () {
                 <h1>On Body Care products</h1>
                 <p>Save more with coupons & up to 70% off! </p>
                 <NavLink to="/collections" state= {{title:"bodycare"}}><button>Shop Now</button></NavLink>
+            </section>
+
+            <section id='section3' className='fet-section'>
+                <div className='icon-box'>
+                    <img src="/src/assets/images/icons/free-shipping.png" alt="" />
+                    <h6>Free Shipping</h6>
+                </div>
+                <div className='icon-box'>
+                    <img src="/src/assets/images/icons/online-order.png" alt="" />
+                    <h6>Online Order</h6>
+                </div>
+                <div className='icon-box'>
+                    <img src="/src/assets/images/icons/best-price.png" alt="" />
+                    <h6>Best Price</h6>
+                </div>
+                <div className='icon-box'>
+                    <img src="/src/assets/images/icons/piggy-bank.png" alt="" />
+                    <h6>Save Money</h6>
+                </div>
+                <div className='icon-box'>
+                    <img src="/src/assets/images/icons/24-hours-support.png" alt="" />
+                    <h6>24/7 Support</h6>
+                </div>
+            </section>
+
+            <section id='section4' className='ftrd-pds'>
+                <h2>Featured Products</h2>
+                <p>User's Best Choices!!!</p>
+                <div className='pro-container'>
+                    <div className='pro'>
+                        <img src="/src/assets/images/icons/online-order.png" alt="" />
+                        <div className='des'>
+                            <span>adidas</span>
+                            <h5>Cartoon Asutronaut T-shirts</h5>
+                            <div className='star'>
+                                <AiFillStar className='ics' />
+                                <AiFillStar className='ics' />
+                                <AiFillStar className='ics' />
+                                <AiFillStar className='ics' />
+                                <AiFillStar className='ics' />
+                            </div>
+                            <h4>₹150</h4>
+                        </div>
+                        <button className='cart'><AiOutlineShoppingCart /></button>
+                    </div>
+                    <div className='pro'>
+                        <img src="/src/assets/images/icons/online-order.png" alt="" />
+                        <div className='des'>
+                            <span>adidas</span>
+                            <h5>Cartoon Asutronaut T-shirts</h5>
+                            <div className='star'>
+                                <AiFillStar className='ics' />
+                                <AiFillStar className='ics' />
+                                <AiFillStar className='ics' />
+                                <AiFillStar className='ics' />
+                                <AiFillStar className='ics' />
+                            </div>
+                            <h4>₹150</h4>
+                        </div>
+                        <button className='cart'><AiOutlineShoppingCart /></button>
+                    </div>
+                    <div className='pro'>
+                        <img src="/src/assets/images/icons/online-order.png" alt="" />
+                        <div className='des'>
+                            <span>adidas</span>
+                            <h5>Cartoon Asutronaut T-shirts</h5>
+                            <div className='star'>
+                                <AiFillStar className='ics' />
+                                <AiFillStar className='ics' />
+                                <AiFillStar className='ics' />
+                                <AiFillStar className='ics' />
+                                <AiFillStar className='ics' />
+                            </div>
+                            <h4>₹150</h4>
+                        </div>
+                        <button className='cart'><AiOutlineShoppingCart /></button>
+                    </div>
+                    <div className='pro'>
+                        <img src="/src/assets/images/icons/online-order.png" alt="" />
+                        <div className='des'>
+                            <span>adidas</span>
+                            <h5>Cartoon Asutronaut T-shirts</h5>
+                            <div className='star'>
+                                <AiFillStar className='ics' />
+                                <AiFillStar className='ics' />
+                                <AiFillStar className='ics' />
+                                <AiFillStar className='ics' />
+                                <AiFillStar className='ics' />
+                            </div>
+                            <h4>₹150</h4>
+                        </div>
+                        <button className='cart'><AiOutlineShoppingCart /></button>
+                    </div>
+                    <div className='pro'>
+                        <img src="/src/assets/images/icons/online-order.png" alt="" />
+                        <div className='des'>
+                            <span>adidas</span>
+                            <h5>Cartoon Asutronaut T-shirts</h5>
+                            <div className='star'>
+                                <AiFillStar className='ics' />
+                                <AiFillStar className='ics' />
+                                <AiFillStar className='ics' />
+                                <AiFillStar className='ics' />
+                                <AiFillStar className='ics' />
+                            </div>
+                            <h4>₹150</h4>
+                        </div>
+                        <button className='cart'><AiOutlineShoppingCart /></button>
+                    </div>
+                </div>
             </section>
 
             <section id="category-section">

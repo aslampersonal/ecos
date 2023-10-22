@@ -153,7 +153,126 @@ main {
     border-radius: 20px;
     box-shadow: 0px 0px 15px rgb(160, 160, 160);
 }
-  
+
+
+/* section 3 features section */
+.fet-section {
+    padding: 40px 80px;
+}
+
+#section3 {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+}
+
+#section3 .icon-box {
+    width: 180px;
+    text-align: center;
+    padding: 25px 15px;
+    box-shadow: 0px 0px 14px rgb(190, 190, 190);
+    border: 1px solid #cce7d0;
+    border-radius: 4px;
+    margin: 15px 0;
+}
+
+#section3 .icon-box:hover {
+    box-shadow: 0px 0px 34px rgb(190, 190, 190);
+}
+
+#section3 .icon-box img {
+    width: 100%;
+    margin-bottom: 10px;
+    padding: 1rem 1.5rem;
+    filter: opacity(70%);
+}
+
+#section3 .icon-box h6 {
+    display: inline-block;
+    padding: 9px 8px 6px 8px;
+    line-height: 1;
+    border-radius: 4px;
+    color: #088178;
+    background-color: #dde1fd;
+}
+
+/* featured product section */
+#section4 {
+    text-align: center;
+}
+
+#section4 .pro-container {
+    display: flex;
+    justify-content: space-between;
+    padding-top: 20px;
+    flex-wrap: wrap;
+}
+
+#section4 .pro {
+    width: 23%;
+    height: 20rem;
+    min-width: 250px;
+    padding: 10px 12px;
+    border: 1px solid #cce7d0;
+    border-radius: 25px;
+    cursor: pointer;
+    box-shadow: 20px 20px 30px rgba(0, 0, 0, 0.02);
+    margin: 15px 0;
+    transition: 0.2s ease;
+    position: relative;
+}
+
+#section4 .pro:hover {
+    box-shadow: 20px 20px 30px rgba(0, 0, 0, 0.06);
+}
+
+#section4 .pro img {
+    width: 100%;
+    border-radius: 20px;
+}
+
+#section4 .pro .des {
+    text-align: start;
+    padding: 10px 0;
+}
+
+#section4 .pro .des span {
+    color: #606063;
+}
+
+#section4 .pro .des h5 {
+    padding-top: 7px;
+    color: #1a1a1a;
+    font-size: 14px;
+}
+
+#section4 .pro .des .ics {
+    font-size: 12px;
+    color: rgb(243, 181, 25);
+}
+
+#section4 .pro .des h4 {
+    padding-top: 7px;
+    font-size: 15px;
+    font-weight: 700;
+    color: #088178;
+}
+
+#section4 .pro .cart {
+    width: 40px;
+    height: 40px;
+    line-height: 40px;
+    border-radius: 50px;
+    background-color: #e8f6ea;
+    font-weight: 500;
+    color: #088178;
+    border: 1px solid #cce7d0;
+    position: absolute;
+    bottom: 20px;
+    right: 10px;
+} 
+
 
 /* product category section */
 #category-section {

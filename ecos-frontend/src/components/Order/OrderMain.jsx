@@ -3,24 +3,10 @@ import Cookies from "js-cookie";
 import jwt_decode from "jwt-decode";
 import "./OrderMain.css";
 
-import { styled } from '@mui/material/styles';
-import Table from '@mui/material/Table';
-import TableBody from '@mui/material/TableBody';
-import TableCell, { tableCellClasses } from '@mui/material/TableCell';
-import TableContainer from '@mui/material/TableContainer';
-import TableHead from '@mui/material/TableHead';
-import TableRow from '@mui/material/TableRow';
-import Paper from '@mui/material/Paper';
 import { HiArrowNarrowLeft } from "react-icons/hi";
-
 import { TiTick } from "react-icons/ti"
-// import { MDBTooltip } from "mdb-react-ui-kit";
-// import { AiFillDelete, AiFillHeart } from "react-icons/ai"
-// import { HiArrowNarrowLeft, HiArrowNarrowRight } from "react-icons/hi"
-// import { FaCcMastercard, FaCcVisa, FaCcPaypal } from "react-icons/fa"
-
 import { useCont } from '../../context/MyContext';
-import { NavLink, useLocation, useParams } from "react-router-dom";
+import { NavLink, useLocation, useNavigate, useParams } from "react-router-dom";
 import { BsFillCalendarDateFill } from "react-icons/bs";
 import axios from "axios";
 import Toast from "../Toast/Toast";
@@ -31,9 +17,11 @@ export default function OrderMain() {
     const [orderList, setOrderList] = useState([]);
     const [Id, setId] = useState("");
     const [showToast, setShowToast] = useState(false);
+    const [showToast1, setShowToast1] = useState(false);
     const { user, setUser, orders, getOrders } = useCont();
     const loc = useLocation().state;
     const { orderId } = useParams();
+    const navigate = useNavigate();
 
     useEffect(() => {
 
@@ -45,6 +33,15 @@ export default function OrderMain() {
           getOrders();
           setOrderList(JSON.parse(localStorage.getItem('orders')) || []);
           setProducts(JSON.parse(localStorage.getItem("fullProducts")));
+        } else {
+            setShowToast1(true);
+            setTimeout(() => {
+                setShowToast1(false);
+                navigate("/login");
+            }, 1000); 
+            setTimeout(() => {
+                navigate("/login");
+            }, 1000);
         }
 
         console.log(orderList);
@@ -85,7 +82,8 @@ export default function OrderMain() {
         <>
             {/* notification toasts */}
             <div className="toast-container position-fixed top-0 start-50 translate-middle-x" style={{zIndex: "10"}}>
-                <Toast show={showToast} type="success" message="Your Order has been cancelled" />
+                <Toast show={showToast} type="success" message="Your order has been cancelled" />
+                <Toast show={showToast1} type="error" message="Please login in to your account! " />
             </div>
             <section style={{display: orderId? "block" : "none" }}>
                 <div style={{display: "flex"}}>

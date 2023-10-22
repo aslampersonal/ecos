@@ -2,7 +2,6 @@
     display: flex;
     flex-direction: column;
     padding: 1rem 0;
-    background-color: rgb(37, 53, 76);
 }
 
 #skincare-sec {
@@ -14,7 +13,6 @@
     width: 100%;
     height: 35rem;
     margin-top: 2rem;
-    background-color: rgb(37, 53, 76);
 }
 
 .sec-h2 {
@@ -27,7 +25,6 @@
 
 #skincare-div {
     width: 100%;
-    background-color: rgb(37, 53, 76);
     padding-top: 2rem;
     padding-bottom: 4rem;
 }
@@ -73,11 +70,8 @@
 
 
 
-
-
 #cosmetics-div {
     width: 100%;
-    background-color: rgb(37, 53, 76);
     padding-top: 2rem;
     padding-bottom: 4rem;
 }
