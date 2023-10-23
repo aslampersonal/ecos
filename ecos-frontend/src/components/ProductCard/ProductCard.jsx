@@ -87,7 +87,6 @@ export default function ProductCard (props) {
             <div className='card-row'>
                 {productList.map((prodData) => {
                         return (
-                            
                             <div className='card-main-div' key={prodData._id}>
                                 <form>
                                 <figure className="prod-card">
@@ -110,7 +109,6 @@ export default function ProductCard (props) {
                                 </figure>
                                 </form>
                             </div>
-                            
                         )
                     })}
             </div>

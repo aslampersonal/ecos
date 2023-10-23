@@ -11,6 +11,7 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
+import "./AdminHome.css";
 
 export default function AdminHome() {
     
@@ -70,7 +71,6 @@ export default function AdminHome() {
     return (
         <>
             <div className="home">
-                <Sidebar />
                 <div className="homeContainer">
                     <div className="widgets">
                         <Widget type="user" />
@@ -85,35 +85,37 @@ export default function AdminHome() {
                             </div>
                             <div className="bottom">
                                 <div className="featuredChart">
-                                <CircularProgressbar value={70} text={"70%"} strokeWidth={5} />
+                                    <CircularProgressbar value={70} text={"70%"} strokeWidth={5} />
                                 </div>
-                                <p className="title">Total sales made today</p>
-                                <p className="amount">$420</p>
-                                <p className="desc">
-                                Previous transactions processing. Last payments may not be included.
-                                </p>
+                                <div className="featuredtext">
+                                    <p className="title">Total sales made today</p>
+                                    <p className="amount">$420</p>
+                                    <p className="desc">
+                                    Previous transactions processing. Last payments may not be included.
+                                    </p>
+                                </div>
                                 <div className="summary">
-                                <div className="item">
-                                    <div className="itemTitle">Target</div>
-                                    <div className="itemResult negative">
-                                        <IoIosArrowDown />
-                                        <div className="resultAmount">$12.4k</div>
+                                    <div className="item">
+                                        <div className="itemTitle">Target</div>
+                                        <div className="itemResult negative">
+                                            <IoIosArrowDown />
+                                            <div className="resultAmount">$12.4k</div>
+                                        </div>
                                     </div>
-                                </div>
-                                <div className="item">
-                                    <div className="itemTitle">Last Week</div>
-                                    <div className="itemResult positive">
-                                        <IoIosArrowUp />
-                                        <div className="resultAmount">$12.4k</div>
+                                    <div className="item">
+                                        <div className="itemTitle">Last Week</div>
+                                        <div className="itemResult positive">
+                                            <IoIosArrowUp />
+                                            <div className="resultAmount">$12.4k</div>
+                                        </div>
                                     </div>
-                                </div>
-                                <div className="item">
-                                    <div className="itemTitle">Last Month</div>
-                                    <div className="itemResult positive">
-                                        <IoIosArrowUp />
-                                        <div className="resultAmount">$12.4k</div>
+                                    <div className="item">
+                                        <div className="itemTitle">Last Month</div>
+                                        <div className="itemResult positive">
+                                            <IoIosArrowUp />
+                                            <div className="resultAmount">$12.4k</div>
+                                        </div>
                                     </div>
-                                </div>
                                 </div>
                             </div>
                         </div>

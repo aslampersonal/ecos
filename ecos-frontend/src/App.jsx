@@ -1,6 +1,5 @@
 import React, { createContext, useEffect, useState } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import axios from 'axios';
 import "./App.css"
 
 import Header from './components/header/Header';
@@ -30,7 +29,6 @@ function App() {
         <BrowserRouter>
           <Header />
           <Routes>
-
             <Route path="/" element={<Home />} /> 
             <Route path="/product" element={<ProductPage />} /> 
             <Route path="/store" element={<StorePage />} /> 
@@ -46,7 +44,6 @@ function App() {
 
             <Route path="/admin" element={<AdminDashboard />} />
             <Route path="/admin/products-adding" element={<ProductAddingPage />} />
-
           </Routes>
           <Footer /> 
         </BrowserRouter>

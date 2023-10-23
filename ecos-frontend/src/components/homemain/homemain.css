@@ -1,9 +1,8 @@
 main {
-    /* display: flex; */
+    display: flex;
     flex-direction: column;
     background-color: white;
 }
-
 
 /* home page banner section */
 #mbanner-section {
@@ -20,7 +19,7 @@ main {
 
 .mbanner-div1 {
     width: 500%;
-    height: 23rem;
+    height: 30rem;
     display: flex;
 }
 
@@ -95,7 +94,6 @@ main {
 }
 
 /* css for automatic navigation */
-
 .navigation-auto div {
     border: 2px solid #6d9962;
     padding: 5px;
@@ -151,7 +149,7 @@ main {
     font-weight: 700;
     font-size: 15px;
     border-radius: 20px;
-    box-shadow: 0px 0px 15px rgb(160, 160, 160);
+    box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.2);
 }
 
 
@@ -171,14 +169,14 @@ main {
     width: 180px;
     text-align: center;
     padding: 25px 15px;
-    box-shadow: 0px 0px 14px rgb(190, 190, 190);
+    box-shadow: 0px 0px 30px rgba(0, 0, 0, 0.02);
     border: 1px solid #cce7d0;
     border-radius: 4px;
     margin: 15px 0;
 }
 
 #section3 .icon-box:hover {
-    box-shadow: 0px 0px 34px rgb(190, 190, 190);
+    box-shadow: 0px 0px 30px rgba(0, 0, 0, 0.06);
 }
 
 #section3 .icon-box img {
@@ -200,6 +198,8 @@ main {
 /* featured product section */
 #section4 {
     text-align: center;
+    padding: 1rem 3rem;
+    margin-bottom: 2rem;
 }
 
 #section4 .pro-container {
@@ -209,11 +209,16 @@ main {
     flex-wrap: wrap;
 }
 
+#section4 h2 {
+    margin-top: 2rem;
+    letter-spacing: 1px;
+}
+
 #section4 .pro {
     width: 23%;
-    height: 20rem;
+    height: 100%;
     min-width: 250px;
-    padding: 10px 12px;
+    padding: 1rem;
     border: 1px solid #cce7d0;
     border-radius: 25px;
     cursor: pointer;
@@ -234,17 +239,18 @@ main {
 
 #section4 .pro .des {
     text-align: start;
-    padding: 10px 0;
+    padding: 10px 1rem;
 }
 
 #section4 .pro .des span {
     color: #606063;
+    font-size: 14px;
 }
 
 #section4 .pro .des h5 {
     padding-top: 7px;
     color: #1a1a1a;
-    font-size: 14px;
+    font-size: 16px;
 }
 
 #section4 .pro .des .ics {
@@ -269,9 +275,15 @@ main {
     color: #088178;
     border: 1px solid #cce7d0;
     position: absolute;
-    bottom: 20px;
-    right: 10px;
+    bottom: 1.5rem;
+    right: 1.5rem;
 } 
+
+#section4 .pro .cart:hover {
+    color: black;
+    background-color: white;
+    box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.06);
+}
 
 
 /* product category section */
@@ -316,7 +328,7 @@ main {
 }
 
 #cat-skin-div-div{
-    background-color: #6d9962;
+    background-color: #088178;
     height: 25rem;
     width: 30rem;
     display: flex;
@@ -469,10 +481,10 @@ main {
 }
 
 #prod-bnr2-div {
-    width: 70%;
+    width: 60%;
     display: flex;
     flex-direction: row;
-    justify-content: center;
+    justify-content: space-between;
     margin-bottom: 2rem;
 }
 
@@ -493,7 +505,11 @@ main {
     height: 100%;
     position: absolute;
     border-radius: 15px;
-    box-shadow: 0px 0px 15px grey;
+    box-shadow: 0px 0px 25px rgba(0, 0, 0, 0.22);
+}
+
+.prod-img:hover {
+    box-shadow: 0px 0px 25px rgba(0, 0, 0, 0.32);
 }
 
 .prod-img-text {

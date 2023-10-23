@@ -4,6 +4,7 @@ import { NavLink } from 'react-router-dom';
 import { useCont } from '../../context/MyContext';
 import axios from 'axios';
 import { AiFillStar, AiOutlineShoppingCart } from 'react-icons/ai';
+import Cookies from 'js-cookie';
 
 function HomeMain () {
     
@@ -36,6 +37,91 @@ function HomeMain () {
         })
     }
     getProducts();
+
+    const featPrds = [
+        {
+            id: "1",
+            title: "aaaaa aaaaaa",
+            brand: "adidas",
+            image: "/src/assets/images/product-images/madara-velvet-wear-matte-cream-lipstick.jpg",
+            price: "123",
+        },
+        {
+            id: "2",
+            title: "aaaaa aaaaaa",
+            brand: "adidas",
+            image: "/src/assets/images/product-images/madara-velvet-wear-matte-cream-lipstick.jpg",
+            price: "123",
+        },
+        {
+            id: "3",
+            title: "aaaaa aaaaaa",
+            brand: "adidas",
+            image: "/src/assets/images/product-images/madara-velvet-wear-matte-cream-lipstick.jpg",
+            price: "123",
+        },
+        {
+            id: "4",
+            title: "aaaaa aaaaaa",
+            brand: "adidas",
+            image: "/src/assets/images/product-images/madara-velvet-wear-matte-cream-lipstick.jpg",
+            price: "123",
+        },
+        {
+            id: "5",
+            title: "aaaaa aaaaaa",
+            brand: "adidas",
+            image: "/src/assets/images/product-images/madara-velvet-wear-matte-cream-lipstick.jpg",
+            price: "123",
+        },
+        {
+            id: "6",
+            title: "aaaaa aaaaaa",
+            brand: "adidas",
+            image: "/src/assets/images/product-images/madara-velvet-wear-matte-cream-lipstick.jpg",
+            price: "123",
+        },
+        {
+            id: "7",
+            title: "aaaaa aaaaaa",
+            brand: "adidas",
+            image: "/src/assets/images/product-images/madara-velvet-wear-matte-cream-lipstick.jpg",
+            price: "123",
+        },
+        {
+            id: "8",
+            title: "aaaaa aaaaaa",
+            brand: "adidas",
+            image: "/src/assets/images/product-images/madara-velvet-wear-matte-cream-lipstick.jpg",
+            price: "123",
+        },
+        
+    ];
+
+    async function addToCart(id) {
+        const jwtToken = Cookies.get("jwtToken");
+        if (jwtToken) {
+            try {
+                const response = await axios.post(`http://localhost:3000/api/users/products/cart/${id}`,
+                {id: id},
+                {
+                    headers: {
+                      'Content-Type': 'application/json',
+                      Authorization: `Bearer ${jwtToken}`,
+                    },
+                    withCredentials: true 
+                });
+                console.log(response.data.message);
+                
+            } catch (error) {
+                console.error('Error adding to cart:', error);
+            }            
+        } else {
+            const cart = JSON.parse(localStorage.getItem("cart")) ? JSON.parse(localStorage.getItem("cart")) : [];
+            localStorage.setItem("cart", JSON.stringify([...cart, id]));
+        }
+        window.location.reload();
+    }
     
     return (
         <>
@@ -118,89 +204,34 @@ function HomeMain () {
             </section>
 
             <section id='section4' className='ftrd-pds'>
+                <hr />
                 <h2>Featured Products</h2>
                 <p>User's Best Choices!!!</p>
                 <div className='pro-container'>
-                    <div className='pro'>
-                        <img src="/src/assets/images/icons/online-order.png" alt="" />
-                        <div className='des'>
-                            <span>adidas</span>
-                            <h5>Cartoon Asutronaut T-shirts</h5>
-                            <div className='star'>
-                                <AiFillStar className='ics' />
-                                <AiFillStar className='ics' />
-                                <AiFillStar className='ics' />
-                                <AiFillStar className='ics' />
-                                <AiFillStar className='ics' />
-                            </div>
-                            <h4>₹150</h4>
-                        </div>
-                        <button className='cart'><AiOutlineShoppingCart /></button>
-                    </div>
-                    <div className='pro'>
-                        <img src="/src/assets/images/icons/online-order.png" alt="" />
-                        <div className='des'>
-                            <span>adidas</span>
-                            <h5>Cartoon Asutronaut T-shirts</h5>
-                            <div className='star'>
-                                <AiFillStar className='ics' />
-                                <AiFillStar className='ics' />
-                                <AiFillStar className='ics' />
-                                <AiFillStar className='ics' />
-                                <AiFillStar className='ics' />
-                            </div>
-                            <h4>₹150</h4>
-                        </div>
-                        <button className='cart'><AiOutlineShoppingCart /></button>
-                    </div>
-                    <div className='pro'>
-                        <img src="/src/assets/images/icons/online-order.png" alt="" />
-                        <div className='des'>
-                            <span>adidas</span>
-                            <h5>Cartoon Asutronaut T-shirts</h5>
-                            <div className='star'>
-                                <AiFillStar className='ics' />
-                                <AiFillStar className='ics' />
-                                <AiFillStar className='ics' />
-                                <AiFillStar className='ics' />
-                                <AiFillStar className='ics' />
-                            </div>
-                            <h4>₹150</h4>
-                        </div>
-                        <button className='cart'><AiOutlineShoppingCart /></button>
-                    </div>
-                    <div className='pro'>
-                        <img src="/src/assets/images/icons/online-order.png" alt="" />
-                        <div className='des'>
-                            <span>adidas</span>
-                            <h5>Cartoon Asutronaut T-shirts</h5>
-                            <div className='star'>
-                                <AiFillStar className='ics' />
-                                <AiFillStar className='ics' />
-                                <AiFillStar className='ics' />
-                                <AiFillStar className='ics' />
-                                <AiFillStar className='ics' />
-                            </div>
-                            <h4>₹150</h4>
-                        </div>
-                        <button className='cart'><AiOutlineShoppingCart /></button>
-                    </div>
-                    <div className='pro'>
-                        <img src="/src/assets/images/icons/online-order.png" alt="" />
-                        <div className='des'>
-                            <span>adidas</span>
-                            <h5>Cartoon Asutronaut T-shirts</h5>
-                            <div className='star'>
-                                <AiFillStar className='ics' />
-                                <AiFillStar className='ics' />
-                                <AiFillStar className='ics' />
-                                <AiFillStar className='ics' />
-                                <AiFillStar className='ics' />
-                            </div>
-                            <h4>₹150</h4>
-                        </div>
-                        <button className='cart'><AiOutlineShoppingCart /></button>
-                    </div>
+                    {
+                        featPrds.map((pd) => {
+                            return (
+                                <div className='pro' key={pd.id}>
+                                    <NavLink to="/product" state={{prodId: pd.id}}>
+                                        <img src={pd.image} alt="" />
+                                    </NavLink>
+                                    <div className='des'>
+                                        <span>{pd.brand}</span>
+                                        <h5>{pd.title}</h5>
+                                        <div className='star'>
+                                            <AiFillStar className='ics' />
+                                            <AiFillStar className='ics' />
+                                            <AiFillStar className='ics' />
+                                            <AiFillStar className='ics' />
+                                            <AiFillStar className='ics' />
+                                        </div>
+                                        <h4>₹{pd.price}</h4>
+                                    </div>
+                                    <button className='cart' onClick={() => addToCart(prodData._id)}><AiOutlineShoppingCart /></button>
+                                </div>
+                            );
+                        })
+                    }
                 </div>
             </section>
 

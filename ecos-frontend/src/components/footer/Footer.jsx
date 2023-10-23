@@ -1,10 +1,25 @@
 import { FaFacebook, FaInbox, FaInstagram, FaLinkedin, FaTwitter } from 'react-icons/fa';
 import './footer.css';
+import Cookies from 'js-cookie';
+import jwt_decode from "jwt-decode";
+import { useState, useEffect } from 'react';
 
 function Footer () {
-    return (
 
-        <footer className="f-footer">
+    const [showfooter, setShowFooter] = useState("");
+
+    useEffect(() => {
+        const jwtToken = Cookies.get("jwtToken");
+        if (jwtToken) {
+            decodedToken = jwt_decode(jwtToken);
+            if (decodedToken.email == "admin@gmail.com") {
+                setShowFooter("none");
+            }
+        }
+    })
+
+    return (
+        <footer className="f-footer" style={{display: showfooter}}>
             <div className="f-container">
                 <div className="f-row">
                     <div className="footer-col">

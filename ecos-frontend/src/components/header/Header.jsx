@@ -20,13 +20,16 @@ function Header() {
     const { loggedIn, login, logout } = useAuth();
     const { cart, setCart, setToken, user, setUser, getCart } = useCont();
     const [showToast, setShowToast] = useState(false);
+    const [showheader, setShowHeader] = useState("");
     const navigate = useNavigate();
+    const jwtToken = Cookies.get("jwtToken");
     
     useEffect(() => {
-
-        const jwtToken = Cookies.get("jwtToken");
         if (jwtToken) {
             const decodedToken = jwt_decode(jwtToken);
+            if (decodedToken.email == "admin@gmail.com") {
+                setShowHeader("none");
+            }
             setUser(decodedToken);
             login();
             document.getElementById("login-icon").style.display = "none";            
@@ -36,7 +39,7 @@ function Header() {
         } else {
             document.getElementById("login-icon").style.display = "";            
             document.getElementById("user-icon").style.display = "none";            
-            document.getElementById("cart-icon").style.display = ""            
+            document.getElementById("cart-icon").style.display = "";     
             document.getElementById("logout-icon").style.display = "none";
         }
         getCart();
@@ -47,11 +50,18 @@ function Header() {
 
         const jwtToken = Cookies.get("jwtToken");
         const decodedToken = jwt_decode(jwtToken);
-        if (decodedToken.email === "admin@gmail.com") {
+        try {
+            const response = await axios.post('http://localhost:3000/api/users/logout',
+            {username: user.username},
+            {
+                headers: {
+                    'Content-Type': 'application/json', // or 'application/json' if needed
+                },
+            });
+            console.log(user.username," - ", response.data.message);
             Cookies.remove("jwtToken");
             localStorage.removeItem('cartProducts');
             localStorage.removeItem("cart");
-            localStorage.removeItem("orders");
             setToken("");
             setUser(null);
             logout();
@@ -60,34 +70,10 @@ function Header() {
                 setShowToast(false);
             }, 2000); 
             setTimeout(() => {
-                navigate("/");
+                window.location.reload();
             }, 2000);
-        } else {
-            try {
-                const response = await axios.post('http://localhost:3000/api/users/logout',
-                {username: user.username},
-                {
-                    headers: {
-                      'Content-Type': 'application/json', // or 'application/json' if needed
-                    },
-                });
-                console.log(user.username," - ", response.data.message);
-                Cookies.remove("jwtToken");
-                localStorage.removeItem('cartProducts');
-                localStorage.removeItem("cart");
-                setToken("");
-                setUser(null);
-                logout();
-                setShowToast(true);
-                setTimeout(() => {
-                    setShowToast(false);
-                }, 2000); 
-                setTimeout(() => {
-                    window.location.reload();
-                }, 2000);
-            } catch (error) {
-                console.error('Error login:', error);
-            }
+        } catch (error) {
+            console.error('Error login:', error);
         }
 
     }
@@ -97,7 +83,7 @@ function Header() {
     }
     
     return (
-        <header className="header" id="header">
+        <header className="header" id="header" style={{display: showheader}}>
                 <div id="header-news">
                     <p className="h-news-text">FREE SHIPPING ON ALL ORDERS ABOVE ₹1000</p>
                     <p className="h-news-text">FREE SHIPPING ON ALL ORDERS ABOVE ₹1000</p>
@@ -149,7 +135,7 @@ function Header() {
                     <div id="h-nav-div-profile">
                             <NavLink to="./login">
                                 <button className="btn" id="login-icon" >
-                                    <BiLogInCircle className='top-icons' />
+                                    <BiLogInCircle className='top-icons' alt="Login" />
                                 </button>
                             </NavLink>
                             <NavLink to="./profile">
