@@ -46,8 +46,8 @@ export default function ProductAdding() {
           'Content-Type': 'multipart/form-data',
         },
       });
-      console.log(response.data);
-      // Clear the form or redirect to a different page
+      console.log(response.data.message);
+      window.location.reload();
     } catch (error) {
       console.error('Error uploading product:', error);
     }
@@ -55,7 +55,7 @@ export default function ProductAdding() {
 
   return (
     <div className='container' id='main-div'>
-      <h2>Upload Your Product</h2>
+      <h2>Upload Products</h2>
       <form onSubmit={handleSubmit} id='prod-form'>
         <div className='input-div'>
             <MdTitle className="icons" />
@@ -63,7 +63,7 @@ export default function ProductAdding() {
         </div>
         <div className='input-div'>
             <BsBodyText className="icons" />
-            <input type="text" className='form-control' name="description" placeholder="Product Description" onChange={handleInputChange} />
+            <textarea type="text" className='form-control' name="description" placeholder="Product Description" onChange={handleInputChange} style={{resize: "none"}}></textarea>
         </div>
         <div className='input-div'>
             <TbBrandAsana className="icons" />
@@ -71,7 +71,43 @@ export default function ProductAdding() {
         </div>
         <div className='input-div'>
             <TbCategory className="icons" />
-            <input type="text" className='form-control' name="category" placeholder="Product Category" onChange={handleInputChange} />
+            <select defaultValue="null" className='form-control' name="category" placeholder="Product Category" onChange={handleInputChange}>
+              <option>select a product category</option>
+              <optgroup label="LIPS">
+                <option>Lipstick</option>
+                <option>Lip Balm</option>
+                <option>Lip Scrub</option>
+                <option>Lip Mask</option>
+              </optgroup>
+              <optgroup label="HANDS & FEET">
+                <option>Hand Creams</option>
+                <option>Foot Creams</option>
+                <option>Hands & Foot Masks</option>
+              </optgroup>
+              <optgroup label="EYES">
+                <option>Under Eye Cream & Serum</option>
+                <option>Eye Masks</option>
+              </optgroup>
+              <optgroup label="SKIN CARE">
+                <option>Moisturizer</option>
+                <option>Cleanser</option>
+                <option>Mask</option>
+                <option>Toner</option>
+              </optgroup>
+              <optgroup label="BODY CARE">
+                <option>Lotions & Creams</option>
+                <option>Massage Oils</option>
+                <option>Shower Gels & Body Wash</option>
+                <option>Scrubs & Loofahs</option>
+              </optgroup>
+              <optgroup label="HAIR CARE">
+                <option>Shampoo</option>
+                <option>Conditioner</option>
+                <option>Hair Oil</option>
+                <option>Hair Serum</option>
+                <option>Dry Shampoo</option>
+              </optgroup>
+            </select>
         </div>
         <div className='input-div'>
             <ImPriceTag className="icons" />
