@@ -17,8 +17,48 @@ export default function ProductCard (props) {
     const navigate = useNavigate();
 
     let productList = prodData;
-    if (path !== "Collections") {
-        productList = prodData.filter((prod) => prod.category == path);
+    if (path === "lips") {
+        productList = prodData.filter((prod) => 
+        prod.category == "Lipstick" || 
+        prod.category === "Lip Balm" || 
+        prod.category === "Lip Scrub" || 
+        prod.category === "Lip Mask" 
+        );
+    } else if(path === "hands & feet") {
+        productList = prodData.filter((prod) => 
+        prod.category == "Hand Creams" || 
+        prod.category === "Foot Creams" || 
+        prod.category === "Hands & Foot Masks" 
+        );
+    } else if (path === "eyes") {
+        productList = prodData.filter((prod) => 
+        prod.category == "Under Eye Cream & Serum" || 
+        prod.category === "Eye Masks"
+        );
+    } else if (path === "skincare") {
+        productList = prodData.filter((prod) => 
+        prod.category == "Moisturizer" || 
+        prod.category === "Cleanser" || 
+        prod.category === "Mask" || 
+        prod.category === "Toner" 
+        );
+    } else if (path === "bodycare") {
+        productList = prodData.filter((prod) => 
+        prod.category == "Lotions & Creams" || 
+        prod.category === "Massage Oils" || 
+        prod.category === "Shower Gels & Body Wash" || 
+        prod.category === "Scrubs & Loofahs" 
+        );
+    } else if (path === "haircare") {
+        productList = prodData.filter((prod) => 
+        prod.category == "Shampoo" || 
+        prod.category === "Conditioner" || 
+        prod.category === "Hair Oil" || 
+        prod.category === "Hair Serum" ||
+        prod.category === "Dry Shampoo" 
+        );
+    } else {
+        productList = prodData.filter((prod) => prod.category == path );
     }
 
     useEffect(() => {
@@ -86,31 +126,30 @@ export default function ProductCard (props) {
             
             <div className='card-row'>
                 {productList.map((prodData) => {
-                        return (
-                            <div className='card-main-div' key={prodData._id}>
-                                <form>
-                                <figure className="prod-card">
-                                    <NavLink to="/product" state={{prodId: prodData._id}} className="nav-link">
-                                        <div className="img-wrap"> 
-                                            <span className="badge badge-danger"> NEW </span>
-                                            <img src={prodData.image} />
+                    return (
+                        <div className='card-main-div' key={prodData._id}>
+                            <form>
+                            <figure className="prod-card">
+                                <NavLink to="/product" state={{prodId: prodData._id}} className="nav-link">
+                                    <div className="img-wrap"> 
+                                        <img src={prodData.image} />
+                                    </div>
+                                </NavLink> 
+                                <figcaption className="info-wrap">
+                                    <span className="pd-title">{prodData.title}</span>
+                                    <div className='price-div'>
+                                        <div className='price-tag-div'>
+                                            <IoIosPricetag className='price-tag' />
+                                            <span className="price">{prodData.price}</span>
                                         </div>
-                                    </NavLink> 
-                                    <figcaption className="info-wrap">
-                                        <span className="pd-title">{prodData.title}</span>
-                                        <div className='price-div'>
-                                            <div className='price-tag-div'>
-                                                <IoIosPricetag className='price-tag' />
-                                                <span className="price">{prodData.price}</span>
-                                            </div>
-                                            <button type='button' className="cart-btn" onClick={() => addToCart(prodData._id)}><BsFillCartPlusFill className='cart-icon'/></button>
-                                        </div>
-                                    </figcaption>
-                                </figure>
-                                </form>
-                            </div>
-                        )
-                    })}
+                                        <button type='button' className="cart-btn" onClick={() => addToCart(prodData._id)}><BsFillCartPlusFill className='cart-icon'/></button>
+                                    </div>
+                                </figcaption>
+                            </figure>
+                            </form>
+                        </div>
+                    )
+                })}
             </div>
 
         </section> 

@@ -7,6 +7,7 @@ import { ImPriceTag } from "react-icons/im"
 import { BiImages } from "react-icons/bi"
 
 import "./ProductAdding.css";
+import Toast from '../../Toast/Toast';
 
 export default function ProductAdding() {
 
@@ -19,6 +20,7 @@ export default function ProductAdding() {
     category: 'Collections', 
     countInStock: '0' 
     });
+  const [showToast, setShowToast] = useState(false);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -47,7 +49,13 @@ export default function ProductAdding() {
         },
       });
       console.log(response.data.message);
-      window.location.reload();
+      setShowToast(true);
+      setTimeout(() => {
+          setShowToast(false);
+      }, 2000);
+      setTimeout(() => {
+        window.location.reload();
+      }, 2000);
     } catch (error) {
       console.error('Error uploading product:', error);
     }
@@ -55,6 +63,10 @@ export default function ProductAdding() {
 
   return (
     <div className='container' id='main-div'>
+      {/* notification toasts */}
+      <div className="toast-container position-fixed top-0 start-50 translate-middle-x" style={{zIndex: "10"}}>
+        <Toast show={showToast} type="success" message="Product added successfully" />
+      </div>
       <h2>Upload Products</h2>
       <form onSubmit={handleSubmit} id='prod-form'>
         <div className='input-div'>

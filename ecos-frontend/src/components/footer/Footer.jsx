@@ -11,7 +11,7 @@ function Footer () {
     useEffect(() => {
         const jwtToken = Cookies.get("jwtToken");
         if (jwtToken) {
-            decodedToken = jwt_decode(jwtToken);
+            const decodedToken = jwt_decode(jwtToken);
             if (decodedToken.email == "admin@gmail.com") {
                 setShowFooter("none");
             }

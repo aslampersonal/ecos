@@ -13,7 +13,7 @@ import Toast from "../Toast/Toast";
 
 export default function OrderMain() {
 
-    const [products, setProducts] = useState([]);
+    const [Products, setProducts] = useState([]);
     const [orderList, setOrderList] = useState([]);
     const [Id, setId] = useState("");
     const [showToast, setShowToast] = useState(false);
@@ -43,8 +43,6 @@ export default function OrderMain() {
                 navigate("/login");
             }, 1000);
         }
-
-        console.log(orderList);
 
         return () => {
             //clearing oderid from local storage
@@ -96,10 +94,10 @@ export default function OrderMain() {
                 <div className="o-row d-flex justify-content-center align-items-center h-100">
                     <div className="col">
                         <h6 className="mb-3">
-                            <a href="#!" className="text-body link-underline link-underline-opacity-0">
+                            <button onClick={() => {navigate(-1)}} className="cnt-btn btn">
                             <HiArrowNarrowLeft style={{marginRight: "5px"}} />
                             Continue Shopping
-                            </a>
+                            </button>
                         </h6>
                         <hr />
                         <div className="d-flex justify-content-between align-items-center mb-4">
@@ -123,7 +121,7 @@ export default function OrderMain() {
                                             order.products.map((id) => {
                                                 return (
                                                     <div key={id}>{
-                                                    products.map((product) => {
+                                                    Products.map((product) => {
                                                     if (id === product._id) {
                                                         return (
                                                             <div className="prod-div" key={product._id}>

@@ -28,6 +28,8 @@ export default function Cart() {
 
     const navigate = useNavigate();
 
+    getCart();
+
     useEffect(() => {
         
         const jwtToken = Cookies.get("jwtToken");
@@ -36,7 +38,6 @@ export default function Cart() {
           setUser(decodedToken);
         }
 
-        getCart();
         let cartProducts = JSON.parse(localStorage.getItem('cartProducts')) || [];
         if (cartProducts) {
           setProducts(cartProducts);
@@ -288,7 +289,7 @@ export default function Cart() {
                           {/* <NavLink to="/orders" state= {{Id: orderid}}> */}
                             <button
                               type="button"
-                              className="btn btn-success btn-block btn-lg"
+                              className="checkout-btn"
                               style={{width: "100%"}}
                               onClick={checkoutSubmit}
                             >

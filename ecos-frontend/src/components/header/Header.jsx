@@ -108,7 +108,7 @@ function Header() {
                                 <NavLink className="h-nav-a" to="./collections" state= {{title:"lips"}}>lips</NavLink>
                             </li>
                             <li className="h-nav-li">
-                                <NavLink className="h-nav-a" to="./collections" state= {{title:"face"}}>face</NavLink>
+                                <NavLink className="h-nav-a" to="./collections" state= {{title:"hands & feet"}}>Hands & Feet</NavLink>
                             </li>
                             <li className="h-nav-li">
                                 <NavLink className="h-nav-a" to="./collections" state= {{title:"eyes"}}>eyes</NavLink>
@@ -117,10 +117,10 @@ function Header() {
                                 <NavLink className="h-nav-a" to="./collections" state= {{title:"skincare"}}>skin care</NavLink>
                             </li>
                             <li className="h-nav-li">
-                                <NavLink className="h-nav-a" to="./collections" state= {{title:"haircare"}}>hair care</NavLink>
+                                <NavLink className="h-nav-a" to="./collections" state= {{title:"bodycare"}}>body care</NavLink>
                             </li>
                             <li className="h-nav-li">
-                                <NavLink className="h-nav-a" to="./collections" state= {{title:"services"}}>services</NavLink>
+                                <NavLink className="h-nav-a" to="./collections" state= {{title:"haircare"}}>hair care</NavLink>
                             </li>
                         </ul>
                     </div>
