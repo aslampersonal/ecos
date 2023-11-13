@@ -223,7 +223,7 @@ const RemoveCartProduct = async (req, res) => {
       return res.status(404).json({ message: "User not found" });
     }
 
-    // find the index of the product to remove from the wishlist
+    // find the index of the product to remove from the cart
     const index = user.cart.indexOf(productId);
     if (index === -1) {
       return res.status(404).json({ message: "Product not found in Cart" });
@@ -321,9 +321,9 @@ const oderProduct = async (req, res) => {
     const decoded = jwt.verify(token, secretKey);
     const user = await schema.findOne({ email: decoded.email });
     const date = new Date();
-    const orderDate = date.slice(0, 10);
+    const orderDate = date.toISOString().slice(0, 10);
     const orderId = Math.floor(Math.random() * (99999999999 - 1111111111 + 1)) + 1111111111;
-    const status = "Shipped";
+    const status = "Processing";
 
     for(let i=0; i<cart.length; i++) {
       const product = await productDatas.findById(cart[i]);
@@ -332,9 +332,19 @@ const oderProduct = async (req, res) => {
       }
     }
 
+    let products = [];
+    let newCart = Array.from(new Set(cart));
+    newCart.forEach((pd) => {
+      let quantity = cart.filter((value) => value === pd).length;
+      products.push({
+        pid: pd,
+        quantity: quantity,
+      })
+    })
+
     user.orders.push({
       _id: orderId,
-      products: cart,
+      products: products,
       payment: total,
       orderDate,
       status,
@@ -344,7 +354,7 @@ const oderProduct = async (req, res) => {
     
     res
       .status(200)
-      .json({ message: "payment successful!...  Order confirmed...", orderId, cart });
+      .json({ message: "payment successful!...  Order confirmed...", orderId });
   } catch (error) {
     console.log(error);
     res.status(500).json({ error: "server error", error: error.message });
@@ -388,7 +398,7 @@ const updateOrderStatus = async (req, res) => {
       res.status(404).json({ message: "Order not found" });
     }
   } catch (error) {
-    res.status(500).json({ message: "Error updating product" });
+    res.status(500).json({ message: "Error updating orders" });
   }
 };
 

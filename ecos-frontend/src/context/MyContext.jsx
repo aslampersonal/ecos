@@ -67,25 +67,28 @@ export function useCont() {
         })
         .then((response) => {
           setCart(response.data.cart);
-          const localCart = JSON.parse(localStorage.getItem("cart"));
-          if (localCart) {
-            let newc = response.data.cart;
-            for(let i=0; i<localCart.length; i++) {
-              newc = [...newc, localCart[i]];
-            }
-            setCart(newc);
-          }
 
-          const productData = localStorage.getItem("productData");
+          const productData = JSON.parse(localStorage.getItem("fullProducts"));
           if (productData) {
             let productList = [];
-            let newCart = [...new Set(cart)];
+            let newCart = [...new Set(response.data.cart)];
             for (let i=0; i<newCart.length; i++) {
-              const newpd = JSON.parse(productData).filter((prod) => prod._id == newCart[i]);
+              const newpd = productData.filter((prod) => prod._id == newCart[i]);
               productList.push(newpd[0]);
             }
+            //setting products list in cart
             setCartProds(productList);
             localStorage.setItem("cartProducts", JSON.stringify(productList));
+
+            //setting total price
+            const totalArr = productList.map((prod) => {
+              const qt = response.data.cart.filter((value) => value === prod._id).length;
+              return prod.price * qt;
+            })
+            const newTotal = totalArr.reduce((accumulator, currentValue) => {
+              return accumulator + currentValue;
+            }, 0);
+            localStorage.setItem("cartTotal", JSON.stringify(newTotal));
           }
         })
         .catch((error) => {
@@ -95,16 +98,26 @@ export function useCont() {
         const cart = JSON.parse(localStorage.getItem("cart"));
         setCart(cart);
 
-        const productData = localStorage.getItem("productData");
+        const productData = localStorage.getItem("fullProducts");
         if (productData) {
           let productList = [];
-          let newCart = [...new Set(cart)];
+          let newCart = [...new Set(JSON.parse(localStorage.getItem("cart")))];
           for (let i=0; i<newCart.length; i++) {
             const newpd = JSON.parse(productData).filter((prod) => prod._id == newCart[i]);
             productList.push(newpd[0]);
           }
           setCartProds(productList);
           localStorage.setItem("cartProducts", JSON.stringify(productList));
+
+          //setting total price
+          const totalArr = productList.map((prod) => {
+            const qt = JSON.parse(localStorage.getItem("cart")).filter((value) => value === prod._id).length;
+            return prod.price * qt;
+          })
+          const newTotal = totalArr.reduce((accumulator, currentValue) => {
+            return accumulator + currentValue;
+          }, 0);
+          localStorage.setItem("cartTotal", JSON.stringify(newTotal));
         }
       }
 

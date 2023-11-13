@@ -3,9 +3,13 @@
   flex-direction: row;
 }
 
+.main {
+  margin-left: 13rem;
+  padding: 2rem;
+}
+
 .home .homeContainer {
   flex: 6;
-  margin-left: 13rem;
 }
 
 .widgets, .charts {

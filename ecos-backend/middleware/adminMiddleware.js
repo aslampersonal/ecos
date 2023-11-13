@@ -7,7 +7,7 @@ const secretKey = process.env.ADMIN_KEY;
 app.use(cookieParser());
 
 const checkAdminToken = (req, res, next) => {
-  const token = req.headers.authorization || req.cookies.token;
+  const token = req.headers.authorization?.split('Bearer ')[1]; 
   
   if (!token) {
     return res.status(401).json({ message: "No token provided" });

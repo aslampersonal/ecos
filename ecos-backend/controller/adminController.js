@@ -4,7 +4,7 @@ const express = require("express");
 const jwt = require("jsonwebtoken");
 const schema = require("../models/userModel");
 const productDatas = require("../models/productModel");
-const secretKey = process.env.SECRET_KEY;
+const secretKey = process.env.ADMIN_KEY;
 
 // admin login
 const adminLogin = async (req, res) => {
@@ -12,6 +12,8 @@ const adminLogin = async (req, res) => {
     
     const email = req.body.email;
     const password = req.body.password;
+
+    console.log(email, ": Admin logged in successfully");
 
     // check admin email and password
     if (email !== "admin@gmail.com" || password !== "admin123") {
@@ -28,6 +30,15 @@ const adminLogin = async (req, res) => {
   } catch (err) {
     res.status(401).json({ message: err.message });
   }
+};
+
+// admin logout
+const adminLogout = async (req, res) => {
+  
+  console.log(req.body.username, "logged out successfully");
+
+  res.json({ message: 'Logged out successfully' });
+  
 };
 
 // create product
@@ -71,7 +82,7 @@ const uploadImage = async (req, res) => {
 // get users details
 const getUsers = async (req, res) => {
   try {
-    const allUsers = await schema.find();
+    const allUsers = await schema.find({ email: {$ne: "admin@gmail.com"} }, {});
     res.status(200).json({ users: allUsers });
   } catch (error) {
     console.log(error);
@@ -96,8 +107,23 @@ const getSpecificUser = async (req, res) => {
   }
 };
 
-// find all product details
+//delete an user
+const deleteUser = async (req, res) => {
+  try {
+    const deletedUser = await schema.findByIdAndRemove(req.params.id);
+    if (!deletedUser) {
+      return res.status(404).json({ message: "User not found" });
+    }
 
+    res.status(200).json({ message: "User deleted successfully", deletedUser });
+
+  } catch (error) {
+    console.error("Error deleting user:", error);
+    res.status(500).json({ error: "Server error" });
+  }
+}
+
+// find all product details
 const getProducts = async (req, res) => {
   try {
     const allProducts = await productDatas.find();
@@ -129,28 +155,40 @@ const getSpecificProduct = async (req, res) => {
 };
 
 // update product
-
 const updateProduct = async (req, res) => {
   try {
     const id = req.params.id;
-    const { title, description, price, image, category } = req.body;
+    const { title, description, brand, category, price, countInStock} = req.body;
+    if (req.body.image) {
+      
+      const { image } = req.body;
+      const updatedProduct = await productDatas.findOneAndUpdate(
+        { _id: id },
+        { title, description, brand, category, price, countInStock, image }
+      );
+      if (!updatedProduct) {
+        return res.status(404).json({ message: "Product not found" });
+      }
+      res.json({ message: "Product updated", updatedProduct });
 
-    const updatedProduct = await productDatas.findOneAndUpdate(
-      { _id: id },
-      { title, description, price, image, category }
-    );
-    // console.log(updatedProduct)
-    if (!updatedProduct) {
-      return res.status(404).json({ message: "Product not found" });
+    } else {
+      
+      const updatedProduct = await productDatas.findOneAndUpdate(
+        { _id: id },
+        { title, description, brand, category, price, countInStock }
+      );
+      if (!updatedProduct) {
+        return res.status(404).json({ message: "Product not found" });
+      }
+      res.json({ message: "Product updated", updatedProduct });
+
     }
-    res.json({ message: "Product updated", updatedProduct });
   } catch (error) {
     res.status(500).json({ message: "Error updating product" });
   }
 };
 
 // delete product by id
-
 const deleteProduct = async (req, res) => {
   const id = req.params.id;
   console.log(req.params.id);
@@ -170,7 +208,6 @@ const deleteProduct = async (req, res) => {
 };
 
 // find category wise
-
 const getCategoryWise = async (req, res) => {
   const categoryList = req.params.category;
   // console.log( 'fgfgfg')
@@ -203,13 +240,37 @@ const getCategoryWise = async (req, res) => {
 };
 
 // get all orders list
-
 const getAllOrders = async (req, res) => {
   try {
-    const orders = await schema.find({}, { orders: 1 });
+    const orders = await schema.find({ email: {$ne: "admin@gmail.com"} }, { email: 1, orders: 1 });
     res.status(200).json({ orders });
   } catch (error) {
     res.status(500).json({ error: "Server Error", error: error.message });
+  }
+};
+
+//update order status
+const updateOrderStatus = async (req, res) => {
+  try {
+    const id = req.params.id;
+    const status = req.body.status;
+    const email = req.body.email;
+    
+    const user = await schema.findOne({ email });
+
+    // Find the order with the specified id in the user's orders array
+    const orderToUpdate = user.orders.find(order => order._id === id);
+
+    // If the order with the specified id is found, update its status
+    if (orderToUpdate) {
+      orderToUpdate.status = status;
+      await user.save(); // Save the updated user document to the database
+      res.status(200).json({ message: "Order status updated successfully", orderId: orderToUpdate._id });
+    } else {
+      res.status(404).json({ message: "Order not found" });
+    }
+  } catch (error) {
+    res.status(500).json({ message: "Error updating orders" });
   }
 };
 
@@ -242,15 +303,18 @@ const getRevenue = async (req, res) => {
 
 module.exports = {
   adminLogin,
+  adminLogout,
   createProduct,
   uploadImage,
   getUsers,
   getSpecificUser,
+  deleteUser,
   getProducts,
   updateProduct,
   deleteProduct,
   getCategoryWise,
   getSpecificProduct,
   getAllOrders,
+  updateOrderStatus,
   getRevenue,
 };

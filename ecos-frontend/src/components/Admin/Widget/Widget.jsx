@@ -5,8 +5,9 @@ import PersonOutlinedIcon from "@mui/icons-material/PersonOutlined";
 import AccountBalanceWalletOutlinedIcon from "@mui/icons-material/AccountBalanceWalletOutlined";
 import ShoppingCartOutlinedIcon from "@mui/icons-material/ShoppingCartOutlined";
 import MonetizationOnOutlinedIcon from "@mui/icons-material/MonetizationOnOutlined";
+import { useState } from "react";
 
-const Widget = ({ type }) => {
+const Widget = ({ type, value }) => {
     let data;
   
     //temporary
@@ -50,7 +51,6 @@ const Widget = ({ type }) => {
         data = {
           title: "EARNINGS",
           isMoney: true,
-          link: "View net earnings",
           icon: (
             <MonetizationOnOutlinedIcon
               className="icon"
@@ -63,7 +63,6 @@ const Widget = ({ type }) => {
         data = {
           title: "BALANCE",
           isMoney: true,
-          link: "See details",
           icon: (
             <AccountBalanceWalletOutlinedIcon
               className="icon"
@@ -84,9 +83,8 @@ const Widget = ({ type }) => {
         <div className="left">
           <span className="title">{data.title}</span>
           <span className="counter">
-            {data.isMoney && "$"} {amount}
+            {data.isMoney && "₹"} {value}
           </span>
-          <span className="link">{data.link}</span>
         </div>
         <div className="right">
           <div className="percentage positive">

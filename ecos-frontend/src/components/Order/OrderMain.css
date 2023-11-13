@@ -6,6 +6,7 @@
     width: 100%;
     display: flex;
     flex-direction: column;
+    margin-bottom: 1rem;
     border-radius: 10px;
     box-shadow: 0px 5px 5px grey;
 }
@@ -27,14 +28,37 @@
 
 .order-main-prods .prod-div {
     width: 100%;
-    height: 5rem;
+    height: auto;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
-    padding: 0px 3rem;
-    margin: 0;
+    padding: 1rem;
+    margin-bottom: 1rem;
     box-shadow: 0px 2px 2px grey;
+}
+
+.order-main-prods .img-div {
+    width: 5rem;
+    height: 5rem;
+    display: flex;
+    align-items: center;
+    margin-right: 1rem;
+}
+
+.order-main-prods .desc-div {
+    width: 25rem;
+}
+
+.desc-div p {
+    max-width: 300px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.order-main-prods .price-div {
+    width: 7rem;
 }
 
 .cncl-btn {
@@ -58,11 +82,6 @@
     text-decoration: none;
     padding: 7px 10px;
     border-radius: 10px;
-}
-
-.pd-view-btn:hover {
-    color: black;
-    box-shadow: 0px 2px 2px grey;
 }
 
 .cnt-btn {

@@ -83,12 +83,12 @@ export default function OrderMain() {
                 <Toast show={showToast} type="success" message="Your order has been cancelled" />
                 <Toast show={showToast1} type="error" message="Please login in to your account! " />
             </div>
-            <section style={{display: orderId? "block" : "none" }}>
+            {/* <section style={{display: JSON.stringify(localStorage.getItem("orderId"))? "block" : "none" }}>
                 <div style={{display: "flex"}}>
                     <TiTick style={{fontSize: "35px", color: "green"}} />
-                    <h3>Your order {orderId} has placed successfully</h3>
+                    <h3>Your order {JSON.stringify(localStorage.getItem("orderId"))} has placed successfully</h3>
                 </div>
-            </section>
+            </section> */}
 
             <section className="container py-5 h-100 d-flex justify-content-center" >
                 <div className="o-row d-flex justify-content-center align-items-center h-100">
@@ -105,7 +105,7 @@ export default function OrderMain() {
                         </div>
 
                         {
-                            orderList.map((order) => {
+                            JSON.parse(localStorage.getItem('orders')).map((order) => {
 
                             return (
                                 <div className="order-main" key={order._id}>
@@ -118,14 +118,14 @@ export default function OrderMain() {
                                     </div>
                                     <div className="order-main-prods">
                                         {
-                                            order.products.map((id) => {
+                                            order.products.map((pd) => {
                                                 return (
-                                                    <div key={id}>{
+                                                    <div key={pd._id}>{
                                                     Products.map((product) => {
-                                                    if (id === product._id) {
+                                                    if (pd.pid === product._id) {
                                                         return (
                                                             <div className="prod-div" key={product._id}>
-                                                                <div className="">
+                                                                <div className="img-div">
                                                                     <img
                                                                         src= {product.image}
                                                                         className="img-fluid rounded-3"
@@ -133,14 +133,17 @@ export default function OrderMain() {
                                                                         style={{ width: 65 }}
                                                                     />
                                                                 </div>
-                                                                <div className="ms-3">
-                                                                    <h5>{product.title}</h5>
+                                                                <div className="desc-div">
+                                                                    <p><strong>{product.title}</strong></p>
                                                                     <p className="small mb-0">{product.brand}</p>
                                                                 </div>
-                                                                <div>
-                                                                    <p className="mb-0"><strong>₹{product.price}</strong></p>
+                                                                <div className="price-div">
+                                                                    <p className=""><strong>{pd.quantity}</strong></p>
                                                                 </div>
-                                                                <div>
+                                                                <div className="price-div">
+                                                                    <p className=""><strong>₹{product.price}</strong></p>
+                                                                </div>
+                                                                <div className="btn-div">
                                                                     <NavLink className="pd-view-btn" to="/product" state={{prodId: product._id}}>View Product</NavLink>
                                                                 </div>
                                                             </div>

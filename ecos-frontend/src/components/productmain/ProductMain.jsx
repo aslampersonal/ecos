@@ -21,7 +21,7 @@ export default function ProductMain (props) {
 
     useEffect(() => {
         
-        const productData = localStorage.getItem("productData");
+        const productData = localStorage.getItem("fullProducts");
         if (productData) {
             setProducts(JSON.parse(productData));
         }
@@ -38,28 +38,33 @@ export default function ProductMain (props) {
         navigate("/error");
     }
 
-    async function addToCart(e) {
+    async function addToCart(id) {
 
         const jwtToken = Cookies.get("jwtToken");
+        const quantity = document.getElementById("quantity").value;
         if (jwtToken) {
-            try {
-                const response = await axios.post(`http://localhost:3000/api/users/products/cart/${productList[0]._id}`,
-                {id: productList[0]._id},
-                {
-                    headers: {
-                      'Content-Type': 'application/json',
-                      Authorization: `Bearer ${jwtToken}`,
-                    },
-                    withCredentials: true 
-                });
-                console.log(response.data.message);
-                
-            } catch (error) {
-                console.error('Error adding to cart:', error);
+            for(let i=1; i<=quantity; i++) {
+                try {
+                    const response = await axios.post(`http://localhost:3000/api/users/products/cart/${productList[0]._id}`,
+                    {id: productList[0]._id},
+                    {
+                        headers: {
+                          'Content-Type': 'application/json',
+                          Authorization: `Bearer ${jwtToken}`,
+                        },
+                        withCredentials: true 
+                    });
+                    console.log(response.data.message);
+                    
+                } catch (error) {
+                    console.error('Error adding to cart:', error);
+                }
             }            
         } else {
-            const cart = JSON.parse(localStorage.getItem("cart")) ? JSON.parse(localStorage.getItem("cart")) : [];
-            localStorage.setItem("cart", JSON.stringify([...cart, id]));
+            for(let i=1; i<=quantity; i++) {
+                const cart = JSON.parse(localStorage.getItem("cart")) ? JSON.parse(localStorage.getItem("cart")) : [];
+                localStorage.setItem("cart", JSON.stringify([...cart, id]));
+            }
         }
         window.location.reload();
         
@@ -188,7 +193,6 @@ export default function ProductMain (props) {
                                 <p id="pd-desc">{productList[0].description}</p>
                                 <div id="price-qnt-div">
                                     <div id="price-div">
-                                        <span style={{ fontSize: 16, fontWeight: 600 }}>MRP</span>
                                         <span id="pd-price" style={{ fontSize: 30, fontWeight: 700 }}>
                                             {productList[0].price}
                                         </span>
@@ -198,54 +202,10 @@ export default function ProductMain (props) {
                                     </div>
                                     <div id="qnt-div">
                                         <span style={{ fontSize: 16, fontWeight: 600 }}>Quantity</span>
-                                        <div className="dropdown show">
-                                            <button
-                                            className="btn dropdown-toggle"
-                                            href="#"
-                                            role="button"
-                                            id="dropdownMenuLink"
-                                            data-toggle="dropdown"
-                                            aria-haspopup="true"
-                                            aria-expanded="false"
-                                            >
-                                            1
-                                            </button>
-                                            <div
-                                            className="dropdown-menu"
-                                            aria-labelledby="dropdownMenuLink"
-                                            >
-                                            <a className="dropdown-item" href="#">
-                                                2
-                                            </a>
-                                            <a className="dropdown-item" href="#">
-                                                3
-                                            </a>
-                                            <a className="dropdown-item" href="#">
-                                                4
-                                            </a>
-                                            <a className="dropdown-item" href="#">
-                                                5
-                                            </a>
-                                            <a className="dropdown-item" href="#">
-                                                6
-                                            </a>
-                                            <a className="dropdown-item" href="#">
-                                                7
-                                            </a>
-                                            <a className="dropdown-item" href="#">
-                                                8
-                                            </a>
-                                            <a className="dropdown-item" href="#">
-                                                9
-                                            </a>
-                                            <a className="dropdown-item" href="#">
-                                                10
-                                            </a>
-                                            </div>
-                                        </div>
+                                        <input type="number" id="quantity" defaultValue="1" min="1" max={productList[0].countInStock} />
                                     </div>
                                 </div>
-                                <button onClick={addToCart} type="button" className="btn" id="cart-btn">
+                                <button onClick={() => {addToCart(productList[0]._id)}} type="button" className="btn" id="cart-btn">
                                     ADD TO CART
                                 </button>
                             </div>

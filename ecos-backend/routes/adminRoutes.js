@@ -21,18 +21,20 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage });
 
-app.post("/productuploadtry", upload.single('image'), admin.createProduct);
-
 app.post("/login", admin.adminLogin);
+app.post("/logout", admin.adminLogout);
 app.post("/productupload", upload.single('image'), checkAdminToken, admin.createProduct);
 app.get("/users", checkAdminToken, admin.getUsers);
 app.get("/users/:id", checkAdminToken, admin.getSpecificUser);
+app.delete("/users/:id", checkAdminToken, admin.deleteUser);
 app.get("/products", checkAdminToken, admin.getProducts);
 app.put("/products/:id", checkAdminToken, admin.updateProduct);
+app.put("/products/image/:id", upload.single('image'), checkAdminToken, admin.updateProduct);
 app.delete("/products/:id", checkAdminToken, admin.deleteProduct);
 app.get("/products/category/:category", checkAdminToken, admin.getCategoryWise);
 app.get("/products/:id", checkAdminToken, admin.getSpecificProduct);
-app.get("/order", checkAdminToken, admin.getAllOrders);
+app.get("/orders", checkAdminToken, admin.getAllOrders);
+app.put("/orders/updateorders/:id", checkAdminToken, admin.updateOrderStatus);
 app.get("/revenue", checkAdminToken, admin.getRevenue);
 
 module.exports = app;

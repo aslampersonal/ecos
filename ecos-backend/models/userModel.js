@@ -32,15 +32,22 @@ const mongoSchema = new mongoose.Schema({
       _id: {
         type: String,
       },
-      products: {
-        type: Array,
-      },
+      products: [
+        {
+          pid: {
+            type: String,
+          },
+          quantity: {
+            type: Number,
+            default: 0,
+          }
+        }
+      ],
       payment: {
         type: Number,
       },
       orderDate: {
-        type: Date,
-        default: Date.now,
+        type: String,
       },
       status: {
         type: String,

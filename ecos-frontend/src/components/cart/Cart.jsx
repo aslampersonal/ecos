@@ -23,12 +23,11 @@ export default function Cart() {
     const [orderid, setOrderId] = useState(null);
     const [showToast, setShowToast] = useState(false);
     const [showToast1, setShowToast1] = useState(false);
+    const [showToast2, setShowToast2] = useState(false);
 
     const { cart, user, setUser, getCart } = useCont();
 
     const navigate = useNavigate();
-
-    getCart();
 
     useEffect(() => {
         
@@ -38,17 +37,11 @@ export default function Cart() {
           setUser(decodedToken);
         }
 
+        getCart();
+
         let cartProducts = JSON.parse(localStorage.getItem('cartProducts')) || [];
         if (cartProducts) {
           setProducts(cartProducts);
-          const totalArr = cartProducts.map((prod) => {
-            const qt = cart.filter((value) => value === prod._id).length;
-            return prod.price * qt;
-          })
-          const newTotal = totalArr.reduce((accumulator, currentValue) => {
-            return accumulator + currentValue;
-          }, 0);
-          setTotal(newTotal);
         } else {
           setProducts(null);
         }
@@ -83,7 +76,7 @@ export default function Cart() {
       }
       try {
         const response = await axios.post(`http://localhost:3000/api/users/products/addorders`,
-          {cart: cart, total: total+50},
+          {cart: cart, total: JSON.parse(localStorage.getItem('cartTotal'))+50},
           {
             headers: {
               'Content-Type': 'application/json',
@@ -113,7 +106,13 @@ export default function Cart() {
 
           localStorage.removeItem("cartProducts");
           localStorage.setItem("orderId", JSON.parse(response.data.orderId));
-          navigate("/orders");
+          setShowToast2(true);
+          setTimeout(() => {
+            setShowToast2(false);
+          }, 2000);
+          setTimeout(() => {
+            navigate("/orders");
+        }, 2000);
         }
 
       } catch (error) {
@@ -123,12 +122,42 @@ export default function Cart() {
       }
     }
 
+    async function removeFromCart(id) {
+      const jwtToken = Cookies.get("jwtToken");
+      if (jwtToken) {
+        await axios.delete(`http://localhost:3000/api/users/products/cart/${id}`,
+          {
+            headers: {
+              Authorization: `Bearer ${jwtToken}`,
+            },
+          }
+        )
+        .then((response) => {
+          console.log(response.data.message);
+          window.location.reload();
+        })
+        .catch((error) => {
+          console.log("Error removing cart item:", error);
+        })
+
+      } else {
+        const cart = JSON.parse(localStorage.getItem("cart"));
+        const index = cart.indexOf(id);
+        if (index > -1) {
+          cart.splice(index, 1);
+        }
+        localStorage.setItem("cart", JSON.stringify(cart));
+      }
+      window.location.reload();
+    }
+
     return (
       <section className="h-100 h-custom" style={{ backgroundColor: "#eee" }}>
         {/* notification toasts */}
         <div className="toast-container position-fixed top-0 start-50 translate-middle-x" style={{zIndex: "10"}}>
             <Toast show={showToast} type="error" message="Please login to order your products" />
             <Toast show={showToast1} type="warning" message="Your cart is empty" />
+            <Toast show={showToast2} type="success" message="Your order has placed successfully" />
         </div>
         <div className="container py-5 h-100">
           <div className="row d-flex justify-content-center align-items-center h-100">
@@ -158,7 +187,7 @@ export default function Cart() {
                           let totalPrice = prod.price * quantity;
 
                           return (
-                            <div className="card mb-3" key={prod._id}>
+                            <div className="card mb-3 pd-card" key={prod._id}>
                               <div className="card-body">
                                 <div className="d-flex justify-content-between">
                                   <div className="d-flex flex-row align-items-center">
@@ -167,10 +196,9 @@ export default function Cart() {
                                         src= {prod.image}
                                         className="img-fluid rounded-3"
                                         alt="Shopping item"
-                                        style={{ width: 65 }}
                                       />
                                     </div>
-                                    <div className="ms-3">
+                                    <div className="ms-3 pd-desc">
                                       <h5>{prod.title}</h5>
                                       <p className="small mb-0">{prod.brand}</p>
                                       <p className="small mb-0">₹{prod.price}</p>
@@ -183,14 +211,10 @@ export default function Cart() {
                                     <div style={{ width: 80 }}>
                                       <h5 className="mb-0">₹{totalPrice}</h5>
                                     </div>
-                                    <MDBTooltip wrapperProps={{ size: "sm", color: "danger" }} wrapperClass="me-3 mb-2"
-                                    title="Remove item">
-                                        <AiFillDelete />
-                                    </MDBTooltip>
-                                    <MDBTooltip wrapperProps={{ size: "sm" }} wrapperClass="me-1 mb-2"
-                                    title="Move to the wish list">
-                                        <AiFillHeart />
-                                    </MDBTooltip>
+                                    <div className="btn-div">
+                                      <button className="delete-btn" onClick={() => {removeFromCart(prod._id)}}><AiFillDelete /></button>
+                                      {/* <button className="wish-btn"><AiFillHeart /></button> */}
+                                    </div>
                                   </div>
                                 </div>
                               </div>
@@ -276,7 +300,7 @@ export default function Cart() {
                           <hr className="my-4" />
                           <div className="d-flex justify-content-between text-white">
                             <p className="mb-2">Subtotal</p>
-                            <p className="mb-2">₹{total}</p>
+                            <p className="mb-2">₹{JSON.parse(localStorage.getItem('cartTotal'))}</p>
                           </div>
                           <div className="d-flex justify-content-between text-white">
                             <p className="mb-2">Shipping</p>
@@ -284,12 +308,12 @@ export default function Cart() {
                           </div>
                           <div className="d-flex justify-content-between mb-4 text-white">
                             <p className="mb-2">Total(Incl. taxes)</p>
-                            <p className="mb-2">₹{total+50}</p>
+                            <p className="mb-2">₹{JSON.parse(localStorage.getItem('cartTotal'))+50}</p>
                           </div>
                           {/* <NavLink to="/orders" state= {{Id: orderid}}> */}
                             <button
                               type="button"
-                              className="checkout-btn"
+                              className="checkout-btn btn btn-success btn-lg"
                               style={{width: "100%"}}
                               onClick={checkoutSubmit}
                             >
@@ -297,7 +321,7 @@ export default function Cart() {
                                 className="d-flex justify-content-between "
                                 style={{display: "flex", justifyContent: "space-between"}}
                               >
-                                <span>₹{total+50}</span>
+                                <span>₹{JSON.parse(localStorage.getItem('cartTotal'))+50}</span>
                                 <span>
                                   Checkout{" "}
                                   <HiArrowNarrowRight />

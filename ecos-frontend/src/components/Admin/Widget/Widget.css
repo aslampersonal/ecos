@@ -25,12 +25,6 @@
         font-weight: 300;
       }
   
-      .link {
-        width: max-content;
-        font-size: 12px;
-        border-bottom: 1px solid gray;
-      }
-  
       .percentage {
         display: flex;
         align-items: center;
@@ -45,7 +39,7 @@
       }
   
       .icon {
-        font-size: 18px;
+        font-size: 25px;
         padding: 5px;
         border-radius: 5px;
         align-self: flex-end;

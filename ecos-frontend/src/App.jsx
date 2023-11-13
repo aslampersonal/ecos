@@ -1,6 +1,6 @@
 import React, { createContext, useEffect, useState } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import "./App.css"
+import "./App.css";
 
 import Header from './components/header/Header';
 import Footer from './components/footer/Footer';
@@ -15,19 +15,23 @@ import OrderPage from "./pages/Order";
 import ProfilePage from "./pages/ProfilePage"
 
 import AdminDashboard from "./pages/Admin/AdminDashboard";
-
 import ProductAddingPage from "./pages/Admin/ProductAddingPage";
 
 import { ContProvider, useCont } from "./context/MyContext";
 import { AuthProvider } from "./context/AuthContext";
+import Sidebar from "./components/Admin/Sidebar/Sidebar";
+import DataPage from "./pages/Admin/DataPage";
 
 function App() {
+
+  // Determine if the current route is an admin route
+  const isAdminRoute = window.location.pathname.startsWith("/admin");
 
   return (
     <ContProvider>
       <AuthProvider>
         <BrowserRouter>
-          <Header />
+          {isAdminRoute ? <Sidebar /> : <Header />}
           <Routes>
             <Route path="/" element={<Home />} /> 
             <Route path="/product" element={<ProductPage />} /> 
@@ -44,8 +48,11 @@ function App() {
 
             <Route path="/admin" element={<AdminDashboard />} />
             <Route path="/admin/products-adding" element={<ProductAddingPage />} />
+            <Route path="/admin/users" element={<DataPage />} />
+            <Route path="/admin/products" element={<DataPage />} />
+            <Route path="/admin/orders" element={<DataPage />} />
           </Routes>
-          <Footer /> 
+          {isAdminRoute ? <></> : <Footer />} 
         </BrowserRouter>
       </AuthProvider>
     </ContProvider>

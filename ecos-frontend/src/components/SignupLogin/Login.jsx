@@ -14,7 +14,7 @@ import Toast from "../Toast/Toast";
 export default function SignInForm (props) {
 
     useEffect(() => {
-        const jwtToken = Cookies.get('jwt');
+        const jwtToken = Cookies.get('jwtToken');
         if (jwtToken) {
             navigate("/");
           }
@@ -40,7 +40,7 @@ export default function SignInForm (props) {
         formData.append('email', document.getElementById("l-email").value);
         formData.append('password', document.getElementById("l-password").value);
 
-        if(document.getElementById("email").value === "admin@gmail.com") {
+        if(document.getElementById("l-email").value === "admin@gmail.com") {
             try {
                 const response = await axios.post('http://localhost:3000/api/admin/login', formData, {
                     headers: {
@@ -108,7 +108,7 @@ export default function SignInForm (props) {
                 }
             
                 login();
-                if (localStorage.getItem("cart") === "null") {
+                if (localStorage.getItem("cart").length) {
                     addToCart();
                 }
                 setShowToast(true);
