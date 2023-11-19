@@ -40,56 +40,56 @@ function HomeMain () {
 
     const featPrds = [
         {
-            id: "1",
+            _id: "653772a1945d37bffc100c79",
             title: "M.A.C Lipstick new",
             brand: "M·A·C",
             image: "/src/assets/images/product-images/lipstick2.png",
             price: "5900",
         },
         {
-            id: "2",
+            _id: "653773c6945d37bffc100c7d",
             title: "M·A·C LOCKED KISS 24HR LIPSTICK",
             brand: "M·A·C",
             image: "/src/assets/images/product-images/lipstick3.png",
             price: "3050",
         },
         {
-            id: "3",
+            _id: "6539f2721a3cfef8ccc1e76f",
             title: "Lakme Lip Love Lip Scrub",
             brand: "LAKME",
             image: "/src/assets/images/product-images/lipscrub1.jpg",
             price: "325",
         },
         {
-            id: "4",
+            _id: "6539f33c1a3cfef8ccc1e773",
             title: "Bella Vita Organic NicoLips Lip Lightening Scrub Balm",
             brand: "BELLA VITA",
             image: "/src/assets/images/product-images/lipscrub2.jpg",
             price: "299",
         },
         {
-            id: "5",
+            _id: "6539f5b51a3cfef8ccc1e777",
             title: "Nykaa Rose & White Musk Hand & Nail Creme",
             brand: "NYKAA",
             image: "/src/assets/images/product-images/handcream1.jpg",
             price: "284",
         },
         {
-            id: "6",
+            _id: "6539f6331a3cfef8ccc1e77b",
             title: "Nykaa Happy Heels Footcream - Tea Tree & Aloe Vera",
             brand: "NYKAA",
             image: "/src/assets/images/product-images/footcream1.avif",
             price: "237",
         },
         {
-            id: "7",
+            _id: "6537749b945d37bffc100c81",
             title: "POWDER KISS LIPSTICK",
             brand: "M.A.C",
             image: "/src/assets/images/product-images/lipstick3.png",
             price: "1850",
         },
         {
-            id: "8",
+            _id: "6539f0e21a3cfef8ccc1e767",
             title: "PREP + PRIME LIP",
             brand: "M.A.C",
             image: "/src/assets/images/product-images/lipstick4.png",
@@ -115,7 +115,7 @@ function HomeMain () {
                 
             } catch (error) {
                 console.error('Error adding to cart:', error);
-            }            
+            }           
         } else {
             const cart = JSON.parse(localStorage.getItem("cart")) ? JSON.parse(localStorage.getItem("cart")) : [];
             localStorage.setItem("cart", JSON.stringify([...cart, id]));
@@ -211,8 +211,8 @@ function HomeMain () {
                     {
                         featPrds.map((pd) => {
                             return (
-                                <div className='pro' key={pd.id}>
-                                    <NavLink to="/product" state={{prodId: pd.id}}>
+                                <div className='pro' key={pd._id}>
+                                    <NavLink to="/product" state={{prodId: pd._id}}>
                                         <img src={pd.image} alt="" />
                                     </NavLink>
                                     <div className='des'>
@@ -227,7 +227,7 @@ function HomeMain () {
                                         </div>
                                         <h4>₹{pd.price}</h4>
                                     </div>
-                                    <button className='cart' onClick={() => addToCart(prodData._id)}><AiOutlineShoppingCart /></button>
+                                    <button className='cart' onClick={() => addToCart(pd._id)}><AiOutlineShoppingCart /></button>
                                 </div>
                             );
                         })

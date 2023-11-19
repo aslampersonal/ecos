@@ -103,10 +103,8 @@ export default function OrderMain() {
                         <div className="d-flex justify-content-between align-items-center mb-4">
                             <h4 className="mb-1">Your Orders:</h4>
                         </div>
-
                         {
-                            JSON.parse(localStorage.getItem('orders')).map((order) => {
-
+                            orderList.map((order) => {
                             return (
                                 <div className="order-main" key={order._id}>
                                     <div className="order-main-top">

@@ -124,7 +124,6 @@ export function useCont() {
     }
 
     async function getOrders() {
-      
       const jwtToken = Cookies.get("jwtToken");
       await axios.get("http://localhost:3000/api/users/orders",
       {

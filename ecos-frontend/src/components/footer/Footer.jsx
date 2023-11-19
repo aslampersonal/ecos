@@ -3,6 +3,7 @@ import './footer.css';
 import Cookies from 'js-cookie';
 import jwt_decode from "jwt-decode";
 import { useState, useEffect } from 'react';
+import { NavLink } from 'react-router-dom';
 
 function Footer () {
 
@@ -25,39 +26,40 @@ function Footer () {
                     <div className="footer-col">
                         <h4>company</h4>
                         <ul className='f-ul'>
-                            <li><a href="#">about us</a></li>
-                            <li><a href="#">our services</a></li>
-                            <li><a href="#">privacy policy</a></li>
-                            <li><a href="#">affiliate program</a></li>
+                            <li><NavLink to="./about-us">about us</NavLink></li>
+                            <li><NavLink to="./our-services">our services</NavLink></li>
+                            <li><NavLink to="./privacy-policy">privacy policy</NavLink></li>
+                            <li><NavLink to="./affiliate-program">affiliate program</NavLink></li>
                         </ul>
                     </div>
                     <div className="footer-col">
                         <h4>get help</h4>
                         <ul className='f-ul'>
-                            <li><a href="#">FAQ</a></li>
-                            <li><a href="#">shipping</a></li>
-                            <li><a href="#">returns</a></li>
-                            <li><a href="#">order status</a></li>
-                            <li><a href="#">payment options</a></li>
+                            <li><NavLink to="./about-us">FAQ</NavLink></li>
+                            <li><NavLink to="./about-us">Shipping</NavLink></li>
+                            <li><NavLink to="./about-us">returns</NavLink></li>
+                            <li><NavLink to="./about-us">order status</NavLink></li>
+                            <li><NavLink to="./about-us">payment options</NavLink></li>
                         </ul>
                     </div>
                     <div className="footer-col">
                         <h4>online shop</h4>
                         <ul className='f-ul'>
-                            <li><a href="#">Lips</a></li>
-                            <li><a href="#">Face</a></li>
-                            <li><a href="#">Eyes</a></li>
-                            <li><a href="#">Skin</a></li>
-                            <li><a href="#">Hair</a></li>
+                            <li><NavLink to="./collections" state= {{title:"lips"}}>lips</NavLink></li>
+                            <li><NavLink to="./collections" state= {{title:"hands & feet"}}>Hands & Feet</NavLink></li>
+                            <li><NavLink to="./collections" state= {{title:"eyes"}}>eyes</NavLink></li>
+                            <li><NavLink to="./collections" state= {{title:"skincare"}}>skin care</NavLink></li>
+                            <li><NavLink to="./collections" state= {{title:"bodycare"}}>body care</NavLink></li>
+                            <li><NavLink to="./collections" state= {{title:"haircare"}}>hair care</NavLink></li>
                         </ul>
                     </div>
                     <div className="footer-col">
                         <h4>follow us</h4>
                         <div className="social-links">
-                            <a href="#"><FaFacebook /></a>
-                            <a href="#"><FaTwitter /></a>
-                            <a href="#"><FaInstagram /></a>
-                            <a href="#"><FaLinkedin /></a>
+                            <a href="https://www.facebook.com/"><FaFacebook /></a>
+                            <a href="https://twitter.com/"><FaTwitter /></a>
+                            <a href="https://www.instagram.com/"><FaInstagram /></a>
+                            <a href="https://www.linkedin.com/"><FaLinkedin /></a>
                         </div>
                     </div>
                 </div>

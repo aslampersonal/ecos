@@ -69,14 +69,21 @@ export default function ProductCard (props) {
 
     const [sorted, sortProducts] = useState([]);
     const [showToast, setShowToast] = useState(false);
+    const [selectedOption, setSelectedOption] = useState('Latest items');
 
-    function sortChange() {
-        productList.forEach(element => {
-            sortProducts([...sorted, element]);
-            console.log(element);
-        });
+    function sortChange(event) {
+        const selectedValue = event.target.value;
+        setSelectedOption(selectedValue);
+
+        if (selectedValue === "Name") {
+            productList.sort((a, b) => a.title.localeCompare(b.title));
+        }
+
+        if (selectedValue === "Cheapest") {
+            productList.sort((a, b) => a.title.localeCompare(b.title) || a.price - b.price);
+        }
         // sortProducts(productList);
-        console.log(sorted);
+        console.log(productList);
     }
 
     async function addToCart(id) {
@@ -115,7 +122,7 @@ export default function ProductCard (props) {
                     <span className="mr-md-auto" style={{fontWeight: "600"}}>{productList.length} Items found </span>
                     <div id='sort-div'>
                         <span style={{marginRight: "1rem", fontWeight: "600"}}>Sort By:</span>
-                        <select className="form-control" id='sort-select' onChange={sortChange}>
+                        <select className="form-control" id='sort-select' value={selectedOption} onChange={sortChange}>
                             <option>Latest items</option>
                             <option>Name</option>
                             <option>Cheapest</option>

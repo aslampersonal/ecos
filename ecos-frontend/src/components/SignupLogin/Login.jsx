@@ -121,7 +121,7 @@ export default function SignInForm (props) {
 
               } catch (error) {
                 console.error('Error login:', error);
-                alert(error.response.data.error);
+                alert(error);
               }
         }
 

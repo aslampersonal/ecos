@@ -245,6 +245,7 @@ export default function Cart() {
                                   id="cardname"
                                   className="form-control"
                                   placeholder="Cardholder's Name"
+                                  required
                                 />
                                 <label className="form-label" htmlFor="cardname">
                                   Cardholder's Name
@@ -258,6 +259,7 @@ export default function Cart() {
                                   placeholder="1234 5678 9012 3457"
                                   minLength={19}
                                   maxLength={19}
+                                  required
                                 />
                                 <label className="form-label" htmlFor="typeText">
                                   Card Number
@@ -273,6 +275,7 @@ export default function Cart() {
                                       placeholder="MM/YYYY"
                                       minLength={7}
                                       maxLength={7}
+                                      required
                                     />
                                     <label className="form-label" htmlFor="typeExp">
                                       Card Expiry Date
@@ -288,6 +291,7 @@ export default function Cart() {
                                       placeholder="●●●"
                                       minLength={3}
                                       maxLength={3}
+                                      required
                                     />
                                     <label className="form-label" htmlFor="typeText">
                                       CVV

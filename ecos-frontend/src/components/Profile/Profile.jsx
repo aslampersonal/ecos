@@ -45,7 +45,7 @@ export default function Profile() {
     }, []);
 
     function orderSection () {
-        if (JSON.parse(localStorage.getItem("orders")).length !== 0) {
+        if (orders.length !== 0) {
             return (
             <TableContainer component={Paper}>
                 <Table sx={{ minWidth: 500 }} aria-label="customized table">
