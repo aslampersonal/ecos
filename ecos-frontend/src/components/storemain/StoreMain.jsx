@@ -11,7 +11,7 @@ export default function StoreMain() {
                     <div className="cat-card">
                         <div className="cat-img-div">
                             <NavLink to="/collections" state= {{title:"Lipstick"}} className="nav-link">
-                                <img src="/src/assets/images/eyeshadow-girl1.jpg" />
+                                <img src="/src/assets/catIcons/lipstick.jpg" />
                             </NavLink>
                         </div>
                         <span>Lipsticks</span>
@@ -19,7 +19,7 @@ export default function StoreMain() {
                     <div className="cat-card">
                         <div className="cat-img-div">
                             <NavLink to="/collections" state= {{title:"Lip Balm"}} className="nav-link">
-                                <img src="/src/assets/images/eyeshadow-girl1.jpg" />
+                                <img src="/src/assets/catIcons/lipbalm.png" />
                             </NavLink>
                         </div>
                         <span>Lip Balms</span>
@@ -27,7 +27,7 @@ export default function StoreMain() {
                     <div className="cat-card">
                         <div className="cat-img-div">
                             <NavLink to="/collections" state= {{title:"Lip Scrub"}} className="nav-link">
-                                <img src="/src/assets/images/eyeshadow-girl1.jpg" />
+                                <img src="/src/assets/catIcons/lipscrub.jpg" />
                             </NavLink>
                         </div>
                         <span>Lip Scrubs</span>
@@ -35,7 +35,7 @@ export default function StoreMain() {
                     <div className="cat-card">
                         <div className="cat-img-div">
                             <NavLink to="/collections" state= {{title:"Lip Mask"}} className="nav-link">
-                                <img src="/src/assets/images/eyeshadow-girl1.jpg" />
+                                <img src="/src/assets/catIcons/lipmask.png" />
                             </NavLink>
                         </div>
                         <span>Lip Masks</span>
@@ -49,7 +49,7 @@ export default function StoreMain() {
                     <div className="cat-card">
                         <div className="cat-img-div">
                             <NavLink to="/collections" state= {{title:"Hand Creams"}} className="nav-link">
-                                <img src="/src/assets/images/eyeshadow-girl1.jpg" />
+                                <img src="/src/assets/catIcons/handcreams.jpg" />
                             </NavLink>
                         </div>
                         <span>Hand Creams</span>
@@ -57,7 +57,7 @@ export default function StoreMain() {
                     <div className="cat-card">
                         <div className="cat-img-div">
                             <NavLink to="/collections" state= {{title:"Foot Creams"}} className="nav-link">
-                                <img src="/src/assets/images/eyeshadow-girl1.jpg" />
+                                <img src="/src/assets/catIcons/footcreams.png" />
                             </NavLink>
                         </div>
                         <span>Foot Creams</span>
@@ -65,7 +65,7 @@ export default function StoreMain() {
                     <div className="cat-card">
                         <div className="cat-img-div">
                             <NavLink to="/collections" state= {{title:"Hands & Foot Masks"}} className="nav-link">
-                                <img src="/src/assets/images/eyeshadow-girl1.jpg" />
+                                <img src="/src/assets/catIcons/handmask.jpg" />
                             </NavLink>
                         </div>
                         <span>Hands & Foot Masks</span>
@@ -79,7 +79,7 @@ export default function StoreMain() {
                     <div className="cat-card">
                         <div className="cat-img-div">
                             <NavLink to="/collections" state= {{title:"Under Eye Cream & Serum"}} className="nav-link">
-                                <img src="/src/assets/images/eyeshadow-girl1.jpg" />
+                                <img src="/src/assets/catIcons/eyeserum.jpg" />
                             </NavLink>
                         </div>
                         <span>Under Eye Cream & Serum</span>
@@ -87,7 +87,7 @@ export default function StoreMain() {
                     <div className="cat-card">
                         <div className="cat-img-div">
                             <NavLink to="/collections" state= {{title:"Eye Masks"}} className="nav-link">
-                                <img src="/src/assets/images/eyeshadow-girl1.jpg" />
+                                <img src="/src/assets/catIcons/eyemask.jpg" />
                             </NavLink>
                         </div>
                         <span>Eye Masks</span>
@@ -101,7 +101,7 @@ export default function StoreMain() {
                     <div className="cat-card">
                         <div className="cat-img-div">
                             <NavLink to="/collections" state= {{title:"Moisturizer"}} className="nav-link">
-                                <img src="/src/assets/images/eyeshadow-girl1.jpg" />
+                                <img src="/src/assets/catIcons/moisturizer.jpg" />
                             </NavLink>
                         </div>
                         <span>Moisturizer</span>
@@ -109,7 +109,7 @@ export default function StoreMain() {
                     <div className="cat-card">
                         <div className="cat-img-div">
                             <NavLink to="/collections" state= {{title:"Cleanser"}} className="nav-link">
-                                <img src="/src/assets/images/eyeshadow-girl1.jpg" />
+                                <img src="/src/assets/catIcons/cleanser.jpg" />
                             </NavLink>
                         </div>
                         <span>Cleanser</span>
@@ -117,7 +117,7 @@ export default function StoreMain() {
                     <div className="cat-card">
                         <div className="cat-img-div">
                             <NavLink to="/collections" state= {{title:"Mask"}} className="nav-link">
-                                <img src="/src/assets/images/eyeshadow-girl1.jpg" />
+                                <img src="/src/assets/catIcons/skinmask.jpg" />
                             </NavLink>
                         </div>
                         <span>Mask</span>
@@ -125,7 +125,7 @@ export default function StoreMain() {
                     <div className="cat-card">
                         <div className="cat-img-div">
                             <NavLink to="/collections" state= {{title:"Toner"}} className="nav-link">
-                                <img src="/src/assets/images/eyeshadow-girl1.jpg" />
+                                <img src="/src/assets/catIcons/toner.jpg" />
                             </NavLink>
                         </div>
                         <span>Toner</span>
@@ -139,7 +139,7 @@ export default function StoreMain() {
                     <div className="cat-card">
                         <div className="cat-img-div">
                             <NavLink to="/collections" state= {{title:"Lotions & Creams"}} className="nav-link">
-                                <img src="/src/assets/images/eyeshadow-girl1.jpg" />
+                                <img src="/src/assets/catIcons/bodylotion.jpg" />
                             </NavLink>
                         </div>
                         <span>Lotions & Creams</span>
@@ -147,7 +147,7 @@ export default function StoreMain() {
                     <div className="cat-card">
                         <div className="cat-img-div">
                             <NavLink to="/collections" state= {{title:"Massage Oils"}} className="nav-link">
-                                <img src="/src/assets/images/eyeshadow-girl1.jpg" />
+                                <img src="/src/assets/catIcons/massageoil.png" />
                             </NavLink>
                         </div>
                         <span>Massage Oils</span>
@@ -155,7 +155,7 @@ export default function StoreMain() {
                     <div className="cat-card">
                         <div className="cat-img-div">
                             <NavLink to="/collections" state= {{title:"Shower Gels & Body Wash"}} className="nav-link">
-                                <img src="/src/assets/images/eyeshadow-girl1.jpg" />
+                                <img src="/src/assets/catIcons/showergel.jpg" />
                             </NavLink>
                         </div>
                         <span>Shower Gels & Body Wash</span>
@@ -163,7 +163,7 @@ export default function StoreMain() {
                     <div className="cat-card">
                         <div className="cat-img-div">
                             <NavLink to="/collections" state= {{title:"Scrubs & Loofahs"}} className="nav-link">
-                                <img src="/src/assets/images/eyeshadow-girl1.jpg" />
+                                <img src="/src/assets/catIcons/bodyscrub.jpg" />
                             </NavLink>
                         </div>
                         <span>Scrubs & Loofahs</span>
@@ -177,7 +177,7 @@ export default function StoreMain() {
                     <div className="cat-card">
                         <div className="cat-img-div">
                             <NavLink to="/collections" state= {{title:"Shampoo"}} className="nav-link">
-                                <img src="/src/assets/images/eyeshadow-girl1.jpg" />
+                                <img src="/src/assets/catIcons/hairshampoo.png" />
                             </NavLink>
                         </div>
                         <span>Shampoo</span>
@@ -185,7 +185,7 @@ export default function StoreMain() {
                     <div className="cat-card">
                         <div className="cat-img-div">
                             <NavLink to="/collections" state= {{title:"Conditioner"}} className="nav-link">
-                                <img src="/src/assets/images/eyeshadow-girl1.jpg" />
+                                <img src="/src/assets/catIcons/conditioner.jpg" />
                             </NavLink>
                         </div>
                         <span>Conditioner</span>
@@ -193,7 +193,7 @@ export default function StoreMain() {
                     <div className="cat-card">
                         <div className="cat-img-div">
                             <NavLink to="/collections" state= {{title:"Hair Oil"}} className="nav-link">
-                                <img src="/src/assets/images/eyeshadow-girl1.jpg" />
+                                <img src="/src/assets/catIcons/hairoil.jpg" />
                             </NavLink>
                         </div>
                         <span>Hair Oil</span>
@@ -201,7 +201,7 @@ export default function StoreMain() {
                     <div className="cat-card">
                         <div className="cat-img-div">
                             <NavLink to="/collections" state= {{title:"Hair Serum"}} className="nav-link">
-                                <img src="/src/assets/images/eyeshadow-girl1.jpg" />
+                                <img src="/src/assets/catIcons/hairserum.jpg" />
                             </NavLink>
                         </div>
                         <span>Hair Serum</span>
@@ -209,7 +209,7 @@ export default function StoreMain() {
                     <div className="cat-card">
                         <div className="cat-img-div">
                             <NavLink to="/collections" state= {{title:"Dry Shampoo"}} className="nav-link">
-                                <img src="/src/assets/images/eyeshadow-girl1.jpg" />
+                                <img src="/src/assets/catIcons/dryshampoo.jpg" />
                             </NavLink>
                         </div>
                         <span>Dry Shampoo</span>

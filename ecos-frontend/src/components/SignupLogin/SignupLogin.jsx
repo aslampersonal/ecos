@@ -14,8 +14,7 @@ export default function SignupLogin() {
     }
   };
 
-  const containerClass =
-    "ls-container " + (type === "signUp" ? "right-panel-active" : "");
+  const containerClass = "ls-container " + (type === "signUp" ? "right-panel-active" : "");
   
   return (
     <div className="SignupLogin">

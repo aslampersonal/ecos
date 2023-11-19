@@ -8,6 +8,7 @@ import { BiImages } from "react-icons/bi"
 
 import "./ProductAdding.css";
 import Toast from '../../Toast/Toast';
+import Cookies from 'js-cookie';
 
 export default function ProductAdding() {
 
@@ -33,6 +34,7 @@ export default function ProductAdding() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    const jwtToken = Cookies.get("jwtToken");
     const formData = new FormData();
     formData.append('title', product.name);
     formData.append('description', product.description);
@@ -46,6 +48,7 @@ export default function ProductAdding() {
       const response = await axios.post('http://localhost:3000/api/admin/productupload', formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
+          Authorization: `Bearer ${jwtToken}`,
         },
       });
       console.log(response.data.message);

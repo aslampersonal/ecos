@@ -29,8 +29,6 @@ export default function Products() {
     const [deletingUser, setDeletingUser] = useState({});
     const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
     const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
-    const [selectedStatus, setSelectedStatus] = useState("");
-    const [orderStatus, setOrderStatus] = useState("");
     const [updatedProduct, setUpdatedProduct] = useState({
         title: '', 
         description: '', 
@@ -65,7 +63,7 @@ export default function Products() {
             localStorage.setItem("allProducts", JSON.stringify(response.data.allProducts));
             setProducts(response.data.allProducts);
         }).catch((err) => {
-            console.log("error getting users: " + err);
+            console.log("error getting Products: " + err);
         })
     }
 
@@ -88,9 +86,10 @@ export default function Products() {
         formData.append('category', updatedProduct.category);
         formData.append('price', updatedProduct.price);
         formData.append('countInStock', updatedProduct.countInStock);
+
         if (typeof(updatedProduct.image) == "object") {
             formData.append('image', updatedProduct.image);
-            await axios.put(`http://localhost:3000/api/admin/products/image/${id}`,
+            await axios.put(`http://localhost:3000/api/admin/products/image/${updatedProduct._id}`,
             formData,
             {
                 method: 'PUT',
@@ -122,41 +121,19 @@ export default function Products() {
         })
     };
 
-    async function updateOrder(id) {
+    async function deleteProduct(id) {
         const jwtToken = Cookies.get("jwtToken");
-        const email = user.email;
-        const status = orderStatus;
-
-        await axios.put(`http://localhost:3000/api/admin/orders/updateorders/${id}`,
-        { status, email },
-        {
-            method: 'PUT', // Use PUT request to update the resource
-            headers: {
-                'Content-Type': 'application/json',
-                Authorization: `Bearer ${jwtToken}`,
-            },
-        }).then((response) => {
-            console.log(response.data.message);
-        }).catch((err) => {
-            console.log("error getting users: " + err);
-        })
-    }
-
-    async function deleteUser(id) {
-        
-        const jwtToken = Cookies.get("jwtToken");
-
-        await axios.delete(`http://localhost:3000/api/admin/users/${id}`,
+        await axios.delete(`http://localhost:3000/api/admin/products/${id}`,
         {
             headers: {
                 'Content-Type': 'application/json',
                 Authorization: `Bearer ${jwtToken}`,
             },
         }).then((response) => {
-            console.log("user deleted:", response.data.deletedUser);
+            console.log("Product deleted:", response.data.product);
             window.location.reload();
         }).catch((err) => {
-            console.log("error deleting user: " + err);
+            console.log("error deleting Product: " + err);
         })
     }
 
@@ -208,11 +185,12 @@ export default function Products() {
                         </TableHead>
                         <TableBody>
                         {products.map((prod) => {
+                            const img = "http://localhost:3000/" + prod.image.slice(7);
                             return (
                             <TableRow key={prod._id}>
                                 <TableCell className="tableCell">{prod._id}</TableCell>
                                 <TableCell className="tableCell">{prod.title}</TableCell>
-                                <TableCell className="tableCell"><img src={prod.image} alt="image error" /></TableCell>
+                                <TableCell className="tableCell"><img src={img} alt="image error" /></TableCell>
                                 <TableCell className="tableCell">{prod.brand}</TableCell>
                                 <TableCell className="tableCell">{prod.category}</TableCell>
                                 <TableCell className="tableCell">₹{prod.price}</TableCell>
@@ -277,7 +255,7 @@ export default function Products() {
                         <Dialog open={isDeleteDialogOpen} onClose={handleDeleteDialogClose}>
                             <DialogContent>
                             <div style={{padding: "1rem"}}>
-                                <span>Are you sure you want to delete the user:</span>
+                                <span>Are you sure you want to delete the Product:</span>
                                 <p style={{textAlign: "center", fontSize: "20px", marginTop: "1rem"}}>{deletingUser.username}</p>
                             </div>
                             </DialogContent>
@@ -285,7 +263,7 @@ export default function Products() {
                                 <Button onClick={handleDeleteDialogClose} id="" color="error">
                                     Close
                                 </Button>
-                                <Button onClick={() => {deleteUser(deletingUser._id)}} id="">
+                                <Button onClick={() => {deleteProduct(deletingUser._id)}} id="">
                                     Delete
                                 </Button>
                             </DialogActions>

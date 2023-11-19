@@ -6,26 +6,17 @@ import PersonOutlineIcon from "@mui/icons-material/PersonOutline";
 import LocalShippingIcon from "@mui/icons-material/LocalShipping";
 import CreditCardIcon from "@mui/icons-material/CreditCard";
 import StoreIcon from "@mui/icons-material/Store";
-import InsertChartIcon from "@mui/icons-material/InsertChart";
-import SettingsApplicationsIcon from "@mui/icons-material/SettingsApplications";
 import ExitToAppIcon from "@mui/icons-material/ExitToApp";
-import NotificationsNoneIcon from "@mui/icons-material/NotificationsNone";
-import SettingsSystemDaydreamOutlinedIcon from "@mui/icons-material/SettingsSystemDaydreamOutlined";
 import PsychologyOutlinedIcon from "@mui/icons-material/PsychologyOutlined";
-import AccountCircleOutlinedIcon from "@mui/icons-material/AccountCircleOutlined";
+import AddIcon from '@mui/icons-material/Add';
 import { useEffect } from "react";
 import Cookies from "js-cookie";
 import jwt_decode from "jwt-decode";
-import { useCont } from '../../../context/MyContext';
-import { useAuth } from "../../../context/AuthContext";
 import Toast from "../../Toast/Toast";
 import axios from "axios";
 
 export default function Sidebar() {
     
-    const { loggedIn, login, logout } = useAuth();
-    const { cart, setCart, setToken, user, setUser, getCart } = useCont();
-
     const [showToast, setShowToast] = useState(false);
     const navigate = useNavigate();
 
@@ -59,7 +50,6 @@ export default function Sidebar() {
                     setShowToast(false);
                 }, 2000); 
                 setTimeout(() => {
-                    window.location.reload();
                     navigate("/login");
                 }, 2000);
             } catch (error) {
@@ -110,50 +100,19 @@ export default function Sidebar() {
                         </NavLink>
                     </li>
                     <li className="li">
-                        <NavLink to="/admin/delivery" className="nav-link">
+                        {/* <NavLink to="/admin/delivery" className="nav-link"> */}
                         <LocalShippingIcon className="icon" />
                         <span className="span">Delivery</span>
-                        </NavLink>
-                    </li>
-                    <p className="title">USEFUL</p>
-                    <li className="li">
-                        <NavLink to="/admin/stats" className="nav-link">
-                        <InsertChartIcon className="icon" />
-                        <span className="span">Stats</span>
-                        </NavLink>
-                    </li>
-                    <li className="li">
-                        <NavLink to="/admin/notifications" className="nav-link">
-                        <NotificationsNoneIcon className="icon" />
-                        <span className="span">Notifications</span>
-                        </NavLink>
+                        {/* </NavLink> */}
                     </li>
                     <p className="title">SERVICE</p>
                     <li className="li">
-                        <NavLink to="/admin/system" className="nav-link">
-                        <SettingsSystemDaydreamOutlinedIcon className="icon" />
-                        <span className="span">System Health</span>
-                        </NavLink>
-                    </li>
-                    <li className="li">
-                        <NavLink to="/admin/logs" className="nav-link">
-                        <PsychologyOutlinedIcon className="icon" />
-                        <span className="span">Logs</span>
-                        </NavLink>
-                    </li>
-                    <li className="li">
-                        <NavLink to="/admin/settings" className="nav-link">
-                        <SettingsApplicationsIcon className="icon" />
-                        <span className="span">Settings</span>
+                        <NavLink to="/admin/products-adding" className="nav-link">
+                        <AddIcon className="icon" />
+                        <span className="span">Add New Product</span>
                         </NavLink>
                     </li>
                     <p className="title">USER</p>
-                    <li className="li">
-                        <NavLink to="/admin/profile" className="nav-link">
-                        <AccountCircleOutlinedIcon className="icon" />
-                        <span className="span">Profile</span>
-                        </NavLink>
-                    </li>
                     <li className="li">
                         <ExitToAppIcon className="icon" />
                         <button className="button" onClick={logoutAdmin}>Logout</button>

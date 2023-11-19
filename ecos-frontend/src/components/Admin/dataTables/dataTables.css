@@ -7,8 +7,8 @@
     padding: 10px 1rem;
     background: 0;
     border: 0;
-    border-radius: 20px;
-    box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.12);
+    border-radius: 15px;
+    box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.09);
 }
 
 .od-main-div button:hover {
@@ -70,7 +70,7 @@
     margin-right: 1rem;
 }
 
-.pop-order-div select {
+.pop-order-div select, .tableCell select {
     padding: 5px 1rem;
 }
 
@@ -101,3 +101,9 @@
 #update-btn:hover {
     box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.32);
 }
+
+.tableCell img {
+    width: 5rem;
+    height: 5rem;
+}
+

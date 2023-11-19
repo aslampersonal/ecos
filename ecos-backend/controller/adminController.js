@@ -55,11 +55,11 @@ const createProduct = async (req, res) => {
         countInStock: req.body.countInStock,
       },
     ])
-      .then(() => {
-        console.log("Data inserted")  // Success
-      }).catch((error) => {
-        console.log(error);
-      });
+    .then(() => {
+      console.log("Data inserted")  // Success
+    }).catch((error) => {
+      console.log(error);
+    });
     res.status(201).json({ message: "Product created successfully" });
   } catch (error) {
     res
@@ -159,9 +159,10 @@ const updateProduct = async (req, res) => {
   try {
     const id = req.params.id;
     const { title, description, brand, category, price, countInStock} = req.body;
-    if (req.body.image) {
+
+    if (req.file) {
       
-      const { image } = req.body;
+      const image = req.file.path;
       const updatedProduct = await productDatas.findOneAndUpdate(
         { _id: id },
         { title, description, brand, category, price, countInStock, image }
@@ -169,10 +170,10 @@ const updateProduct = async (req, res) => {
       if (!updatedProduct) {
         return res.status(404).json({ message: "Product not found" });
       }
-      res.json({ message: "Product updated", updatedProduct });
+      res.json({ message: "Product updated with image", updatedProduct });
 
     } else {
-      
+
       const updatedProduct = await productDatas.findOneAndUpdate(
         { _id: id },
         { title, description, brand, category, price, countInStock }
