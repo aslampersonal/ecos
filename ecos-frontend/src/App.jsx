@@ -13,6 +13,7 @@ import CollectionPage from "./pages/CollectionPage";
 import CartPage from "./pages/CartPage";
 import OrderPage from "./pages/Order";
 import ProfilePage from "./pages/ProfilePage"
+import NotFoundPage from "./pages/404Page";
 
 import AdminDashboard from "./pages/Admin/AdminDashboard";
 import ProductAddingPage from "./pages/Admin/ProductAddingPage";
@@ -21,6 +22,15 @@ import { ContProvider, useCont } from "./context/MyContext";
 import { AuthProvider } from "./context/AuthContext";
 import Sidebar from "./components/Admin/Sidebar/Sidebar";
 import DataPage from "./pages/Admin/DataPage";
+
+function NotFound() {
+  return (
+    <main>
+      <h1>404 - Not Found</h1>
+      <p>The page you are looking for does not exist.</p>
+    </main>
+  );
+}
 
 function App() {
 
@@ -51,6 +61,8 @@ function App() {
             <Route path="/admin/users" element={<DataPage />} />
             <Route path="/admin/products" element={<DataPage />} />
             <Route path="/admin/orders" element={<DataPage />} />
+            {/* Add a wildcard route for Not Found */}
+            <Route path="*" element={<NotFoundPage />} />
           </Routes>
           {isAdminRoute ? <></> : <Footer />} 
         </BrowserRouter>

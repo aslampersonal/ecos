@@ -18,19 +18,19 @@ mongoose
 
 app.use(cors({ origin: 'http://localhost:5173', credentials: true }));
 app.use(express.static("public"));
-
 app.use(cookieParser());
 
 // for admin routes
-
 const adminRoute = require("./routes/adminRoutes");
 app.use("/api/admin", adminRoute);
 
 // for user route
-
 const userRoute = require("./routes/userRoutes");
+const googleAuth = require("./middleware/googleAuth");
 app.use("/api/users", userRoute);
+app.use("/api/auth", googleAuth);
 
 app.listen(3000, () => {
   console.log("server connected at 3000");
 });
+

@@ -138,7 +138,6 @@ export function useCont() {
       .catch((error) => {
         console.log("Error getting cart details: ", error);
       });
-
     }
   
     return (

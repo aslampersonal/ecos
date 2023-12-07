@@ -2,12 +2,15 @@ main {
     display: flex;
     flex-direction: column;
     background-color: white;
+    overflow: hidden;
 }
 
 /* home page banner section */
 #mbanner-section {
     height: 30rem;
     width: 100%;
+    overflow: hidden;
+    position: relative;
 }
 
 .mbanner-div {
@@ -15,12 +18,14 @@ main {
     height: 30rem;
     border-radius: 10px;
     overflow: hidden;
+    position: relative;
 }
 
 .mbanner-div1 {
     width: 500%;
     height: 30rem;
     display: flex;
+    transition: 2s;
 }
 
 .mbanner-div1 input {

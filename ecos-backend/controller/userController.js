@@ -2,11 +2,18 @@ const express = require('express');
 const app=express();
 const jwt = require("jsonwebtoken");
 const cookieParser = require("cookie-parser");
+const dotenv = require('dotenv');
+dotenv.config();
+const {OAuth2Client} = require('google-auth-library');
 
 const productDatas = require("../models/productModel");
 const validator = require("validator");
 const schema = require("../models/userModel");
 const secretKey = process.env.SECRET_KEY;
+
+//for encrypting password using bcrypt
+const bcrypt = require('bcrypt');
+const saltRounds = 10;
 
 // Configure cookie parsing middleware
 app.use(cookieParser());
@@ -32,7 +39,7 @@ const userLogin = async (req, res) => {
   
   try {
     const login = await schema.findOne({ email: req.body.email });
-    console.log(login);
+    console.log("user:",login);
 
     if(login == null) {
       res.status(401).json({ error: "E-mail or password is invalid" });
@@ -40,29 +47,58 @@ const userLogin = async (req, res) => {
     }
 
     // check user email and password
-    if (login.email == req.body.email && login.password == req.body.password) {
+    if (login.email == req.body.email) {
       
-      // Create a JWT token
-      const user = {username: login.username, email: login.email, cart: login.cart, orders: login.orders};
-      const token = jwt.sign(user, secretKey, { expiresIn: '5h' });
+      // Password decryption using bcrypt
 
-      // Set the token as a HTTP cookie
-      res.cookie('jwtToken', token, {
-        httpOnly: true,
-        secure: true, // Set to true in production (for HTTPS)
-        sameSite: 'strict', // Adjust as needed
+      bcrypt.compare(req.body.password, login.password, (err, result) => {
+        if (result) {
+          // Create a JWT token
+          const user = {username: login.username, email: login.email, cart: login.cart, orders: login.orders};
+          const token = jwt.sign(user, secretKey, { expiresIn: '5h' });
+
+          // Set the token as a HTTP cookie
+          res.cookie('jwtToken', token, {
+            httpOnly: true,
+            secure: true, // Set to true in production (for HTTPS)
+            sameSite: 'strict', // Adjust as needed
+          });
+          
+          res.status(201).json({ message: "user logged successfully.....", user, cookie: token });
+          return;
+        } else {
+          res.status(401).json({ error: "E-mail or password is invalid" });
+        }
       });
-      
-      res.status(201).json({ message: "user logged successfully.....", user, cookie: token });
-      return;
-
     }
-    res.status(401).json({ error: "E-mail or password is invalid" });
   } catch (error) {
     console.log(error);
     res.status(500).json({ error: "server error", error: error.message });
   }
 };
+
+const googleLogin = async (req, res) => {
+  
+  res.header('Access-Control-Allow-Origin','http://localhost:5173');
+  res.header('Referrer-Policy','no-referrer-when-downgrade');
+
+  const redirectUrl = 'http://localhost:3000/api/users/googlelogin';
+
+  const oAuth2Client = new OAuth2Client(
+    process.env.CLIENT_ID,
+    process.env.CLIENT_SECRET,
+    redirectUrl
+  )
+
+  const authorizeUrl = oAuth2Client.generateAuthUrl({
+    access_type:'offline',
+    scope:'http://www.googleapis.com/auth/userinfo.profile openid',
+    prompt:'consent'
+  })
+
+  res.json({url:authorizeUrl});
+
+}
 
 // user logout
 const userLogout = async (req, res) => {
@@ -75,8 +111,8 @@ const userLogout = async (req, res) => {
 
 // user registration
 const userRegister = async (req, res) => {
+  
   //validator check email as email format use in isEmail
-
   if (!validator.isEmail(req.body.email)) {
     return res.status(400).json({ error: "Invalid email format" });
   }
@@ -101,14 +137,18 @@ const userRegister = async (req, res) => {
 
     console.log(req.body);
 
-    await schema.insertMany({
-      username: req.body.username,
-      // fullname: req.body.fullname,
-      // mobile: req.body.mobile,
-      email: req.body.email,
-      password: req.body.password,
+    // password encryption using bcrypt
+    bcrypt.hash(req.body.password, saltRounds, (err, hash) => {
+      schema.insertMany({
+        username: req.body.username,
+        // fullname: req.body.fullname,
+        // mobile: req.body.mobile,
+        email: req.body.email,
+        password: hash,
+      });
+      res.status(200).json({ message: "user registered successfully !!..." });
     });
-    res.status(200).json({ message: "user registered successfully !!..." });
+
   } catch (error) {
     res.status(500).json({ error: "Server Error", error: error.message });
   }
@@ -405,6 +445,7 @@ const updateOrderStatus = async (req, res) => {
 module.exports = {
     getAllProducts,
     userLogin,
+    googleLogin,
     userLogout,
     userRegister,
     getProducts,
