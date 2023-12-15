@@ -10,7 +10,7 @@ import { VscDebugBreakpointLog } from "react-icons/vsc"
 
 import { useCont } from "../../context/MyContext";
 
-import "./ProductMain.css";
+import "./productmain.css";
 import Error from "../error/Error";
 
 export default function ProductMain (props) {
