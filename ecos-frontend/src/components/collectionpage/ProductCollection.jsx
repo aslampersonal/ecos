@@ -3,7 +3,7 @@ import { NavLink, useLocation } from "react-router-dom";
 import { BiSearchAlt } from "react-icons/bi"
 
 import ProductCard from "../ProductCard/ProductCard";
-import "./productCollection.css"
+import "./ProductCollection.css"
 
 
 export default function ProductCollection() {
