@@ -54,7 +54,7 @@ export default function Profile() {
                         <StyledTableCell align="center">Ordered Date</StyledTableCell>
                         <StyledTableCell align="center">Total</StyledTableCell>
                         <StyledTableCell align="center">Status</StyledTableCell>
-                        <StyledTableCell align="center">Cancellation</StyledTableCell>
+                        {/* <StyledTableCell align="center">Cancellation</StyledTableCell> */}
                     </TableRow>
                     </TableHead>
                     <TableBody>
@@ -64,7 +64,7 @@ export default function Profile() {
                         <StyledTableCell align="left"><BsFillCalendarDateFill style={{fontSize:"20px", marginRight: "10px"}} />{order.orderDate.slice(0, 10)}</StyledTableCell>
                         <StyledTableCell align="left">₹{order.payment}</StyledTableCell>
                         <StyledTableCell align="right">{order.status}</StyledTableCell>
-                        <StyledTableCell align="center">{order.status!=="Cancelled" ? <button className="cancel-btn" onClick={() => {cancelOrder(order._id)}}>Cancel</button> : <span>Cancelled</span>}</StyledTableCell>
+                        {/* <StyledTableCell align="center">{order.status!=="Cancelled" ? <button className="cancel-btn" onClick={() => {cancelOrder(order._id)}}>Cancel</button> : <span>Cancelled</span>}</StyledTableCell> */}
                         </StyledTableRow>
                     ))}
                     </TableBody>

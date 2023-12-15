@@ -1,6 +1,6 @@
 import React from "react";
 
-import ProductAdding from "../../components/Admin/ProductAdding/ProductAdding";
+import ProductAdding from "../../components/Admin/productadding/ProductAdding";
 
 export default function ProductAddingPage (props) {
     return (

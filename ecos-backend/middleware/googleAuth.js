@@ -7,7 +7,7 @@ const router = express.Router();
 // Google OAuth credentials
 const GOOGLE_CLIENT_ID = "553811670174-82u1d0qaelspr7jdeptejvvakcbq2it8.apps.googleusercontent.com";
 const GOOGLE_CLIENT_SECRET = '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';
-const CALLBACK_URL = 'http://localhost:3000/api/users/googlelogin';
+const CALLBACK_URL = 'http://localhost:3000/api/auth/google';
 
 passport.use(new GoogleStrategy({
   clientID: GOOGLE_CLIENT_ID,
@@ -46,7 +46,6 @@ router.get('/google', (req, res, next) => {
   res.header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
   res.header('Access-Control-Allow-Headers', 'Content-Type');
   res.header('Access-Control-Allow-Credentials', 'true');
-  
   passport.authenticate('google', { scope: ['profile', 'email'] })(req, res, next);
 });
 
