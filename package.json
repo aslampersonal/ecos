@@ -4,7 +4,10 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "install-all": "npm install --prefix ecos-frontend && npm install --prefix ecos-backend",
+    "build-all": "vite build --prefix ecos-frontend && echo 'Backend does not require build.'",
+    "start-all": "vite --prefix ecos-frontend & nodemon server.js --prefix ecos-backend"
   },
   "repository": {
     "type": "git",
