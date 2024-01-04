@@ -17,6 +17,7 @@ export function useCont() {
     const [prodData, setData] = useState([]);
     const [file, setFile] = useState([]);
     const [cart, setCart] = useState([]);
+    const [cartLength, setCartLength] = useState();
     const [cartProds, setCartProds] = useState([]);
     const [orders, setOrders] = useState([]);
     const [token, setToken] = useState("");
@@ -29,6 +30,8 @@ export function useCont() {
         setFile,
         cart, 
         setCart,
+        cartLength,
+        setCartLength,
         cartProds,
         setCartProds,
         orders,
@@ -58,6 +61,7 @@ export function useCont() {
       
       const jwtToken = Cookies.get("jwtToken");
       setCart([]);
+
       if (jwtToken) {
         await axios.get("http://localhost:3000/api/users/cart",
         {
@@ -66,7 +70,9 @@ export function useCont() {
             },
         })
         .then((response) => {
-          setCart(response.data.cart);
+          const newCart = response.data.cart;
+          setCart(newCart);
+          setCartLength(newCart ? newCart.length : 0);
 
           const productData = JSON.parse(localStorage.getItem("fullProducts"));
           if (productData) {
@@ -95,8 +101,9 @@ export function useCont() {
           console.log("Error getting cart details: ", error);
         }); 
       } else {
-        const cart = JSON.parse(localStorage.getItem("cart"));
-        setCart(cart);
+        const loccart = JSON.parse(localStorage.getItem("cart"));
+        setCart(loccart);
+        setCartLength(loccart ? loccart.length :0);
 
         const productData = localStorage.getItem("fullProducts");
         if (productData) {
@@ -120,7 +127,6 @@ export function useCont() {
           localStorage.setItem("cartTotal", JSON.stringify(newTotal));
         }
       }
-
     }
 
     async function getOrders() {

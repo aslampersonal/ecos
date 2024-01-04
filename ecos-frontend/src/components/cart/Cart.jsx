@@ -25,7 +25,7 @@ export default function Cart() {
     const [showToast1, setShowToast1] = useState(false);
     const [showToast2, setShowToast2] = useState(false);
 
-    const { cart, user, setUser, getCart } = useCont();
+    const { cart, user, setUser, getCart, getOrders } = useCont();
 
     const navigate = useNavigate();
 
@@ -111,6 +111,7 @@ export default function Cart() {
             setShowToast2(false);
           }, 2000);
           setTimeout(() => {
+            getOrders();
             navigate("/orders");
         }, 2000);
         }
@@ -134,7 +135,7 @@ export default function Cart() {
         )
         .then((response) => {
           console.log(response.data.message);
-          window.location.reload();
+          getCart();
         })
         .catch((error) => {
           console.log("Error removing cart item:", error);
@@ -148,7 +149,7 @@ export default function Cart() {
         }
         localStorage.setItem("cart", JSON.stringify(cart));
       }
-      window.location.reload();
+      getCart();
     }
 
     return (
@@ -186,7 +187,9 @@ export default function Cart() {
                           let quantity = cart.filter((value) => value === prod._id).length;
                           let totalPrice = prod.price * quantity;
 
-                          return (
+                          if(quantity === 0) {
+                            return;
+                          } else return (
                             <div className="card mb-3 pd-card" key={prod._id}>
                               <div className="card-body">
                                 <div className="d-flex justify-content-between">

@@ -68,7 +68,8 @@ export default function OrderMain() {
             setShowToast(true);
             setTimeout(() => {
                 setShowToast(false);
-                window.location.reload();
+                getOrders();
+                setOrderList(JSON.parse(localStorage.getItem('orders')) || []);
             }, 2000); 
         } catch (error) {
             console.log('Error updating order status:', error);

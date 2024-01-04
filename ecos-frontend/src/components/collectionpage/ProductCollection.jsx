@@ -1,6 +1,6 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { NavLink, useLocation } from "react-router-dom";
-import { BiSearchAlt } from "react-icons/bi"
+import { BiSearchAlt } from "react-icons/bi";
 
 import ProductCard from "../ProductCard/ProductCard";
 import "./ProductCollection.css"
@@ -8,11 +8,37 @@ import "./ProductCollection.css"
 
 export default function ProductCollection() {
 
+    const [selectedBrands, setSelectedBrands] = useState([]);
+    const [brands, setBrands] = useState([]);
+    const [filteredProductList, setFilteredProductList] = useState([]);
+
     const a = useLocation();
     let loc = "Collections";
+    let searchResults = [];
     if(a.state !== null) {
         loc = a.state.title;
+        if(loc === "Search") {
+            searchResults = a.state.searchResults;
+        }
     }
+
+    useEffect(() => {
+        const productData = localStorage.getItem("fullProducts");
+        if (productData) {
+            const productsArray = JSON.parse(productData);
+            setBrands(Array.from(new Set(productsArray.map(product => product.brand))));
+        }
+    },[selectedBrands]);
+
+    const handleBrandChange = (brand) => {
+        setSelectedBrands((prevBrands) => {
+            if (prevBrands.includes(brand)) {
+                return prevBrands.filter((prevBrand) => prevBrand !== brand);
+            } else {
+                return [...prevBrands, brand];
+            }
+        });
+    };
 
     return (
     <>
@@ -39,23 +65,34 @@ export default function ProductCollection() {
                                 <header className="card-header">
                                     <button data-toggle="collapse" type="button" data-target="#collapse_1" aria-expanded="false" aria-controls="#collapse_1" className="link-dark link-underline-opacity-0">
                                         {/* <MdKeyboardArrowDown className="pd-icons" /> */}
-                                        <h6 className="title">Product type</h6>
+                                        <h6 className="title">Product Types</h6>
                                     </button>
                                 </header>
                                 <div className="filter-content collapse show" id="collapse_1">
                                     <div className="card-body">
-                                        <form className="pb-3">
-                                            <div className="input-group">
-                                                <input type="text" className="form-control" placeholder="Search" />
-                                                <button className="btn btn-light" id="search-btn" type="button"><BiSearchAlt className="pd-icons" /></button>
-                                            </div>
-                                        </form>
+                                        {/* <div className="input-group">
+                                            <input type="text" className="form-control" placeholder="Search" />
+                                            <button className="btn btn-light" id="search-btn" type="button"><BiSearchAlt className="pd-icons" /></button>
+                                        </div> */}
                                         <ul className="list-menu">
-                                            <li><a href="#" className="link-dark link-underline-opacity-0">Skin Care</a></li>
-                                            <li><a href="#" className="link-dark link-underline-opacity-0">Face Care</a></li>
-                                            <li><a href="#" className="link-dark link-underline-opacity-0">Body Care</a></li>
-                                            <li><a href="#" className="link-dark link-underline-opacity-0">Cosmetics for Men</a></li>
-                                            <li><a href="#" className="link-dark link-underline-opacity-0">Cosmetics for Women</a></li>
+                                            <li className="h-nav-li">
+                                                <NavLink className="h-nav-a" to="/collections" state= {{title:"lips"}}>lips</NavLink>
+                                            </li>
+                                            <li className="h-nav-li">
+                                                <NavLink className="h-nav-a" to="/collections" state= {{title:"hands & feet"}}>Hands & Feet</NavLink>
+                                            </li>
+                                            <li className="h-nav-li">
+                                                <NavLink className="h-nav-a" to="/collections" state= {{title:"eyes"}}>eyes</NavLink>
+                                            </li>
+                                            <li className="h-nav-li">
+                                                <NavLink className="h-nav-a" to="/collections" state= {{title:"skincare"}}>skin care</NavLink>
+                                            </li>
+                                            <li className="h-nav-li">
+                                                <NavLink className="h-nav-a" to="/collections" state= {{title:"bodycare"}}>body care</NavLink>
+                                            </li>
+                                            <li className="h-nav-li">
+                                                <NavLink className="h-nav-a" to="/collections" state= {{title:"haircare"}}>hair care</NavLink>
+                                            </li>
                                         </ul>
                                     </div> 
                                 </div>
@@ -65,44 +102,29 @@ export default function ProductCollection() {
                                 <header className="card-header">
                                     <button href="#" data-toggle="collapse" data-target="#collapse_2" aria-expanded="true" className="link-dark link-underline-opacity-0">
                                         {/* <MdKeyboardArrowDown className="pd-icons" /> */}
-                                        <h6 className="title">Brands </h6>
+                                        <h6 className="title">Filter by Brands</h6>
                                     </button>
                                 </header>
                                 <div className="filter-content collapse show" id="collapse_2">
                                     <div className="card-body">
-                                        <label className="custom-control custom-checkbox">
-                                            <input type="checkbox" className="custom-control-input" />
-                                            <div className="custom-control-label">Mercedes  
-                                                <b className="badge badge-pill badge-light float-right">120</b>  </div>
+                                    {brands.map((brand) => (
+                                        <label key={brand} className="custom-control custom-checkbox">
+                                            <input
+                                                type="checkbox"
+                                                className="custom-control-input"
+                                                checked={selectedBrands.includes(brand)}
+                                                onChange={() => handleBrandChange(brand)}
+                                            />
+                                            <div className="h-nav-a">{brand}</div>
                                         </label>
-                                        <label className="custom-control custom-checkbox">
-                                            <input type="checkbox" className="custom-control-input" />
-                                            <div className="custom-control-label">Toyota 
-                                                <b className="badge badge-pill badge-light float-right">15</b>  </div>
-                                        </label>
-                                        <label className="custom-control custom-checkbox">
-                                            <input type="checkbox" className="custom-control-input" />
-                                            <div className="custom-control-label">Mitsubishi 
-                                                <b className="badge badge-pill badge-light float-right">35</b> </div>
-                                        </label>
-                                        <label className="custom-control custom-checkbox">
-                                            <input type="checkbox" className="custom-control-input" />
-                                            <div className="custom-control-label">Nissan 
-                                                <b className="badge badge-pill badge-light float-right">89</b> </div>
-                                        </label>
-                                        <label className="custom-control custom-checkbox">
-                                            <input type="checkbox" className="custom-control-input" />
-                                            <div className="custom-control-label">Honda 
-                                                <b className="badge badge-pill badge-light float-right">30</b>  </div>
-                                        </label>
+                                    ))}
                                     </div> 
                                 </div>
                             </article>
 
-                            <article className="filter-group">
+                            {/* <article className="filter-group">
                                 <header className="card-header">
                                     <button href="#" data-toggle="collapse" data-target="#collapse_3" aria-expanded="true" className="link-dark link-underline-opacity-0">
-                                        {/* <MdKeyboardArrowDown className="pd-icons" /> */}
                                         <h6 className="title">Price range </h6>
                                     </button>
                                 </header>
@@ -122,45 +144,30 @@ export default function ProductCollection() {
                                         <button className="btn btn-block btn-primary">Apply</button>
                                     </div>
                                 </div>
-                            </article> 
+                            </article>  */}
 
-                            <article className="filter-group">
-                                <header className="card-header">
-                                    <button href="#" data-toggle="collapse" data-target="#collapse_4" aria-expanded="true" className="link-dark link-underline-opacity-0">
-                                        {/* <MdKeyboardArrowDown className="pd-icons" /> */}
-                                        <h6 className="title">Sizes </h6>
-                                    </button>
-                                </header>
-                                <div className="filter-content collapse show" id="collapse_4">
-                                    <div className="card-body">
-                                        <label className="checkbox-btn">
-                                        <input type="checkbox" />
-                                        <span className="btn btn-light"> XS </span>
-                                        </label>
-                
-                                        <label className="checkbox-btn">
-                                        <input type="checkbox" />
-                                        <span className="btn btn-light"> SM </span>
-                                        </label>
-                
-                                        <label className="checkbox-btn">
-                                        <input type="checkbox" />
-                                        <span className="btn btn-light"> LG </span>
-                                        </label>
-                
-                                        <label className="checkbox-btn">
-                                        <input type="checkbox" />
-                                        <span className="btn btn-light"> XXL </span>
-                                        </label>
-                                    </div>
-                                </div>
-                            </article> 
                         </div> 
-    
                     </aside> 
                         
+                    {/* {
+                        loc === "Search" ? <ProductCard searchResults={searchResults} selectedBrands={selectedBrands} loc={loc}/> : <ProductCard loc={loc}/>
+                    } */}
+
                     {
-                        <ProductCard loc={loc}/>
+                        loc === "Search" ? (
+                            <ProductCard
+                            searchResults={searchResults}
+                            loc={loc}
+                            selectedBrands={selectedBrands}
+                            updateProductList={setFilteredProductList} // Pass the function to the ProductCard
+                            />
+                        ) : (
+                            <ProductCard
+                            loc={loc}
+                            selectedBrands={selectedBrands}
+                            updateProductList={setFilteredProductList} // Pass the function to the ProductCard
+                            />
+                        )
                     }
   
                 </div>

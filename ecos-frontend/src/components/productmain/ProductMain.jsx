@@ -2,7 +2,6 @@ import React, { useEffect, useState, useContext } from "react";
 import axios from "axios";
 
 import Cookies from 'js-cookie';
-import jwt_decode from "jwt-decode";
 
 import { NavLink, useNavigate, useLocation } from 'react-router-dom';
 import { MdKeyboardArrowLeft } from "react-icons/md"
@@ -18,9 +17,19 @@ export default function ProductMain (props) {
     const { cart, setCart, user } = useCont();
     const [products, setProducts] = useState([]);
     const navigate = useNavigate();
+    const location = useLocation();
+    const [prodId, setProdId] = useState(location.state?.prodId);
 
     useEffect(() => {
+        const newProdId = location.state?.prodId;
+        if (newProdId && newProdId !== prodId) {
+            setProdId(newProdId);
+        }
         
+        if (!prodId) {
+            navigate("/error");
+            return;
+        }
         const productData = localStorage.getItem("fullProducts");
         if (productData) {
             setProducts(JSON.parse(productData));
@@ -28,14 +37,11 @@ export default function ProductMain (props) {
 
         // imageScroller();
 
-    }, []);
+    }, [prodId, location.state?.prodId]);
 
-    const [prodId] = useState(useLocation().state.prodId);
     let productList = products[0];
     if (prodId) {
         productList = products.filter((prod) => prod._id == prodId);
-    } else {
-        navigate("/error");
     }
 
     async function addToCart(id) {
@@ -125,7 +131,7 @@ export default function ProductMain (props) {
         carousel.addEventListener("mouseleave", dragStop);
     }
 
-    if (!productList[0]) {
+    if (!(productList ? productList[0] : "sample")) {
         return (
             <Error />
         );
@@ -139,7 +145,7 @@ export default function ProductMain (props) {
                         <ol className="breadcrumb text-white">
                             <li className="breadcrumb-item"><NavLink to="/" className="link-dark link-underline-opacity-0">Home</NavLink></li>
                             <li className="breadcrumb-item"><NavLink to="/store" className="link-dark link-underline-opacity-0">Store</NavLink></li>
-                            <li className="breadcrumb-item active" aria-current="page" id="category-link-nav">{productList[0].category}</li>
+                            <li className="breadcrumb-item active" aria-current="page" id="category-link-nav">{productList ? productList[0].category : "sample"}</li>
                         </ol>  
                     </nav>
                 </div> 
@@ -149,7 +155,7 @@ export default function ProductMain (props) {
                 <div className="container" id="prod-sec-div">
                     <div id="prod-img-div">
                         <div id="prod-img-main">
-                            <img id="prod-img" src={productList[0].image} alt="" />
+                            <img id="prod-img" src={productList ? productList[0].image : "sample"} alt="" />
                         </div>
                         {/* <div id="prod-scroll-div">
                             <div id="scroll-back" className="scroll-icon">
@@ -188,13 +194,13 @@ export default function ProductMain (props) {
                     <div id="prod-det-div">
                         <form action="" id="product-form">
                             <div id="product-form-div">
-                                <h1 id="pd-title">{productList[0].title}</h1>
-                                <h5 id="pd-brand">{productList[0].brand}</h5>
-                                <p id="pd-desc">{productList[0].description}</p>
+                                <h1 id="pd-title">{productList ? productList[0].title : "sample"}</h1>
+                                <h5 id="pd-brand">{productList ? productList[0].brand : "sample"}</h5>
+                                <p id="pd-desc">{productList ? productList[0].description : "sample"}</p>
                                 <div id="price-qnt-div">
                                     <div id="price-div">
                                         <span id="pd-price" style={{ fontSize: 30, fontWeight: 700 }}>
-                                            {productList[0].price}
+                                            ₹{productList ? productList[0].price : "sample"}
                                         </span>
                                         <span style={{ fontSize: 9, fontWeight: 400 }}>
                                             inclusive of all taxes
@@ -202,10 +208,10 @@ export default function ProductMain (props) {
                                     </div>
                                     <div id="qnt-div">
                                         <span style={{ fontSize: 16, fontWeight: 600 }}>Quantity</span>
-                                        <input type="number" id="quantity" defaultValue="1" min="1" max={productList[0].countInStock} />
+                                        <input type="number" id="quantity" defaultValue="1" min="1" max={productList ? productList[0].countInStock : "sample"} />
                                     </div>
                                 </div>
-                                <button onClick={() => {addToCart(productList[0]._id)}} type="button" className="btn" id="cart-btn">
+                                <button onClick={() => {addToCart(productList ? productList[0]._id : "sample")}} type="button" className="btn" id="cart-btn">
                                     ADD TO CART
                                 </button>
                             </div>
@@ -222,6 +228,10 @@ export default function ProductMain (props) {
                             <div className="p-features">
                                 <VscDebugBreakpointLog className="features-icons"/>
                                 <p className="p-features-p">Depuffs</p>
+                            </div>
+                            <div className="p-features">
+                                <VscDebugBreakpointLog className="features-icons"/>
+                                <p className="p-features-p">Long Lasting</p>
                             </div>
                         </div>
                     </div>

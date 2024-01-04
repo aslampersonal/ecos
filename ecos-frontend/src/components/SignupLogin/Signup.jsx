@@ -73,7 +73,7 @@ export default function SignUpForm () {
     <div className="form-container sign-up-container">
       <form onSubmit={handleSubmit} className="ls-form">
         <h1 className="ls-h1">Create Account</h1>
-        <div className="social-container">
+        {/* <div className="social-container">
           <a href="#" className="social">
             <FaFacebook className="social-i" />
           </a>
@@ -84,7 +84,8 @@ export default function SignUpForm () {
             <FaLinkedin className="social-i" />
           </a>
         </div>
-        <span className="ls-span">or use your email for registration</span>
+        <span className="ls-span">or use your email for registration</span> */}
+        <div className="social-container"></div>
         <input
           type="text"
           name="username"

@@ -18,11 +18,14 @@ import { AiTwotoneShopping } from 'react-icons/ai';
 function Header() {
     
     const { loggedIn, login, logout } = useAuth();
-    const { cart, setCart, setToken, user, setUser, getCart } = useCont();
+    const { cart, setCart, setToken, user, setUser, getCart, cartLength  } = useCont();
     const [showToast, setShowToast] = useState(false);
     const [showheader, setShowHeader] = useState("");
     const navigate = useNavigate();
     const jwtToken = Cookies.get("jwtToken");
+    const [searchTerm, setSearchTerm] = useState('');
+    const [products, setProducts] = useState();
+    const [searchResults, setSearchResults] = useState([]);
     
     useEffect(() => {
         if (jwtToken) {
@@ -43,8 +46,12 @@ function Header() {
             document.getElementById("logout-icon").style.display = "none";
         }
         getCart();
+        const productData = localStorage.getItem("fullProducts");
+        if (productData) {
+            setProducts(JSON.parse(productData));
+        }
 
-    }, [loggedIn]);
+    }, [loggedIn, cartLength]);
 
     async function logoutUser() {
 
@@ -78,9 +85,25 @@ function Header() {
 
     }
 
-    async function searchProduct() {
+    const handleSearch = async (event) => {
+        
+        const term = event.target.value.toLowerCase();
+        setSearchTerm(term);
 
-    }
+        let results = products.filter(
+            (product) =>
+                product.title.toLowerCase().includes(term) ||
+                product.brand.toLowerCase().includes(term) ||
+                product.category.toLowerCase().includes(term)
+        );
+
+        if (event.target.value.length === 0) {
+            results = [];
+        }
+    
+        setSearchResults(results);
+
+    };
     
     return (
         <header className="header" id="header" style={{display: showheader}}>
@@ -124,18 +147,36 @@ function Header() {
                             </li>
                         </ul>
                     </div>
-                    <form className='search-form'>
-                        <button className='search-btn' type='submit' onChange={searchProduct}><BiSearchAlt className='search-icon' /></button>
+                    <div className='search-form'>
+                        <button className='search-btn'>
+                            <NavLink to="/Collections" state= {{title:"Search", searchResults}}>
+                                <BiSearchAlt className='search-icon' onClick={() => {setSearchResults([])}} />
+                            </NavLink>
+                        </button>
                         <input
                             type="text"
                             className="search-input"
-                            placeholder="search"
+                            placeholder="Type to search..."
+                            onChange={handleSearch}
                         />
-                    </form>
+                        {searchResults.length > 0 && (
+                        <div className='result'>
+                            {searchResults.map((result) => (
+                            <div key={result._id} className='result-list'>
+                            <NavLink to="/product" state={{prodId: result._id}} className="nav-link">
+                                <div onClick={() => {setSearchResults([])}}> 
+                                    {result.title}
+                                </div>
+                            </NavLink>
+                            </div>
+                            ))}
+                        </div>
+                        )}
+                    </div>
                     <div id="h-nav-div-profile">
                             <NavLink to="./login">
                                 <button className="btn" id="login-icon" >
-                                    <BiLogInCircle className='top-icons' alt="Login" />
+                                    <BiLogInCircle className='top-icons' alt="Login" title='Login here'/>
                                 </button>
                             </NavLink>
                             <NavLink to="./profile">
@@ -145,11 +186,11 @@ function Header() {
                             </NavLink>
                             <NavLink to="./cart">
                                 <button className="btn" id="cart-icon" >
-                                    <AiTwotoneShopping className='top-icons' style={{fontSize: "30px"}} />
-                                    <label>{cart ? cart.length: ""}</label>
+                                    <AiTwotoneShopping className='top-icons' style={{fontSize: "30px"}}/>
+                                    <label>{cartLength ? cartLength: ""}</label>
                                 </button>
                             </NavLink>
-                            <button onClick={logoutUser} className="btn" id="logout-icon" >
+                            <button onClick={logoutUser} className="btn" id="logout-icon" title='Logout here'>
                                 <FiLogOut className='top-icons' />
                             </button>
                     </div>

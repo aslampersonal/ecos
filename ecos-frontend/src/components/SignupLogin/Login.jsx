@@ -118,7 +118,7 @@ export default function SignInForm (props) {
                     setShowToast(false);
                 }, 2000);
                 setTimeout(() => {
-                    navigate(-1);
+                    navigate("/");
                 }, 2000);
 
               } catch (error) {
@@ -178,7 +178,7 @@ export default function SignInForm (props) {
         <Toast show={showToast} type="success" message="Logged in successfully" />
       </div>
       <h1 className="ls-h1">Sign in</h1>
-      <div className="social-container">
+      {/* <div className="social-container">
         <button className="social">
           <FaFacebook className="social-i" />
         </button>
@@ -189,7 +189,8 @@ export default function SignInForm (props) {
           <FaLinkedin className="social-i" />
         </button>
       </div>
-      <span className="ls-span">or use your account</span>
+      <span className="ls-span">or use your account</span> */}
+      <div className="social-container"></div>
       <form onSubmit={handleSubmit} className="ls-form">
         <input
           type="email"

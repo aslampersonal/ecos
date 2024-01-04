@@ -13,11 +13,17 @@ import axios from 'axios';
 export default function ProductCard (props) {
 
     const path = props.loc;
-    const { cart, setCart, user, prodData } = useCont();
+    const selectedBrands = props.selectedBrands || [];
+    const updateProductList = props.updateProductList;
+
+    const { cart, setCart, user, prodData, getCart } = useCont();
     const navigate = useNavigate();
 
     let productList = prodData;
-    if (path === "lips") {
+    if (path === "Search") {
+        const searchResults = props.searchResults;
+        productList = searchResults;
+    } else if (path === "lips") {
         productList = prodData.filter((prod) => 
         prod.category == "Lipstick" || 
         prod.category === "Lip Balm" || 
@@ -61,11 +67,24 @@ export default function ProductCard (props) {
         productList = prodData.filter((prod) => prod.category == path );
     }
 
+    // Filter productList based on selected brands
+    productList = productList.filter((prod) => selectedBrands.length === 0 || selectedBrands.includes(prod.brand));
+
     useEffect(() => {
+        // Update productList when the prop changes
+        productList = prodData;
+        productList = productList.filter((prod) => selectedBrands.length === 0 || selectedBrands.includes(prod.brand));
+
+
+    }, [selectedBrands, prodData]);
+    
+    useEffect(() => {
+
         if(prodData) {
             localStorage.setItem("productData", JSON.stringify(productList));
         }
-    }, [productList]);
+
+    }, [selectedBrands, productList, prodData, updateProductList]);
 
     const [sorted, sortProducts] = useState([]);
     const [showToast, setShowToast] = useState(false);
@@ -99,6 +118,7 @@ export default function ProductCard (props) {
                     },
                     withCredentials: true 
                 });
+                getCart();
                 console.log(response.data.message);
                 
             } catch (error) {
@@ -108,7 +128,7 @@ export default function ProductCard (props) {
             const cart = JSON.parse(localStorage.getItem("cart")) ? JSON.parse(localStorage.getItem("cart")) : [];
             localStorage.setItem("cart", JSON.stringify([...cart, id]));
         }
-        window.location.reload();
+        // window.location.reload();
     }
 
     return(

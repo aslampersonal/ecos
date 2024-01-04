@@ -23,3 +23,13 @@ a {
 #search-btn {
     z-index: 0;
 }
+
+.custom-control {
+    display: flex;
+    flex-direction: row;
+    margin: 10px 1rem;
+}
+
+.custom-control-input {
+    margin-right: 10px;
+}
